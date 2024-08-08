@@ -5,7 +5,6 @@ import { TipoGrano } from "src/enum/tipoGrano.enum";
 import { Medida } from "src/enum/medidas.enum";
 
 @ChildEntity()
-//@Entity()
 export class Coffee extends Product{
     @Column({
         type: 'enum',
