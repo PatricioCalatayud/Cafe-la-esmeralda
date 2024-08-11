@@ -16,7 +16,8 @@ export class ImageService{
             public:true
         });
         return fileUpload.publicUrl();
-        }
+    }
+}
 // }
 // @Injectable()
 // export class StorageService {
@@ -32,4 +33,3 @@ export class ImageService{
 //       throw error;
 //     }
 //   }
- }

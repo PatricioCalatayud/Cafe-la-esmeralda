@@ -25,7 +25,7 @@ import { Testimony } from './entities/testimony.entity';
 import { CategoryModule } from './modules/categorias/category.module';
 import { StorageOrderModule } from './modules/storageOrder/storage-order.module';
 import { Storage } from './entities/storage.entity';
-import { UploadService } from './modules/storage/upload.service';
+import { ImageService } from './modules/storage/image.service';
 
 @Module({
   imports: [
@@ -55,6 +55,6 @@ import { UploadService } from './modules/storage/upload.service';
     StorageOrderModule,
   ],
   controllers: [AppController, ImageController],
-  providers: [AppService, PreloadService, UploadService],
+  providers: [AppService, PreloadService, ImageService],
 })
 export class AppModule {}
