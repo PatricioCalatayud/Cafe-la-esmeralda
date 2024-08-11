@@ -20,7 +20,7 @@ const serviceAccount = {
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-    storageBucket: 'coffee-store-98417.appspot.com',
+    storageBucket: 'gs://la-esmeralda-dc654.appspot.com',
 });
 
 const bucket = admin.storage().bucket();
