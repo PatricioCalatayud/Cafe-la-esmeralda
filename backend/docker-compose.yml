@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  nestapp:
+    image: valentinojcarrero/cafeteriaesmeralda:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgresdb
+    env_file: .env.development
+
+  postgresdb:
+    image: postgres
+    restart: always
+    env_file: .env.development
+    volumes:
+      - pgdata-cafe:/var/lib/postgresql/data
+
+volumes:
+  pgdata-cafe:

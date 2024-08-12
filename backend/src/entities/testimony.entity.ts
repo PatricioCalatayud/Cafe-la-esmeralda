@@ -6,12 +6,6 @@ export class Testimony {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  //   @Column({ type: 'varchar', length: 40, nullable: false })
-  //   name: string;
-
-  //   @Column({ type: 'varchar', length: 40, nullable: false })
-  //   email: string;
-
   @Column({ type: 'text', nullable: false })
   description: string;
 
