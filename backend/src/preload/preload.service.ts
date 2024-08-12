@@ -195,8 +195,8 @@ export class PreloadService implements OnModuleInit{
         const product_2 = await this.teRepository.find();
 
         const response = await this.orderService.addOrder(users[0].id,[
-            {id:product_1[0].id, cantidad:2},
-            {id:product_2[0].id, cantidad:3}
+            {id:product_1[0].id, quantity: 2},
+            {id:product_2[0].id, quantity: 3}
         ],"tienda",0,undefined)
         
         console.log("se cargo preorder por defecto")
@@ -208,8 +208,8 @@ export class PreloadService implements OnModuleInit{
         const product_2 = await this.teRepository.find();
 
         await this.storageService.storage(users[0].id,[
-            {id:product_1[0].id, cantidad:5},
-            {id:product_2[0].id, cantidad:1}
+            {id:product_1[0].id, quantity: 5},
+            {id:product_2[0].id, quantity: 1}
         ])
         
         console.log("se cargo  storage por defecto")

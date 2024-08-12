@@ -66,7 +66,7 @@ export class StorageOrderService {
                 const item = this.storageRepository.create({
                     user:userFound,
                     product:objectProduct,
-                    quantity:product.cantidad
+                    quantity:product.quantity
                 })
                     await this.storageRepository.save(item)
                 }
