@@ -1,7 +1,8 @@
-import { Controller, HttpStatus, ParseFilePipeBuilder, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, HttpStatus, ParseFilePipeBuilder, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('Image Storage')
 @Controller('image')
@@ -13,6 +14,7 @@ export class ImageController {
         description:
             'Esta ruta permite subir imagenes con los datos enviados por body',
     })
+    @UseGuards(AuthGuard)
     @Post()
 
     @UseInterceptors(FileInterceptor('file'))
