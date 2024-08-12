@@ -1,11 +1,10 @@
 import { Presentacion } from "src/enum/presentacion.enum";
-import { CreateProductdto, UpdatedProductdto } from "./products.dto";
+import { CreateProductDto, UpdatedProductDto } from "./products.dto";
 import { TipoGrano } from "src/enum/tipoGrano.enum";
 import { Medida } from "src/enum/medidas.enum";
 import { IsEnum, IsOptional } from "class-validator";
 
-export class CreateCoffeeDto extends CreateProductdto{
-
+export class CreateCoffeeDto extends CreateProductDto{
     @IsEnum(Presentacion)
     presentacion: Presentacion;
 
@@ -16,9 +15,7 @@ export class CreateCoffeeDto extends CreateProductdto{
     medida: Medida;
 }
 
-
-export class UpdateCoffeDto extends UpdatedProductdto{
-
+export class UpdateCoffeDto extends UpdatedProductDto{
     @IsOptional()
     @IsEnum(Presentacion)
     presentacion: Presentacion;

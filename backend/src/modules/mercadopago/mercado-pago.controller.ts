@@ -8,7 +8,7 @@ import { ApiOperation, ApiTags } from "@nestjs/swagger";
 export class MercadoPagoController {
   constructor(private readonly mercadoPagoService: MercadoPagoService) {}
 
-  @ApiOperation({ summary: 'Crear una orden de pago.', description: 'Este endpoint retorna una URL de orden de pago de Mercado Pago.' })
+  @ApiOperation({ summary: 'Crea una orden de pago.', description: 'Este endpoint retorna una URL de orden de pago de Mercado Pago.' })
   @Post('url-process')
   async createPayment(@Body(new ValidationPipe()) createPaymentDto: CreatePaymentDto) {
     console.log('DTO recibido:', createPaymentDto); // DEJAMOS POR EL MOMENTO PARA REVISAR

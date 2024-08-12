@@ -4,7 +4,7 @@ import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import { Category } from "src/entities/category.entity";
 import { CreateCoffeeDto, UpdateCoffeDto } from "src/modules/products/dtos/coffee.dto";
-import { CreateProductdto, UpdatedProductdto } from "src/modules/products/dtos/products.dto";
+import { CreateProductDto, UpdatedProductDto } from "src/modules/products/dtos/products.dto";
 import { Repository } from "typeorm";
 
 export class ProductValidationInterceptor implements NestInterceptor{
@@ -16,7 +16,7 @@ export class ProductValidationInterceptor implements NestInterceptor{
 
     async intercept(context: ExecutionContext, next: CallHandler<any>){
         const request = context.switchToHttp().getRequest();
-        const body: CreateProductdto = request.body
+        const body: CreateProductDto = request.body
         const method = request.method
 
         let dtoClass;
@@ -33,7 +33,7 @@ export class ProductValidationInterceptor implements NestInterceptor{
             dtoClass= method === 'POST'?CreateCoffeeDto:UpdateCoffeDto
         }
         else if (otherID.includes(body.categoryID)||body.categoryID===undefined){
-            dtoClass = method === 'POST'?CreateProductdto:UpdatedProductdto
+            dtoClass = method === 'POST'?CreateProductDto:UpdatedProductDto
         }else{
             throw new BadRequestException(`Categoría: ${body.categoryID}, no reconocida`);
         }

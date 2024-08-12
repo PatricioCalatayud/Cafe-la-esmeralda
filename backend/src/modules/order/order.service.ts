@@ -23,22 +23,22 @@ export class OrderService {
         private readonly dataSource: DataSource
     ){}
 
-    async GetOrders() {
+    async getOrders() {
         return await this.orderQuery.getOrders()
     }
 
-    async GetOrderById(id: string) {
-        const foundOrder = await this.orderQuery.GetOrderById(id);
+    async getOrderById(id: string) {
+        const foundOrder = await this.orderQuery.getOrderById(id);
         if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
 
         return foundOrder;
     }
 
-    async GetOrdersByUserId(id: string) {
-        return await this.orderQuery.GetOrdersByUserId(id)
+    async getOrdersByUserId(id: string) {
+        return await this.orderQuery.getOrdersByUserId(id)
     }
 
-    async addOrder(userId: string, productsInfo: ProductInfo[], address: undefined | string, discount: undefined | number, deliveryDate: undefined | Date) {
+    async createOrder(userId: string, productsInfo: ProductInfo[], address: undefined | string, discount: undefined | number, deliveryDate: undefined | Date) {
         let total = 0 ; 
         let createdOrder;
 
