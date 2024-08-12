@@ -2,33 +2,33 @@ import { BeforeInsert, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryG
 import { Order } from "./order.entity";
 import { Transaccion } from "./transaction.entity";
 
-@Entity({name:'orderdetails'})
+@Entity({ name: 'orderDetail' })
 export class OrderDetail {
-    @PrimaryGeneratedColumn()
-    id:string
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-    @Column({default:"tienda"})
-    adressDelivery:string
+    @Column({ default: "Tienda" })
+    addressDelivery: string;
 
-    @Column({type: 'timestamp'})
-    deliveryDate:Date
+    @Column({ type: 'timestamp' })
+    deliveryDate: Date;
 
-    @Column()
-    totalPrice: number
+    @Column({ type: 'decimal', scale: 2 })
+    totalPrice: number;
 
-    @Column({default:0})
-    cupoDescuento: number
+    @Column({ type: 'int', default: 0 })
+    cupoDescuento: number;
 
-    @OneToOne(()=>Order,(order)=>order.orderDetail)
-    @JoinColumn({name:'orderId'})
-    order:  Order
+    @OneToOne(()=>Order, (order) => order.orderDetail)
+    @JoinColumn({ name: 'orderId' })
+    order: Order;
 
-    @OneToMany(()=>Transaccion,(transaccion)=> transaccion.orderdetail)
-    transactions : Transaccion[]
+    @OneToMany(()=>Transaccion, (transaccion) => transaccion.orderdetail)
+    transactions : Transaccion[];
 
     @BeforeInsert()
     setDefaultEventDate() {
-            const currentDate = new Date();
-            this.deliveryDate = new Date(currentDate.setDate(currentDate.getDate() + 7));
-        }
+        const currentDate = new Date();
+        this.deliveryDate = new Date(currentDate.setDate(currentDate.getDate() + 7));
     }
+}

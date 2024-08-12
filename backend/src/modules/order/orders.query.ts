@@ -11,7 +11,7 @@ export class OrderQuery {
     ){}
 
 
-    async getOrder(id:string){
+    async GetOrderById(id:string){
 
         const order = this.orderRepository
         .createQueryBuilder('orders')
@@ -43,7 +43,7 @@ export class OrderQuery {
     }
 
 
-    async getByUserId(id:string){
+    async GetOrdersByUserId(id:string){
 
         const orders = this.orderRepository
         .createQueryBuilder('orders')

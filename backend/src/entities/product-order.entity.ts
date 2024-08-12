@@ -9,7 +9,7 @@ export class ProductOrder{
     id:string
 
     @Column()
-    cantidad: number
+    quantity: number
 
     @ManyToOne(()=>Product,(product)=>product.productsOrder)
     product: Product
