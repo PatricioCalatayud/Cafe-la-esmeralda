@@ -1,8 +1,6 @@
-import { ChildEntity, Column, Entity } from "typeorm";
+import { ChildEntity } from "typeorm";
 import { Product } from "./product.entity";
 
 @ChildEntity()
-export class Accesorio extends Product{
-
-}
+export class Accesorio extends Product{}
 
