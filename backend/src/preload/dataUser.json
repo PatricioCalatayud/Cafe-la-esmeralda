@@ -1,21 +1,23 @@
 [
-    {"name":"user01",
-    "email":"user01@gmail.com",
-    "password":"123#abc2",
-    "phone":"987567123",
-    "role":"user"
+    {
+        "name": "user01",
+        "email": "user01@gmail.com",
+        "password": "123#abc2",
+        "phone": "987567123",
+        "role": "Usuario"
     },
-    {"name":"admin01",
-    "email":"admin01@gmail.com",
-    "password":"123#abc2",
-    "phone":"987567123",
-    "role":"admin"
+    {
+        "name": "admin01",
+        "email": "admin01@gmail.com",
+        "password": "123#abc2",
+        "phone": "987567123",
+        "role": "Administrador"
     },
-    {"name":"client01",
-    "email":"client01@gmail.com",
-    "password":"123#abc2",
-    "phone":"987567123",
-    "role":"client"
+    {
+        "name": "client01",
+        "email": "client01@gmail.com",
+        "password": "123#abc2",
+        "phone": "987567123",
+        "role": "Cliente"
     }
-
 ]
