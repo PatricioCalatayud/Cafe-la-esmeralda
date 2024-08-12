@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
 import { StorageOrderService } from './storage-order.service';
 
 import { CreateOrderStorageDto } from './storage-order.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('storage-order')
 @Controller('storage-order')
@@ -17,6 +18,7 @@ export class StorageOrderController {
 
     })
     @ApiBearerAuth()
+    @UseGuards(AuthGuard)
     @Get(':id')
     getStoreUser(@Param('id', ParseUUIDPipe) userId:string){
         return this.storageOrderService.getByID(userId)
@@ -28,6 +30,7 @@ export class StorageOrderController {
         
     })
     @ApiBearerAuth()
+    @UseGuards(AuthGuard)
     @Post()
     createStorageOrder(@Body() orderInfo:CreateOrderStorageDto){
         const{userId,products}=orderInfo
@@ -40,6 +43,7 @@ export class StorageOrderController {
         
     })
     @ApiBearerAuth()
+    @UseGuards(AuthGuard)
     @Delete('id')
     deleteStorageOrder(@Param('id',ParseUUIDPipe)userId:string){
         return this.deleteStorageOrder(userId)
