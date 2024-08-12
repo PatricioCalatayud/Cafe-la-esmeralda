@@ -3,17 +3,18 @@ import { ImageService } from './image.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Storage')
+@ApiTags('Image Storage')
 @Controller('image')
 export class ImageController {
     constructor(private readonly uploadService: ImageService){}
 
-    @Post()
     @ApiOperation({
-        summary: 'Añadir imagenes a la base de datos',
+        summary: 'Almacenar imagenes',
         description:
             'Esta ruta permite subir imagenes con los datos enviados por body',
     })
+    @Post()
+
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile(
         new ParseFilePipeBuilder()
