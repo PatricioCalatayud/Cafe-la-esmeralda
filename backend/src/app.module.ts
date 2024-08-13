@@ -39,8 +39,7 @@ import { ImageService } from './modules/storage/image.service';
       useFactory: (ConfigService: ConfigService) =>
         ConfigService.get('typeorm'),
     }),
-    TypeOrmModule.forFeature([Testimony,Product,Category,User,Coffee,Mate,Endulzante,Chocolate,Te,Accesorio,Storage])
-    ,
+    TypeOrmModule.forFeature([Testimony,Product,Category,User,Coffee,Mate,Endulzante,Chocolate,Te,Accesorio,Storage]),
     UsersModule,
     ProductsModule,
     OrderModule,
