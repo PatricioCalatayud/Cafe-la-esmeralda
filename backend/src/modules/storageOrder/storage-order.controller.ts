@@ -12,9 +12,7 @@ export class StorageOrderController {
     constructor(
         private readonly storageOrderService:StorageOrderService
     ){}
-    @ApiOperation({
-        summary:'Persistencia Order',
-        description:'Esta ruta se usa para obtener la permanencia de de orden de un usuario por un tiempo'
+    @ApiOperation({summary:'Persistencia Order', description:'Esta ruta se usa para obtener la permanencia de de orden de un usuario por un tiempo'
 
     })
     @ApiBearerAuth()
@@ -24,11 +22,7 @@ export class StorageOrderController {
         return this.storageOrderService.getByID(userId)
     }
     
-    @ApiOperation({
-        summary:'Crear Persistencia Order',
-        description:'Esta ruta se usa para obtener la persistencia de de orden especifica de un usuario por un tiempo'
-        
-    })
+    @ApiOperation({summary:'Crear Persistencia Order', description:'Esta ruta se usa para obtener la persistencia de de orden especifica de un usuario por un tiempo'})
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
@@ -37,11 +31,7 @@ export class StorageOrderController {
         return this.storageOrderService.storage(userId,products)
     }
     
-    @ApiOperation({
-        summary:'Eliminar Persistencia Order',
-        description:'Esta ruta se usa para eliminar la persistencia de de orden de un usuario por un tiempo'
-        
-    })
+    @ApiOperation({summary:'Eliminar Persistencia Order', description:'Esta ruta se usa para eliminar la persistencia de de orden de un usuario por un tiempo'})
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Delete('id')

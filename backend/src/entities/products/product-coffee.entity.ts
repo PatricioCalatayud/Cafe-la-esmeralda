@@ -1,4 +1,4 @@
-import { ChildEntity, Column, Entity } from "typeorm";
+import { ChildEntity, Column } from "typeorm";
 import { Product } from "./product.entity";
 import { Presentacion } from "src/enum/presentacion.enum";
 import { TipoGrano } from "src/enum/tipoGrano.enum";
@@ -11,19 +11,19 @@ export class Coffee extends Product{
         enum: Presentacion,
         default: Presentacion.GRANO
     })
-    presentacion:Presentacion
+    presentacion: Presentacion;
 
     @Column({
         type: 'enum',
         enum: TipoGrano,
         default:TipoGrano.COLOMBIANO
     })
-    tipoGrano:TipoGrano
+    tipoGrano: TipoGrano;
 
     @Column({
         type: 'enum',
         enum: Medida,
         default: Medida.UNIDADES
     })
-    medida:Medida
+    medida: Medida;
 }

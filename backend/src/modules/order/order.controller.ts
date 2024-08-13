@@ -1,70 +1,41 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { AddOrderDto } from './order.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/guards/auth.guard';
-@ApiTags('Ordenes')
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
+@ApiTags('Ordenes de compra')
 @Controller('order')
 export class OrderController {
+    constructor(private readonly orderService: OrderService){}
 
-    constructor(
-        private readonly orderService: OrderService,
-    ){}
-    @ApiOperation({
-        summary:'Obtener ordenes',
-        description:'Obtiene todas las ordenes, tiene que estar registrado'
-    })
-    @ApiBearerAuth()
-    @UseGuards(AuthGuard)
+    @ApiOperation({ summary: 'Obtiene todas las ordenes', description: 'Este endpoint retorna todas las ordenes.' })
     @Get()
-    async GetAll(){
-        return await this.orderService.getAll()
-    }   
-    @ApiOperation({
-        summary:'Obtener ordenes por id',
-        description:'Obtiene ordenes especificas, tiene que estar registrado'
-    })
-    @ApiBearerAuth()
-    @UseGuards(AuthGuard)
-    @Get(':id')
-    async GetById(@Param('id', ParseUUIDPipe) id: string){
-        return await this.orderService.getById(id)
-        
-    }
-    
-    @ApiOperation({
-        summary:'Obtener ordenes por usuario',
-        description:'Obtiene ordenes especificas de un usuario, tiene que estar registrado'
-    })
-    @ApiBearerAuth()
-    @UseGuards(AuthGuard)
-    @Get('user/:id')
-    async GetByUserId(@Param('id', ParseUUIDPipe) id: string){
-        return await this.orderService.getByUserId(id)
-        
-    }
-    
-    @ApiOperation({
-        summary:'Crear ordenes',
-        description:'Crea una nueva orden, tiene que estar registrado'
-    })
-    @ApiBearerAuth()
-    @UseGuards(AuthGuard)
-    @Post()
-    async addOne(@Body() orderInfo:AddOrderDto){    
-        const {userId,products,adress,cuponDescuento,deliveryDate} = orderInfo
-        return await this.orderService.addOrder(userId,products,adress,Number(cuponDescuento),deliveryDate)
-    }
-    
-    @ApiOperation({
-        summary:'Eliminar ordenes',
-        description:'Elimina una orden especifica, tiene que estar registrado'
-    })
-    @ApiBearerAuth()
-    @UseGuards(AuthGuard)
-    @Delete(':id')
-    async deleteOne(){
-        
+    async getOrders() {
+        return await this.orderService.getOrders()
     }
 
+    @ApiOperation({ summary: 'Obtiene una orden por ID.', description: 'Este endpoint retorna una orden por su ID.' })
+    @Get(':id')
+    async getOrderById(@Param('id', ParseUUIDPipe) id: string){
+        return await this.orderService.getOrderById(id)
+    }
+
+    @ApiOperation({ summary: 'Obtiene ordenes de un usuario por su ID.', description: 'Este endpoint retorna todas las ordenes de un usuario por su ID' })
+    @Get('user/:id')
+    async getOrdersByUserId(@Param('id', ParseUUIDPipe) id: string){
+        return await this.orderService.getOrdersByUserId(id)
+    }
+
+    @ApiOperation({ summary: 'Crea una orden de compra usando AddOrderDto.', description: 'Este endpoint crea una orden de compra usando AddOrderDto.' })
+    @Post()
+    async createOrder(@Body() orderInfo: AddOrderDto) {
+        const { userId, products, address, discount, deliveryDate } = orderInfo;
+        return await this.orderService.createOrder(userId, products, address, Number(discount), deliveryDate);
+    }
+
+    // SIN DOCUMENTAR YA QUE ESTÁ INCOMPLETA
+    @Delete(':id')
+    async deleteOrder() {
+        
+    }
 }

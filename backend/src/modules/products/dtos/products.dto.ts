@@ -1,10 +1,9 @@
 import { Type } from "class-transformer"
-import { IsBoolean, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID, Length, Max, Min } from "class-validator"
+import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID } from "class-validator"
 
-export class CreateProductdto{
-
+export class CreateProductDto{
     @IsNotEmpty()
-    @Type(()=> Number)
+    @Type(() => Number)
     @IsPositive()
     @IsNumber()
     article_id: number;
@@ -14,21 +13,21 @@ export class CreateProductdto{
     description: string;
 
     @IsNotEmpty()
-    @Type(()=> Number)
+    @Type(() => Number)
     @IsPositive()
-    price?:number
+    price?: number; 
 
     @IsNotEmpty()
     @IsNumber()
-    @Type(()=> Number)
+    @Type(() => Number)
     @IsPositive()
     @IsInt()
-    stock?:number
+    stock?: number;
 
     @IsOptional()
-    @Type(()=> Number)
+    @Type(() => Number)
     @IsInt()
-    discount?: number
+    discount?: number;
 
     @IsOptional()
     @IsBoolean()
@@ -39,31 +38,27 @@ export class CreateProductdto{
     categoryID: string;
 }
 
-
-
-
-export class UpdatedProductdto {
-    
+export class UpdatedProductDto {
     @IsOptional()
     @IsString()
     description: string;
 
     @IsOptional()
-    @Type(()=> Number)
+    @Type(() => Number)
     @IsPositive()
-    price?:number
+    price?: number;
 
     @IsOptional()
     @IsNumber()
-    @Type(()=> Number)
+    @Type(() => Number)
     @IsPositive()
     @IsInt()
-    stock?:number
+    stock?: number;
 
     @IsOptional()
-    @Type(()=> Number)
+    @Type(() => Number)
     @IsInt()
-    discount?: number
+    discount?: number;
 
     @IsOptional()
     @IsBoolean()
