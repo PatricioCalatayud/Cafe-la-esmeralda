@@ -11,8 +11,7 @@ export class OrderQuery {
     ){}
 
 
-    async getOrder(id:string){
-
+    async getOrderById(id: string) {
         const order = this.orderRepository
         .createQueryBuilder('orders')
         .leftJoinAndSelect('orders.user', 'user')
@@ -43,8 +42,7 @@ export class OrderQuery {
     }
 
 
-    async getByUserId(id:string){
-
+    async getOrdersByUserId(id: string) {
         const orders = this.orderRepository
         .createQueryBuilder('orders')
         .leftJoinAndSelect('orders.user', 'user')

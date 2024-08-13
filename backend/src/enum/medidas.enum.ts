@@ -1,6 +1,6 @@
 export enum Medida {
-    KILO = "kilo",
-    UNIDADES = "unidades",
-    SOBRE = "sobre",
-    CAJA = "caja"
+    KILO = "Kilo",
+    UNIDADES = "Unidades",
+    SOBRE = "Sobre",
+    CAJA = "Caja"
 }

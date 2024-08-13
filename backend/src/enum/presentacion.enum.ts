@@ -1,5 +1,5 @@
 export enum Presentacion{
-    MOLIDO = "molido",
-    GRANO = "grano",
-    CAPSULAS = "capsulas"
+    MOLIDO = "Molido",
+    GRANO = "Grano",
+    CAPSULAS = "Capsulas"
 }
