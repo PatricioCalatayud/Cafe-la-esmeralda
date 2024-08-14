@@ -97,18 +97,20 @@ export class PreloadService implements OnModuleInit {
         console.log(`Precarga de productos exitosa.`);
     }
     async addDefaultUser(dataUser) {
-        await Promise.all(dataUser.map(async (user)=>{
+        await Promise.all(dataUser.map(async (user) => {
             if (user.password) {
                 const hashedPassword = await bcrypt.hash(user.password, 10);
                 if (!hashedPassword) throw new BadRequestException('Error encriptando la contraseña.');
                 user.password = hashedPassword;
             }
             
-            const objUser = this.userRepository.create({ ...user });
-
-            await this.userRepository.save(objUser);
-        }))
-
+            const existingUser = await this.userRepository.findOneBy({ id: user.id });
+            if (!existingUser) {
+                const objUser = this.userRepository.create({ ...user });
+                await this.userRepository.save(objUser);
+            }
+        }));
+    
         console.log("Precarga de usuarios exitosa.");
     }
 
@@ -142,15 +144,15 @@ export class PreloadService implements OnModuleInit {
         await Promise.all(dataTestimony.map(async (testimony) => {
             const userFound = await this.userRepository.findOneBy({ id: testimony.userID });
             if (!userFound) throw new Error(`User with ID ${testimony.userID} not found.`);
-
+    
             const newTestimony = this.testimonyRepository.create({
                 ...testimony,
                 user: userFound
             });
-
+    
             await this.testimonyRepository.save(newTestimony);
         }));
-
+    
         console.log(`Precarga de testimonios exitosa.`);
     }
 
@@ -161,6 +163,6 @@ export class PreloadService implements OnModuleInit {
         await this.addDefaultUser(dataUser);
         await this.addDefaultOrder();
         await this.addDefaultStorage();
-        // await this.addDefaultTestimonies();
+        await this.addDefaultTestimonies();
     }
 }
