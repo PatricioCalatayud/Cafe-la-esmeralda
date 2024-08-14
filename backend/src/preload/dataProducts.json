@@ -5,7 +5,21 @@
         "imgUrl" : "https://imgur.com/U9juK3e.png",
         "price" : 25990,
         "stock": 23,
-        "category": "Café"
+        "category": "Café",
+        "subproducts": [
+            {
+                "price": 23000,
+                "stock": 10,
+                "amount": 500,
+                "unit": "gramos"
+            },
+            {
+                "price": 33000,
+                "stock": 13,
+                "amount": 1,
+                "unit": "kg"
+            }
+        ]
     },
     {
         "article_id": 2,
