@@ -6,13 +6,13 @@ import { preference } from 'src/config/mercadopago.config';
 export class MercadoPagoService {
   constructor() {}
 
-  async createPayment(createPaymentDto: CreatePaymentDto): Promise<any> {
-    /* try {
+  async createPayment(createPaymentDto: any) {
+    try {
       const items = createPaymentDto.items || [];
 
       const response = await preference.create({
         body: {
-          items: items.map(item => ({ ESTO ESTÁ PESIMO, MAL, MUY MAL.
+          items: items.map(item => ({
               title: item.title,
               description: item.description,
               quantity: item.quantity,
@@ -20,13 +20,12 @@ export class MercadoPagoService {
           })),
         },
       });
-    
-      console.log("response: ", response, "Fin de response");
+
+      console.log(response);
       
-      
-      return response;
+      return response.init_point;
     } catch (error) {
-      throw new Error(`Error creating payment: ${error.message}`);
-    } */
+      throw new Error(`Error creando el pago. ERROR: ${error.message}`);
+    }
   }
 }
