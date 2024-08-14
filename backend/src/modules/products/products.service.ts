@@ -5,7 +5,7 @@ import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { Repository } from 'typeorm';
 import { CreateCoffeeDto, UpdateCoffeDto } from './dtos/coffee.dto';
-import { ImageService } from './image.service';
+import { ImageService } from '../storage/image.service';
 import { Coffee } from 'src/entities/products/product-coffee.entity';
 
 @Injectable()

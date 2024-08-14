@@ -27,6 +27,7 @@ import { CategoryModule } from './modules/categories/category.module';
 import { StorageOrderModule } from './modules/storageOrder/storage-order.module';
 import { Storage } from './entities/storage.entity';
 import { ImageService } from './modules/storage/image.service';
+import { ImageModule } from './modules/storage/image.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ImageService } from './modules/storage/image.service';
         ConfigService.get('typeorm'),
     }),
     TypeOrmModule.forFeature([Testimony,Product,Subproduct,Category,User,Coffee,Mate,Endulzante,Chocolate,Te,Accesorio,Storage]),
+    ImageModule,
     UsersModule,
     ProductsModule,
     OrderModule,
@@ -54,7 +56,7 @@ import { ImageService } from './modules/storage/image.service';
     CategoryModule,
     StorageOrderModule,
   ],
-  controllers: [AppController, ImageController],
-  providers: [AppService, PreloadService, ImageService],
+  controllers: [AppController],
+  providers: [AppService, PreloadService],
 })
 export class AppModule {}

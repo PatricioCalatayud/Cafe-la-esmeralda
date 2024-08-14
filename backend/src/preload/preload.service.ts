@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import * as dataCategory from './dataCategory.json'
 import * as dataProducts from './dataProducts.json'
 import * as dataUser from './dataUser.json'
+import * as dataTestimony from './dataTestimony.json'
 import { Coffee } from 'src/entities/products/product-coffee.entity';
 import { Chocolate } from 'src/entities/products/product-chocolate.entity';
 import { Mate } from 'src/entities/products/product-mate.entity';
@@ -17,11 +18,13 @@ import { OrderService } from 'src/modules/order/order.service';
 import { StorageOrderService } from 'src/modules/storageOrder/storage-order.service';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import * as bcrypt from 'bcrypt';
+import { Testimony } from 'src/entities/testimony.entity';
 
 @Injectable()
 export class PreloadService implements OnModuleInit {
     private repositories: { [key: string]: { repository:Repository<any>, class:any } };
     constructor(
+        @InjectRepository(Testimony) private testimonyRepository: Repository<Testimony>,
         @InjectRepository(Subproduct) private subproductRepository: Repository<Subproduct>,
         @InjectRepository(Product) private productRepository: Repository<Product>,
         @InjectRepository(Coffee) private coffeeRepository: Repository<Coffee>,
@@ -57,21 +60,6 @@ export class PreloadService implements OnModuleInit {
         }))
     }
 
-    // async addDefaultProducts(dataProducts) {
-    //     const products = dataProducts.map(async (product) => {
-    //     const existCategory = await this.categoryRepository.findOne({ where: { name: product.category }});
-    //     if(!existCategory) throw new Error(`Categoría ${product.category} no encontrada en la base de datos.`);
-
-    //     const repository = this.repositories[product.category].repository;
-
-    //     const createdProduct = repository.create({ ... product, category: existCategory.id });
-
-    //     await repository.save(createdProduct);
-    // });
-
-    // await Promise.all(products);
-    // console.log(`Precarga de productos exitosa.`)
-    // }
     async addDefaultProducts(dataProducts) {
         const products = dataProducts.map(async (product) => {
             
@@ -105,7 +93,6 @@ export class PreloadService implements OnModuleInit {
             }
         });
     
-        // Ejecutar todas las promesas
         await Promise.all(products);
         console.log(`Precarga de productos exitosa.`);
     }
@@ -151,11 +138,29 @@ export class PreloadService implements OnModuleInit {
         console.log("Precarga de storage exitosa.");
     }
 
+    async addDefaultTestimonies() {
+        await Promise.all(dataTestimony.map(async (testimony) => {
+            const userFound = await this.userRepository.findOneBy({ id: testimony.userID });
+            if (!userFound) throw new Error(`User with ID ${testimony.userID} not found.`);
+
+            const newTestimony = this.testimonyRepository.create({
+                ...testimony,
+                user: userFound
+            });
+
+            await this.testimonyRepository.save(newTestimony);
+        }));
+
+        console.log(`Precarga de testimonios exitosa.`);
+    }
+
+
     async onModuleInit() {
         await this.addDefaultCategories();
         await this.addDefaultProducts(dataProducts);
         await this.addDefaultUser(dataUser);
         await this.addDefaultOrder();
         await this.addDefaultStorage();
+        // await this.addDefaultTestimonies();
     }
 }

@@ -1,0 +1,26 @@
+[
+    {
+        "description": "This is a fantastic product! Highly recommended.",
+        "rating": 5,
+        "date": "2024-08-01",
+        "userID": "user-uuid-1"
+    },
+    {
+        "description": "Great value for the price. Will definitely buy again.",
+        "rating": 4,
+        "date": "2024-08-02",
+        "userID": "user-uuid-2"
+    },
+    {
+        "description": "The product quality is okay, but delivery was slow.",
+        "rating": 3,
+        "date": "2024-08-03",
+        "userID": "user-uuid-3"
+    },
+    {
+        "description": "Not satisfied with the product. Customer service was helpful though.",
+        "rating": 2,
+        "date": "2024-08-04",
+        "userID": "user-uuid-4"
+    }
+]
