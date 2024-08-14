@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductValidationInterceptor } from 'src/interceptors/productValidatorInterceptor';
-import { CreateProductDto, UpdatedProductDto } from './dtos/products.dto';
+import { CreateProductDto } from './dtos/products.dto';
+import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';

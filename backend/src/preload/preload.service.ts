@@ -15,12 +15,14 @@ import { Accesorio } from 'src/entities/products/product-accesorio.entity';
 import { User } from 'src/entities/user.entity';
 import { OrderService } from 'src/modules/order/order.service';
 import { StorageOrderService } from 'src/modules/storageOrder/storage-order.service';
+import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PreloadService implements OnModuleInit {
     private repositories: { [key: string]: { repository:Repository<any>, class:any } };
     constructor(
+        @InjectRepository(Subproduct) private subproductRepository: Repository<Subproduct>,
         @InjectRepository(Product) private productRepository: Repository<Product>,
         @InjectRepository(Coffee) private coffeeRepository: Repository<Coffee>,
         @InjectRepository(Chocolate) private chocolateRepository: Repository<Chocolate>,
@@ -55,22 +57,58 @@ export class PreloadService implements OnModuleInit {
         }))
     }
 
+    // async addDefaultProducts(dataProducts) {
+    //     const products = dataProducts.map(async (product) => {
+    //     const existCategory = await this.categoryRepository.findOne({ where: { name: product.category }});
+    //     if(!existCategory) throw new Error(`Categoría ${product.category} no encontrada en la base de datos.`);
+
+    //     const repository = this.repositories[product.category].repository;
+
+    //     const createdProduct = repository.create({ ... product, category: existCategory.id });
+
+    //     await repository.save(createdProduct);
+    // });
+
+    // await Promise.all(products);
+    // console.log(`Precarga de productos exitosa.`)
+    // }
     async addDefaultProducts(dataProducts) {
         const products = dataProducts.map(async (product) => {
-        const existCategory = await this.categoryRepository.findOne({ where: { name: product.category }});
-        if(!existCategory) throw new Error(`Categoría ${product.category} no encontrada en la base de datos.`);
-
-        const repository = this.repositories[product.category].repository;
-
-        const createdProduct = repository.create({ ... product, category: existCategory.id });
-
-        await repository.save(createdProduct);
-    });
-
-    await Promise.all(products);
-    console.log(`Precarga de productos exitosa.`)
+            
+            const existCategory = await this.categoryRepository.findOne({ where: { name: product.category } });
+            if (!existCategory) throw new Error(`Categoría ${product.category} no encontrada en la base de datos.`);
+    
+            
+            const repository = this.repositories[product.category].repository;
+    
+            
+            const createdProduct = repository.create({
+                ...product,
+                category: existCategory.id
+            });
+    
+            
+            await repository.save(createdProduct);
+    
+            
+            if (product.subproducts && product.subproducts.length > 0) {
+                const subproductRepository = this.subproductRepository; 
+    
+                const subproducts = product.subproducts.map(subproduct => {
+                    return subproductRepository.create({
+                        ...subproduct,
+                        product: createdProduct
+                    });
+                });
+    
+                await subproductRepository.save(subproducts);
+            }
+        });
+    
+        // Ejecutar todas las promesas
+        await Promise.all(products);
+        console.log(`Precarga de productos exitosa.`);
     }
-
     async addDefaultUser(dataUser) {
         await Promise.all(dataUser.map(async (user)=>{
             if (user.password) {

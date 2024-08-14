@@ -8,6 +8,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { PreloadService } from './preload/preload.service';
 import { Category } from './entities/category.entity';
 import { Product } from './entities/products/product.entity';
+import { Subproduct } from './entities/products/subprodcut.entity';
 import { User } from 'src/entities/user.entity';
 import { UsersModule } from './modules/users/users.module';
 import { Coffee } from './entities/products/product-coffee.entity';
@@ -39,7 +40,7 @@ import { ImageService } from './modules/storage/image.service';
       useFactory: (ConfigService: ConfigService) =>
         ConfigService.get('typeorm'),
     }),
-    TypeOrmModule.forFeature([Testimony,Product,Category,User,Coffee,Mate,Endulzante,Chocolate,Te,Accesorio,Storage]),
+    TypeOrmModule.forFeature([Testimony,Product,Subproduct,Category,User,Coffee,Mate,Endulzante,Chocolate,Te,Accesorio,Storage]),
     UsersModule,
     ProductsModule,
     OrderModule,

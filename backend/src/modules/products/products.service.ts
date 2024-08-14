@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, UnprocessableEntity
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
+import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { Repository } from 'typeorm';
 import { CreateCoffeeDto, UpdateCoffeDto } from './dtos/coffee.dto';
 import { ImageService } from './image.service';
@@ -11,13 +12,14 @@ import { Coffee } from 'src/entities/products/product-coffee.entity';
 export class ProductsService {
     constructor(
         @InjectRepository(Product) private productRepository: Repository<Product>,
+        @InjectRepository(Subproduct) private subproductRepository: Repository<Subproduct>,
         @InjectRepository(Category) private categoryRepository: Repository<Category>,
         @InjectRepository(Coffee) private coffeeRepository: Repository<Coffee>,
         private readonly imageService: ImageService,
     ){}
 
     async getAll() {
-        return await this.productRepository.find({ where: { isDeleted: false }, relations: { category: true }}); 
+        return await this.productRepository.find({ where: { isDeleted: false }, relations: { category: true, subproducts: true }}); 
     }
 
     async getAvailable() {
@@ -26,6 +28,7 @@ export class ProductsService {
 
     async getAllByCategory(category: string) {
         const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});
+        
         if(!categoryFound) throw new NotFoundException(`No se encontró la categoría "${category}".`);
 
         return await this.productRepository.createQueryBuilder('products')
