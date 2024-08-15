@@ -40,12 +40,12 @@ export class PreloadService implements OnModuleInit {
         private readonly storageService: StorageOrderService
     ) {
         this.repositories = {
-            "Café": { repository: coffeeRepository, class: Coffee },
+            "Coffee": { repository: coffeeRepository, class: Coffee },
             "Chocolate": { repository: chocolateRepository, class: Chocolate },
             "Mate": { repository: mateRepository, class: Mate },
-            "Té": { repository: teRepository, class: Te },
-            "Endulzante": { repository: endulzanteRepository, class: Endulzante },
-            "Accesorio": { repository: accesorioRepository, class: Accesorio },
+            "Tea": { repository: teRepository, class: Te },
+            "Sweetener": { repository: endulzanteRepository, class: Endulzante },
+            "Accesory": { repository: accesorioRepository, class: Accesorio },
         }
     }
 

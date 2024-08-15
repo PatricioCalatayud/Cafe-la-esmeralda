@@ -5,7 +5,7 @@
         "imgUrl" : "https://imgur.com/U9juK3e.png",
         "price" : 25990,
         "stock": 23,
-        "category": "Café",
+        "category": "Coffee",
         "subproducts": [
             {
                 "price": 23000,
@@ -27,7 +27,7 @@
         "imgUrl" : "",
         "price" : 80000,
         "stock": 23,
-        "category": "Café"
+        "category": "Coffee"
     },
     {
         "article_id": 27,
@@ -43,7 +43,7 @@
         "imgUrl" : "https://imgur.com/aD3vPHv.png",
         "price" : 3000,
         "stock": 84,
-        "category": "Té"
+        "category": "Tea"
     },
     {
         "article_id": 82,
@@ -59,7 +59,7 @@
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 5232,
         "stock": 13,
-        "category": "Endulzante"
+        "category": "Sweetener"
     },
     {
         "article_id": 156,
@@ -67,7 +67,7 @@
         "imgUrl" : "https://imgur.com/qFVuRNx.png",
         "price" : 2825,
         "stock": 92,
-        "category": "Accesorio"
+        "category": "Accesory"
     },
     {
         "article_id": 1001,
@@ -75,6 +75,6 @@
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 14475,
         "stock": 113,
-        "category": "Endulzante"
+        "category": "Sweetener"
     }
 ]

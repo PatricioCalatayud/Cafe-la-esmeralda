@@ -44,7 +44,7 @@ export class ProductsController {
     
     @Get(":id")
     @ApiOperation({ summary: 'Obtiene un producto', description: 'Este endpoint retorna un producto.' })
-    async getById(@Query('id', ParseUUIDPipe) id: string) {
+    async getById(@Query('id', ParseUUIDPipe) id: number) {
         console.log('Controlador - ID:', id); 
         const result = await this.productService.getById(id);
         console.log('Controlador - Resultado:', result); 
@@ -57,7 +57,7 @@ export class ProductsController {
     @UseInterceptors(ProductValidationInterceptor)
     @UseInterceptors(FileInterceptor('file'))
     async updateProuct(
-        @Param('id', ParseUUIDPipe) id: string,
+        @Param('id', ParseUUIDPipe) id: number,
         @Body() productInfo:UpdatedProductDto,
         @UploadedFile()file?: Express.Multer.File) {
         return this.productService.updateProduct(id,productInfo,file)
@@ -67,7 +67,7 @@ export class ProductsController {
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Elimina un producto', description: 'Este endpoint elimina un producto por su ID.' })
-    async deleteProduct(@Param('id', ParseUUIDPipe) id: string) {
+    async deleteProduct(@Param('id', ParseUUIDPipe) id: number) {
         return await this.productService.deleteProduct(id)
     }
 }
