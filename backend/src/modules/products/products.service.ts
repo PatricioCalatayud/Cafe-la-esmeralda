@@ -51,7 +51,8 @@ export class ProductsService {
         }
 
     async getById(id: string) {
-        const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true }});
+        console.log('ID:', id); 
+        const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true, subproducts: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         return product;
     }   
