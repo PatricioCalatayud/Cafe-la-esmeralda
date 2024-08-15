@@ -16,5 +16,5 @@ export class ImageService{
             public:true
         });
         return fileUpload.publicUrl();
-        }
+    }
 }

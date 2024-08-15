@@ -2,22 +2,24 @@ import { BadRequestException, Injectable, NotFoundException, UnprocessableEntity
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
+import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { Repository } from 'typeorm';
 import { CreateCoffeeDto, UpdateCoffeDto } from './dtos/coffee.dto';
-import { ImageService } from './image.service';
+import { ImageService } from '../images/image.service';
 import { Coffee } from 'src/entities/products/product-coffee.entity';
 
 @Injectable()
 export class ProductsService {
     constructor(
         @InjectRepository(Product) private productRepository: Repository<Product>,
+        @InjectRepository(Subproduct) private subproductRepository: Repository<Subproduct>,
         @InjectRepository(Category) private categoryRepository: Repository<Category>,
         @InjectRepository(Coffee) private coffeeRepository: Repository<Coffee>,
         private readonly imageService: ImageService,
     ){}
 
     async getAll() {
-        return await this.productRepository.find({ where: { isDeleted: false }, relations: { category: true }}); 
+        return await this.productRepository.find({ where: { isDeleted: false }, relations: { category: true, subproducts: true }}); 
     }
 
     async getAvailable() {
@@ -26,6 +28,7 @@ export class ProductsService {
 
     async getAllByCategory(category: string) {
         const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});
+        
         if(!categoryFound) throw new NotFoundException(`No se encontró la categoría "${category}".`);
 
         return await this.productRepository.createQueryBuilder('products')
@@ -47,8 +50,9 @@ export class ProductsService {
             .getMany();
         }
 
-    async getById(id: string) {
-        const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true }});
+    async getById(id: number) {
+        console.log('ID:', id); 
+        const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true, subproducts: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         return product;
     }   
@@ -85,7 +89,7 @@ export class ProductsService {
     }
 
 
-    async updateProduct(id: string, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
+    async updateProduct(id: number, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         
@@ -111,7 +115,7 @@ export class ProductsService {
         return product;
     }
 
-    async deleteProduct(id: string) {
+    async deleteProduct(id: number) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         

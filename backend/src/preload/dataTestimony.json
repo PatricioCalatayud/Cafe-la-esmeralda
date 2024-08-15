@@ -1,0 +1,20 @@
+[
+    {
+        "description": "This is a fantastic product! Highly recommended.",
+        "punctuation": 5,
+        "date": "2024-08-01",
+        "userID": "f0e09b24-1a5c-4a67-9a3f-07d23a897b0d"
+    },
+    {
+        "description": "Great value for the price. Will definitely buy again.",
+        "punctuation": 4,
+        "date": "2024-08-02",
+        "userID": "05b394d9-969a-4bbd-b73f-346c26b8c424"
+    },
+    {
+        "description": "The product quality is okay, but delivery was slow.",
+        "punctuation": 3,
+        "date": "2024-08-03",
+        "userID": "c28409dd-7034-4e22-b5c4-de939166843c"
+    }
+]

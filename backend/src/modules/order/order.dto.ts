@@ -4,8 +4,8 @@ import { ArrayMinSize, ArrayNotEmpty, IsArray, IsDate, IsInt, IsNotEmpty, IsNumb
 
 
 export class ProductInfo{
-    @IsUUID()
-    id: string;
+    // @IsUUID()
+    id: number;
   
     @IsInt()
     @IsNotEmpty()

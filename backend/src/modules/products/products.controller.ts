@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductValidationInterceptor } from 'src/interceptors/productValidatorInterceptor';
-import { CreateProductDto, UpdatedProductDto } from './dtos/products.dto';
+import { CreateProductDto } from './dtos/products.dto';
+import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -31,12 +32,6 @@ export class ProductsController {
             return this.productService.getAvailable()
     }    
 
-    @Get(":id")
-    @ApiOperation({ summary: 'Obtiene un producto', description: 'Este endpoint retorna un producto.' })
-    async getById(@Param('id', ParseUUIDPipe) id: string){
-        return this.productService.getById(id)
-    }
-
     @Post()
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
@@ -47,6 +42,14 @@ export class ProductsController {
         return this.productService.addProduct(productInfo,file)
     } 
     
+    @Get(":id")
+    @ApiOperation({ summary: 'Obtiene un producto', description: 'Este endpoint retorna un producto.' })
+    async getById(@Query('id', ParseUUIDPipe) id: number) {
+        console.log('Controlador - ID:', id); 
+        const result = await this.productService.getById(id);
+        console.log('Controlador - Resultado:', result); 
+        return result;
+    }
     @Put(':id')
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
@@ -54,7 +57,7 @@ export class ProductsController {
     @UseInterceptors(ProductValidationInterceptor)
     @UseInterceptors(FileInterceptor('file'))
     async updateProuct(
-        @Param('id', ParseUUIDPipe) id: string,
+        @Param('id', ParseUUIDPipe) id: number,
         @Body() productInfo:UpdatedProductDto,
         @UploadedFile()file?: Express.Multer.File) {
         return this.productService.updateProduct(id,productInfo,file)
@@ -64,7 +67,7 @@ export class ProductsController {
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Elimina un producto', description: 'Este endpoint elimina un producto por su ID.' })
-    async deleteProduct(@Param('id', ParseUUIDPipe) id: string) {
+    async deleteProduct(@Param('id', ParseUUIDPipe) id: number) {
         return await this.productService.deleteProduct(id)
     }
 }
