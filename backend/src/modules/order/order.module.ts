@@ -6,11 +6,11 @@ import { Product } from 'src/entities/products/product.entity';
 import { Order } from 'src/entities/order.entity';
 import { User } from 'src/entities/user.entity';
 import { OrderDetail } from 'src/entities/orderdetail.entity';
-import { ProductOrder } from 'src/entities/product-order.entity';
+import { ProductsOrder } from 'src/entities/product-order.entity';
 import { OrderQuery } from './orders.query';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product,Order,User,OrderDetail,ProductOrder])],
+  imports: [TypeOrmModule.forFeature([Product,Order,User,OrderDetail,ProductsOrder])],
   providers: [OrderService, OrderQuery],
   controllers: [OrderController],
   exports:[OrderService]

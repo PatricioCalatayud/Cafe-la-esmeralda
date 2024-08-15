@@ -48,7 +48,7 @@
 
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, TableInheritance } from "typeorm";
 import { Category } from "../category.entity";
-import { ProductOrder } from "../product-order.entity";
+import { ProductsOrder } from "../product-order.entity";
 import { Storage } from "../storage.entity";
 import { Subproduct } from "./subprodcut.entity"; 
 
@@ -56,7 +56,7 @@ import { Subproduct } from "./subprodcut.entity";
 @TableInheritance({ column: { type: "varchar", name: "group" } })
 export abstract class Product {
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     @Column({ type: 'int', unique: true })
     article_id: number;
@@ -88,8 +88,8 @@ export abstract class Product {
     @ManyToOne(() => Category, (category) => category.products)
     category: Category;
 
-    @OneToMany(() => ProductOrder, (productOrder) => productOrder.product)
-    productsOrder: ProductOrder[];
+    @OneToMany(() => ProductsOrder, (productsOrder) => productsOrder.product)
+    productsOrder: ProductsOrder[];
 
     @OneToMany(() => Storage, (storage) => storage.product)
     storage: Storage[];

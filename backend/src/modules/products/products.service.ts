@@ -50,7 +50,7 @@ export class ProductsService {
             .getMany();
         }
 
-    async getById(id: string) {
+    async getById(id: number) {
         console.log('ID:', id); 
         const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true, subproducts: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
@@ -89,7 +89,7 @@ export class ProductsService {
     }
 
 
-    async updateProduct(id: string, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
+    async updateProduct(id: number, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         
@@ -115,7 +115,7 @@ export class ProductsService {
         return product;
     }
 
-    async deleteProduct(id: string) {
+    async deleteProduct(id: number) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         
