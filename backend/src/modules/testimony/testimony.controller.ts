@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { TestimonyService } from './testimony.service';
 import { CreateTestimonyDto } from './testimony.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @ApiTags('Calificaciones')
 @Controller('testimony')
@@ -11,7 +12,7 @@ export class TestimonyController {
     @ApiOperation({ 
         summary: 'Obtener calificaciones.',
         description: 
-            'Este endpoint permite obtener todas las calificaciones.'
+            'Este endpoint permite obtener todas las calificaciones. No es necesario el registro'
     })
     async getTestimonials(){
             return await this.testimonyService.getTestimonials()
@@ -23,6 +24,8 @@ export class TestimonyController {
         description: 
             'Este endpoint permite crear una calificación.'
     })
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard)
     async createTestimony(@Body() testimony: CreateTestimonyDto){
         const { userId, ...testimonyEntity } = testimony
         return this.testimonyService.createTestimony(userId, testimonyEntity)

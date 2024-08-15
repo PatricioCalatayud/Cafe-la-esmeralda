@@ -1,7 +1,8 @@
-import { Type } from "class-transformer"
-import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID } from "class-validator"
+import { Type } from "class-transformer";
+import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID, ValidateNested, IsArray } from "class-validator";
+import { SubproductDto } from "./subproduct.dto"; // Importa el DTO de Subproducto
 
-export class CreateProductDto{
+export class CreateProductDto {
     @IsNotEmpty()
     @Type(() => Number)
     @IsPositive()
@@ -15,14 +16,14 @@ export class CreateProductDto{
     @IsNotEmpty()
     @Type(() => Number)
     @IsPositive()
-    price?: number; 
+    price: number; // Hacer obligatorio
 
     @IsNotEmpty()
     @IsNumber()
     @Type(() => Number)
     @IsPositive()
     @IsInt()
-    stock?: number;
+    stock: number; // Hacer obligatorio
 
     @IsOptional()
     @Type(() => Number)
@@ -34,37 +35,12 @@ export class CreateProductDto{
     isAvailable?: boolean;
 
     @IsNotEmpty()
-    @IsUUID() 
+    @IsUUID()
     categoryID: string;
-}
-
-export class UpdatedProductDto {
-    @IsOptional()
-    @IsString()
-    description: string;
 
     @IsOptional()
-    @Type(() => Number)
-    @IsPositive()
-    price?: number;
-
-    @IsOptional()
-    @IsNumber()
-    @Type(() => Number)
-    @IsPositive()
-    @IsInt()
-    stock?: number;
-
-    @IsOptional()
-    @Type(() => Number)
-    @IsInt()
-    discount?: number;
-
-    @IsOptional()
-    @IsBoolean()
-    isAvailable?: boolean;
-
-    @IsOptional()
-    @IsString() 
-    categoryID?: string;
+    @ValidateNested({ each: true })
+    @Type(() => SubproductDto)
+    @IsArray()
+    subproducts?: SubproductDto[];
 }
