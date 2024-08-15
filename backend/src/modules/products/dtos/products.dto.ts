@@ -1,6 +1,6 @@
 import { Type } from "class-transformer";
 import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID, ValidateNested, IsArray } from "class-validator";
-import { SubproductDto } from "./subproduct.dto"; // Importa el DTO de Subproducto
+import { SubproductDto } from "./subproduct.dto"; 
 
 export class CreateProductDto {
     @IsNotEmpty()
@@ -16,14 +16,11 @@ export class CreateProductDto {
     @IsNotEmpty()
     @Type(() => Number)
     @IsPositive()
-    price: number; // Hacer obligatorio
-
-    @IsNotEmpty()
     @IsNumber()
     @Type(() => Number)
     @IsPositive()
     @IsInt()
-    stock: number; // Hacer obligatorio
+    stock: number; 
 
     @IsOptional()
     @Type(() => Number)
