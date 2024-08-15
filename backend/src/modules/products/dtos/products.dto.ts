@@ -3,11 +3,6 @@ import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsStrin
 import { SubproductDto } from "./subproduct.dto"; 
 
 export class CreateProductDto {
-    @IsNotEmpty()
-    @Type(() => Number)
-    @IsPositive()
-    @IsNumber()
-    article_id: number;
 
     @IsNotEmpty()
     @IsString()

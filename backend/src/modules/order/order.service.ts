@@ -108,7 +108,7 @@ export class OrderService {
         await this.orderRepository.update(id, {isDeleted:true });
     }
     
-    async updateStock(id: number) {
+    async updateStock(id: string) {
         const product = await this.productRepository.findOne({ where: { id } });
         await this.productRepository.update({ id },{ stock: product.stock - 1 });
     }
