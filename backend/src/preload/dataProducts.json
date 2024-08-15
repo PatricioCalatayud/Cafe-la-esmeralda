@@ -1,6 +1,5 @@
 [
     {
-        "article_id": 1,
         "description": "Cafe Santos",
         "imgUrl" : "https://imgur.com/U9juK3e.png",
         "price" : 25990,
@@ -22,7 +21,6 @@
         ]
     },
     {
-        "article_id": 2,
         "description": "Cafe Mezcla",
         "imgUrl" : "",
         "price" : 80000,
@@ -30,7 +28,6 @@
         "category": "Coffee"
     },
     {
-        "article_id": 27,
         "description": "Mate x 50",
         "imgUrl" : "https://imgur.com/RZnhckX.png",
         "price" : 3390,
@@ -38,7 +35,6 @@
         "category": "Mate"
     },
     {
-        "article_id": 55,
         "description": "Te x 100 saquitos Green Hills",
         "imgUrl" : "https://imgur.com/aD3vPHv.png",
         "price" : 3000,
@@ -46,7 +42,6 @@
         "category": "Tea"
     },
     {
-        "article_id": 82,
         "description": "Chocolate x 50 MAPSA",
         "imgUrl" :"https://imgur.com/zmremPu.png",
         "price" : 22600,
@@ -54,7 +49,6 @@
         "category": "Chocolate"
     },
     {
-        "article_id": 100,
         "description": "Capsulas Esmeralda x10",
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 5232,
@@ -62,7 +56,6 @@
         "category": "Sweetener"
     },
     {
-        "article_id": 156,
         "description": "Portasobres",
         "imgUrl" : "https://imgur.com/qFVuRNx.png",
         "price" : 2825,
@@ -70,7 +63,6 @@
         "category": "Accesory"
     },
     {
-        "article_id": 1001,
         "description": "Capsulas Esmeralda x30",
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 14475,

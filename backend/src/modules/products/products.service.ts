@@ -4,7 +4,7 @@ import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { Repository } from 'typeorm';
-import { CreateCoffeeDto, UpdateCoffeDto } from './dtos/coffee.dto';
+import { UpdateCoffeDto } from './dtos/coffee.dto';
 import { ImageService } from '../images/image.service';
 import { Coffee } from 'src/entities/products/product-coffee.entity';
 import { CreateProductDto } from './dtos/products.dto';
@@ -51,7 +51,7 @@ export class ProductsService {
             .getMany();
         }
 
-    async getById(id: number) {
+    async getById(id: string) {
         console.log('ID:', id); 
         const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true, subproducts: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
@@ -59,11 +59,6 @@ export class ProductsService {
     }   
 
     async addProduct(infoProduct: Partial<CreateProductDto>, file?: Express.Multer.File) {
-        const foundProduct = await this.productRepository.findOneBy({ article_id: infoProduct.article_id });
-        if (foundProduct) {
-            throw new BadRequestException(`Ya existe un producto con el ID ${infoProduct.article_id}.`);
-        }
-    
         const foundCategory = await this.categoryRepository.findOneBy({ id: infoProduct.categoryID });
         if (!foundCategory) {
             throw new BadRequestException(`Categoría "${infoProduct.categoryID}" no existe.`);
@@ -95,8 +90,8 @@ export class ProductsService {
     
         return newProduct;
     }
-
-        async updateProduct(id: number, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
+    
+        async updateProduct(id: string, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         
@@ -122,7 +117,7 @@ export class ProductsService {
         return product;
     }
 
-    async deleteProduct(id: number) {
+    async deleteProduct(id: string) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         
