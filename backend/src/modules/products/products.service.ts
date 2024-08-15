@@ -95,13 +95,13 @@ export class ProductsService {
     
         return newProduct;
     }
-    
+
         async updateProduct(id: number, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         
         let builder = this.productRepository;
-        if(product.category.name === 'coffee') builder = this.coffeeRepository;
+        if(product.category.name === 'Coffee') builder = this.coffeeRepository;
 
         const{categoryID, ...updateData} = infoProduct;
     
