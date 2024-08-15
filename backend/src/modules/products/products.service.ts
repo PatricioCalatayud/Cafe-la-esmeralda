@@ -5,7 +5,7 @@ import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { Repository } from 'typeorm';
 import { CreateCoffeeDto, UpdateCoffeDto } from './dtos/coffee.dto';
-import { ImageService } from '../storage/image.service';
+import { ImageService } from '../images/image.service';
 import { Coffee } from 'src/entities/products/product-coffee.entity';
 
 @Injectable()
@@ -51,7 +51,8 @@ export class ProductsService {
         }
 
     async getById(id: string) {
-        const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true }});
+        console.log('ID:', id); 
+        const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true, subproducts: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         return product;
     }   

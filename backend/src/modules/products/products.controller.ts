@@ -32,12 +32,6 @@ export class ProductsController {
             return this.productService.getAvailable()
     }    
 
-    @Get(":id")
-    @ApiOperation({ summary: 'Obtiene un producto', description: 'Este endpoint retorna un producto.' })
-    async getById(@Param('id', ParseUUIDPipe) id: string){
-        return this.productService.getById(id)
-    }
-
     @Post()
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
@@ -48,6 +42,14 @@ export class ProductsController {
         return this.productService.addProduct(productInfo,file)
     } 
     
+    @Get(":id")
+    @ApiOperation({ summary: 'Obtiene un producto', description: 'Este endpoint retorna un producto.' })
+    async getById(@Query('id', ParseUUIDPipe) id: string) {
+        console.log('Controlador - ID:', id); 
+        const result = await this.productService.getById(id);
+        console.log('Controlador - Resultado:', result); 
+        return result;
+    }
     @Put(':id')
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
