@@ -42,9 +42,10 @@ export class ProductsController {
         return this.productService.addProduct(productInfo,file)
     } 
     
-    @Get(":id")
+    @Get(':id')
     @ApiOperation({ summary: 'Obtiene un producto', description: 'Este endpoint retorna un producto.' })
-    async getById(@Query('id', ParseUUIDPipe) id: string) {
+    
+    async getById(@Param('id', ParseUUIDPipe) id: string) {
         console.log('Controlador - ID:', id); 
         const result = await this.productService.getById(id);
         console.log('Controlador - Resultado:', result); 
