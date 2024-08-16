@@ -55,7 +55,8 @@ export class ProductsController {
         return result;
     }
     @Put(':id')
-    @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Actualiza un producto', description: 'Este endpoint actualiza un producto por su ID.' })
     @UseInterceptors(FileInterceptor('file'))
