@@ -54,7 +54,6 @@ export class ProductsController {
     @UseGuards(AuthGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Actualiza un producto', description: 'Este endpoint actualiza un producto por su ID.' })
-    @UseInterceptors(ProductValidationInterceptor)
     @UseInterceptors(FileInterceptor('file'))
     async updateProuct(
         @Param('id', ParseUUIDPipe) id: string,

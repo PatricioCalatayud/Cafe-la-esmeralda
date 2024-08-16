@@ -6,7 +6,7 @@ import { DataSource, Repository } from 'typeorm';
 import { ProductInfo } from './order.dto';
 import { User } from 'src/entities/user.entity';
 import { Product } from 'src/entities/products/product.entity';
-import { ProductOrder } from 'src/entities/product-order.entity';
+import { ProductsOrder } from 'src/entities/product-order.entity';
 import { OrderQuery } from './orders.query';
 import { Transaccion } from 'src/entities/transaction.entity';
 import { OrderStatus } from 'src/enum/orderStatus.enum';
@@ -68,13 +68,13 @@ export class OrderService {
                     total += ((foundProduct.price * product.quantity) * (1 - foundProduct.discount));
                     
                     // Lo guardamos en la orden
-                    const productOrder = transactionalEntityManager.create(ProductOrder,{
+                    const productsOrder = transactionalEntityManager.create(ProductsOrder,{
                         foundProduct,
                         order,
                         quantity: product.quantity
                     });
 
-                    await transactionalEntityManager.save(ProductOrder, productOrder);
+                    await transactionalEntityManager.save(ProductsOrder, productsOrder);
                     }
                 ));
             
