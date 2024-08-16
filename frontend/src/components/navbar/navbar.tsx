@@ -21,10 +21,9 @@ const Navbar = () => {
   const [nav, setNav] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { searchResults: searchProductResults, searchProducts } = useProductContext();
-  const {session, handleSignOut, userGoogle} = useAuthContext();
+  const {session, handleSignOut} = useAuthContext();
   const { cartItemCount } = useCartContext();
   const hideNavbar = pathname === "/login" || pathname === "/register";
-  
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
@@ -39,6 +38,7 @@ const Navbar = () => {
   const handleNavLinkClick = () => {
     setNav(false);
   };
+
 
 
   if (hideNavbar) {
@@ -122,10 +122,12 @@ const Navbar = () => {
       <span className="block text-sm">{session.name}</span>
       <span className="block truncate text-sm font-medium">{session.email}</span>
     </Dropdown.Header>
-    {session?.role === "admin" ? (
-      <Dropdown.Item href="/dashboard">Dashboard</Dropdown.Item>
+    {session?.role === "Administrador" ? (
+      <Dropdown.Item href="/dashboard">Panel de Administrador
+      </Dropdown.Item>
     ) : (
-      <Dropdown.Item href="/dashboardCliente">Dashboard</Dropdown.Item>
+
+      <Dropdown.Item href="/dashboardCliente">Panel de Cliente </Dropdown.Item>
     )}
     <Dropdown.Item onClick={handleSignOut}>Salir</Dropdown.Item>
   </Dropdown>
@@ -147,9 +149,9 @@ const Navbar = () => {
           <Link href="/politica" className={` hover:text-gray-900 ${pathname === "/politica" && "text-gray-900 font-bold"}`}>
             Politica
           </Link>
-          <Link href="/contact" className={` hover:text-gray-900 ${pathname === "/contact" && "text-gray-900 font-bold"}`}>
-            Contacto
-          </Link>
+          {session && <Link href="/contact" className={` hover:text-gray-900 ${pathname === "/contact" && "text-gray-900 font-bold"}`}>
+            Contacto 
+          </Link>}
           <Link href="/mvv" className={` hover:text-gray-900 ${pathname === "/mvv" && "text-gray-900 font-bold"}`}>
             MVV
           </Link>
@@ -222,11 +224,11 @@ const Navbar = () => {
                   {session?.email}
                 </span>
               </Dropdown.Header>
-              {session?.role === "admin" ? (
-                <Dropdown.Item href="/dashboard/product">Dashboard</Dropdown.Item>
+              {session?.role === "Administrador" ? (
+                <Dropdown.Item href="/dashboard/product">Panel de Administrador</Dropdown.Item>
               ) : (
                 <div className="flex flex-col">
-                <Dropdown.Item href="/dashboardCliente">Dashboard</Dropdown.Item>
+                <Dropdown.Item href="/dashboardCliente">Panel de cliente</Dropdown.Item>
                 <Dropdown.Item href="/tracking">Envios</Dropdown.Item>
                 </div>
               )}
