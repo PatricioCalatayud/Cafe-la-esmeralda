@@ -6,6 +6,9 @@ import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enum/roles.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @ApiTags('Productos')
 @Controller('products')
@@ -64,7 +67,8 @@ export class ProductsController {
     }
 
     @Delete(':id')
-    @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Elimina un producto', description: 'Este endpoint elimina un producto por su ID.' })
     async deleteProduct(@Param('id', ParseUUIDPipe) id: string) {
