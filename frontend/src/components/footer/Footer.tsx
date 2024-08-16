@@ -3,20 +3,19 @@ import React, { useState, useEffect } from "react";
 import MercadoLibreIcon from "@/components/MercadoLibreBotton/MercadoLibreBotton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AiFillInstagram, AiFillTwitterCircle, AiFillYoutube } from "react-icons/ai";
+import { AiFillInstagram} from "react-icons/ai";
 import { MdFacebook } from "react-icons/md";
 import Container from "@/components/container/Container";
 import FooterList from "./FooterList";
-import { getCategories } from "@/helpers/categories.helper";
-import { Category } from "@/interfaces/IProductList";
+import { useCategoryContext } from "@/context/categories.context";
 
 const Footer: React.FC = () => {
   const pathname = usePathname();
-  const hideFooter = pathname === "/login" || pathname === "/register"; // Ocultar footer en login y register
+  const hideFooter = pathname === "/login" || pathname === "/register" ||  /^\/dashboard(\/|$)/.test(pathname) ||  /^\/dashboardCliente(\/|$)/.test(pathname); // Ocultar footer en login y register
   const [footerHeight, setFooterHeight] = useState("600px");
   const [flexDirection, setFlexDirection] = useState<"row" | "column">("row");
   const [backgroundStyle, setBackgroundStyle] = useState<React.CSSProperties>({});
-  const [categories, setCategories] = useState<Category[] | undefined>([]);
+  const {categories} = useCategoryContext();
 
   useEffect(() => {
     function updateSize() {
@@ -44,10 +43,6 @@ const Footer: React.FC = () => {
     window.addEventListener("resize", updateSize);
 
     return () => window.removeEventListener("resize", updateSize);
-  }, []);
-
-  useEffect(() => {
-    getCategories().then(setCategories);
   }, []);
 
   if (hideFooter) {
