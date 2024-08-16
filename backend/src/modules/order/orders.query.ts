@@ -14,8 +14,8 @@ export class OrderQuery {
         const order = await this.orderRepository
             .createQueryBuilder('orders')
             .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productOrder', 'productOrder') 
-            .leftJoinAndSelect('productOrder.product', 'products')
+            .leftJoinAndSelect('orders.productsOrder', 'productsOrder')  // Cambiado aquí
+            .leftJoinAndSelect('productsOrder.product', 'products')
             .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
             .leftJoinAndSelect('orderDetails.transactions', 'transaction')
             .where('orders.id = :orID', { orID: id })
@@ -28,7 +28,7 @@ export class OrderQuery {
                 'orderDetails.deliveryDate',
                 'transaction.status',
                 'transaction.timestamp',
-                'productOrder.quantity',  
+                'productsOrder.quantity',  // Cambiado aquí
                 'products.id',
                 'products.description',
                 'products.price',
@@ -36,16 +36,16 @@ export class OrderQuery {
                 'products.imgUrl',
             ])
             .getOne();
-
+    
         return order;
     }
-
+    
     async getOrdersByUserId(id: string) {
         const orders = await this.orderRepository
             .createQueryBuilder('orders')
             .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productOrder', 'productOrder')  
-            .leftJoinAndSelect('productOrder.product', 'products')
+            .leftJoinAndSelect('orders.productsOrder', 'productsOrder')  // Cambiado aquí
+            .leftJoinAndSelect('productsOrder.product', 'products')
             .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
             .leftJoinAndSelect('orderDetails.transactions', 'transaction')
             .where('user.id = :orID', { orID: id })
@@ -58,7 +58,7 @@ export class OrderQuery {
                 'orderDetails.deliveryDate',
                 'transaction.status',
                 'transaction.timestamp',
-                'productOrder.quantity',  
+                'productsOrder.quantity',  // Cambiado aquí
                 'products.id',
                 'products.description',
                 'products.price',
@@ -66,15 +66,15 @@ export class OrderQuery {
                 'products.imgUrl',
             ])
             .getMany();
-
+    
         return orders;
     }
-
+    
     async getOrders() {
         const orders = await this.orderRepository
             .createQueryBuilder('orders')
             .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productsOrder', 'productsOrder')  
+            .leftJoinAndSelect('orders.productsOrder', 'productsOrder')  // Cambiado aquí
             .leftJoinAndSelect('productsOrder.product', 'products')
             .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
             .leftJoinAndSelect('orderDetails.transactions', 'transaction')
@@ -87,7 +87,7 @@ export class OrderQuery {
                 'orderDetails.deliveryDate',
                 'transaction.status',
                 'transaction.timestamp',
-                'productsOrder.quantity',  
+                'productsOrder.quantity',  // Cambiado aquí
                 'products.id',
                 'products.description',
                 'products.price',
@@ -95,7 +95,8 @@ export class OrderQuery {
                 'products.imgUrl',
             ])
             .getMany();
-
+    
         return orders;
     }
+    
 }
