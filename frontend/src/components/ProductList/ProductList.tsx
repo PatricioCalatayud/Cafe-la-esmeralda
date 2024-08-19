@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 import { useCategoryContext } from "@/context/categories.context";
+import categorySpanish from "@/utils/categorySpanish";
 
 interface ProductsClientPageProps {
   selectedCategory: string | null;
@@ -24,7 +25,8 @@ const ProductList: React.FC<ProductsClientPageProps> = ({
   const [filterOption, setFilterOption] = useState<string>("");
   const [filteredProducts, setFilteredProducts] = useState<IProductList[] | undefined>(productsList);
   const {categories } = useCategoryContext();
-
+  console.log(category);
+console.log(productsList);
   useEffect(() => {
     let sortedProducts = productsList || [];
     if (searchResults !== undefined && productsList !== undefined) {
@@ -78,10 +80,10 @@ const ProductList: React.FC<ProductsClientPageProps> = ({
     }
 
     return (
-      <h1 className="text-2xl">
+      <h1 className="text-2xl mb-4 lg:mb-0">
         <Link href="/categories">Productos</Link>
         {" / "}
-        <span className="font-bold">{category.name}</span>
+        <span className="font-bold">{categorySpanish(category.name)|| category.name} </span>
       </h1>
     );
   };
@@ -89,7 +91,7 @@ const ProductList: React.FC<ProductsClientPageProps> = ({
   return (
     <>
       {/* Título y filtro */}
-      <div className="flex flex-col md:flex-row justify-around items-center bg-teal-800 py-6 text-white">
+      <div className="flex flex-col md:flex-row justify-around items-center bg-teal-800 py-6 text-white ">
         {renderBreadcrumb()}
 
         <Dropdown
@@ -133,9 +135,9 @@ const ProductList: React.FC<ProductsClientPageProps> = ({
         </Dropdown>
       </div>
 
-      <div className="flex flex-col lg:flex-row">
+      <div className="flex flex-col lg:flex-row ">
         {/* Sidebar de categorías */}
-        <div className="w-full lg:w-1/4 p-4 lg:ml-24">
+        <div className="w-full lg:w-1/4 p-4 lg:ml-24 px-16 lg:px-0">
           <h2 className="text-lg font-bold mb-4 text-gray-400">Categorías</h2>
           <ul>
             <li className="mb-2">
@@ -170,7 +172,7 @@ const ProductList: React.FC<ProductsClientPageProps> = ({
         {/* Contenido principal */}
         <div className="w-full lg:w-3/4 p-4">
           {filteredProducts && filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8  px-12 lg:px-0">
               {filteredProducts.map((product) => {
                 const productCategory = categories?.find(
                   (cat) => cat.id === product.category.id
@@ -178,7 +180,7 @@ const ProductList: React.FC<ProductsClientPageProps> = ({
                 return (
                   <div
                     key={product.article_id}
-                    className=" rounded-lg h-[400px] shadow-lg hover:scale-105"
+                    className=" rounded-lg h-[400px] shadow-lg hover:scale-105 "
                     onClick={() => router.push(`/products/${product.id}`)}
                   >
 
@@ -187,7 +189,7 @@ const ProductList: React.FC<ProductsClientPageProps> = ({
                         height={500}
                         src={product.imgUrl}
                         alt={product.description}
-                        className="relative inset-0 w-46 h-4/6 object-cover rounded-t-lg animate-fade-in-up  transition-transform duration-300 cursor-pointer"
+                        className="relative inset-0 w-full h-4/6 object-cover rounded-t-lg animate-fade-in-up  transition-transform duration-300 cursor-pointer"
                       />
                     <hr className=" bg-blue-gray-600"/>
                     <div className="p-4 flex flex-col justify-between w-full h-2/6">
