@@ -78,7 +78,12 @@ export class ProductsService {
             builder = this.coffeeRepository;
         }
     
-        const { categoryID, ...productData } = infoProduct;
+        const { categoryID, subproducts, ...productData } = infoProduct;
+    
+        if (subproducts && subproducts.length > 0) {
+            const totalStock = subproducts.reduce((sum, subproduct) => sum + subproduct.stock, 0);
+            productData.stock = totalStock; 
+        }
     
         const newProduct = builder.create({
             ...productData,
@@ -88,8 +93,19 @@ export class ProductsService {
     
         await builder.save(newProduct);
     
+        if (subproducts && subproducts.length > 0) {
+            for (const subproductData of subproducts) {
+                const newSubproduct = this.subproductRepository.create({
+                    ...subproductData,
+                    product: newProduct, 
+                });
+                await this.subproductRepository.save(newSubproduct);
+            }
+        }
+    
         return newProduct;
     }
+    
     
         async updateProduct(id: string, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});

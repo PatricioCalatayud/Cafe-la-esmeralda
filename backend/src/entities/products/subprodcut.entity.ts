@@ -14,6 +14,7 @@ export class Subproduct {
 
     @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
     amount: number; 
+    
     @Column({ type: 'text', nullable: false })
     unit: string;
 
