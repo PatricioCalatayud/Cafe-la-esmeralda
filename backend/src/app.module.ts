@@ -18,7 +18,6 @@ import {Te} from './entities/products/product-te.entity'
 import { Chocolate } from './entities/products/product-chocolate.entity';
 import { Accesorio } from './entities/products/product-accesorio.entity';
 import { OrderModule } from './modules/order/order.module';
-import { ImageController } from './modules/images/image.controller';
 import { MercadoPagoModule } from './modules/mercadopago/mercado-pago.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TestimonyModule } from './modules/testimony/testimony.module';
@@ -26,8 +25,8 @@ import { Testimony } from './entities/testimony.entity';
 import { CategoryModule } from './modules/categories/category.module';
 import { StorageOrderModule } from './modules/storageOrder/storage-order.module';
 import { Storage } from './entities/storage.entity';
-import { ImageService } from './modules/images/image.service';
 import { ImageModule } from './modules/images/image.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -42,6 +41,7 @@ import { ImageModule } from './modules/images/image.module';
         ConfigService.get('typeorm'),
     }),
     TypeOrmModule.forFeature([Testimony,Product,Subproduct,Category,User,Coffee,Mate,Endulzante,Chocolate,Te,Accesorio,Storage]),
+    AuthModule,
     ImageModule,
     UsersModule,
     ProductsModule,
