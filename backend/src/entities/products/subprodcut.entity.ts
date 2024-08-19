@@ -6,15 +6,15 @@ export class Subproduct {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
+    @Column({ type: 'int', nullable: false })
     price: number;
 
     @Column({ type: 'int', nullable: false })
     stock: number;
 
-    @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
+    @Column({ type: 'int', nullable: false })
     amount: number; 
-    
+
     @Column({ type: 'text', nullable: false })
     unit: string;
 
