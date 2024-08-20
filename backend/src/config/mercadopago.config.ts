@@ -1,4 +1,4 @@
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { MercadoPagoConfig, Payment, Preference } from 'mercadopago';
 import { config as dotenvConfig } from 'dotenv';
 
 dotenvConfig({ path: '.env.development' });
@@ -8,3 +8,4 @@ const client = new MercadoPagoConfig({
 });
 
 export const preference = new Preference(client);
+export const payment = new Payment(client);

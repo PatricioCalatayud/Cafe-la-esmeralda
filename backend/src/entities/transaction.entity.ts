@@ -7,8 +7,8 @@ export class Transaccion {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({type: 'enum', enum: OrderStatus, nullable: false})
-    status: OrderStatus;
+    @Column({type: 'enum', enum: OrderStatus, default: null })
+    status: OrderStatus | null;
 
     @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     timestamp:Date;
