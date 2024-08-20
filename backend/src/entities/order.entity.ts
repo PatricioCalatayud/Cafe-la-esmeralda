@@ -3,7 +3,7 @@ import { ProductsOrder } from "./product-order.entity";
 import { OrderDetail } from "./orderdetail.entity";
 import { User } from "./user.entity";
 
-@Entity({name:'orders'})
+@Entity({ name:'orders' })
 export class Order {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -13,6 +13,9 @@ export class Order {
     
     @Column({default:false})
     isDeleted:boolean
+
+    @Column({ default: 'Pendiente' })
+    status: string;
 
     @ManyToOne(()=>User,(user) => user.orders )
     @JoinColumn({name:'userId'})
