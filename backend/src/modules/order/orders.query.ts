@@ -86,6 +86,7 @@ export class OrderQuery {
             .where('orders.isDeleted = :isDeleted', { isDeleted: false })
             .select([
                 'user.id',
+                'user.name',
                 'orders.id',
                 'orders.date',
                 'orderDetails.totalPrice',
