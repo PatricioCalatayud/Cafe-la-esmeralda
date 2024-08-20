@@ -10,12 +10,6 @@ import { AuthGuard } from 'src/guards/auth.guard';
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @ApiOperation({ 
-        summary: 'Registro de usuario.',
-        description: 
-            'Este endpoint registra un usuario.'
-    })
-
     @Get(':id')
     @ApiBearerAuth()
     @ApiOperation({

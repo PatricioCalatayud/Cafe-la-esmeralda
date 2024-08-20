@@ -14,6 +14,7 @@ export class MercadoPagoController {
     return await this.mercadoPagoService.createPayment(data);
   }
 
+  @ApiOperation({ summary: 'Guarda y asocia un pago exitoso en Mercado Pago.', description: 'Este endpoint guarda y asocia al usuario un pago exitoso de Mercado Pago en la base de datos.' })
   @Post('webhook')
   async webhook(@Body() paid) {
     return this.mercadoPagoService.webhook(paid);
