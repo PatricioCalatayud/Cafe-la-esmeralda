@@ -4,9 +4,10 @@ import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { Repository } from 'typeorm';
-import { CreateCoffeeDto, UpdateCoffeDto } from './dtos/coffee.dto';
+import { UpdateCoffeDto } from './dtos/coffee.dto';
 import { ImageService } from '../images/image.service';
 import { Coffee } from 'src/entities/products/product-coffee.entity';
+import { CreateProductDto } from './dtos/products.dto';
 
 @Injectable()
 export class ProductsService {
@@ -50,51 +51,68 @@ export class ProductsService {
             .getMany();
         }
 
-    async getById(id: number) {
+    async getById(id: string) {
         console.log('ID:', id); 
         const product = await this.productRepository.findOne({ where: {id, isDeleted: false, isAvailable: true}, relations: { category: true, subproducts: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         return product;
     }   
 
-    async addProduct(infoProduct: Partial<CreateCoffeeDto>, file?: Express.Multer.File) {
-        const foundProduct = await this.productRepository.findOneBy({ article_id: infoProduct.article_id });
-        if(foundProduct) throw new BadRequestException(`Ya existe un producto con el ID ${infoProduct.article_id}.`);
-        
+    async addProduct(infoProduct: Partial<CreateProductDto>, file?: Express.Multer.File) {
         const foundCategory = await this.categoryRepository.findOneBy({ id: infoProduct.categoryID });
-        if(!foundCategory) throw new BadRequestException(`Categoría "${infoProduct.categoryID}" no existe.`);
-
-        let imgURL: string | undefined;
-
-        if(file) {
-            imgURL = await this.imageService.uploadFile(file);
-            if(!imgURL) throw new UnprocessableEntityException(`Error al cargar la imagen`);
+        if (!foundCategory) {
+            throw new BadRequestException(`Categoría "${infoProduct.categoryID}" no existe.`);
         }
-
+    
+        let imgURL: string | undefined;
+    
+        if (file) {
+            imgURL = await this.imageService.uploadFile(file);
+            if (!imgURL) {
+                throw new UnprocessableEntityException(`Error al cargar la imagen`);
+            }
+        }
+    
         let builder = this.productRepository;
-        if(foundCategory.name === 'coffee') { // REVISAR PARA QUE SEA Coffe con C mayuscula
+        if (foundCategory.name === 'Coffee') {
             builder = this.coffeeRepository;
         }
-
-        const newProduct = builder.create(
-            {
-                ...infoProduct,
-                imgUrl: imgURL,
-                category: foundCategory
-            }
-        )
+    
+        const { categoryID, subproducts, ...productData } = infoProduct;
+    
+        if (subproducts && subproducts.length > 0) {
+            const totalStock = subproducts.reduce((sum, subproduct) => sum + subproduct.stock, 0);
+            productData.stock = totalStock; 
+        }
+    
+        const newProduct = builder.create({
+            ...productData,
+            imgUrl: imgURL,
+            category: foundCategory,
+        });
+    
         await builder.save(newProduct);
-
+    
+        if (subproducts && subproducts.length > 0) {
+            for (const subproductData of subproducts) {
+                const newSubproduct = this.subproductRepository.create({
+                    ...subproductData,
+                    product: newProduct, 
+                });
+                await this.subproductRepository.save(newSubproduct);
+            }
+        }
+    
         return newProduct;
     }
-
-
-    async updateProduct(id: number, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
+    
+    
+        async updateProduct(id: string, infoProduct: Partial<UpdateCoffeDto>, file?: Express.Multer.File) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         
         let builder = this.productRepository;
-        if(product.category.name === 'coffee') builder = this.coffeeRepository;
+        if(product.category.name === 'Coffee') builder = this.coffeeRepository;
 
         const{categoryID, ...updateData} = infoProduct;
     
@@ -115,7 +133,7 @@ export class ProductsService {
         return product;
     }
 
-    async deleteProduct(id: number) {
+    async deleteProduct(id: string) {
         const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if(!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         

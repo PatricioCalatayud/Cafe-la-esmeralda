@@ -22,5 +22,5 @@ export class SubproductDto {
 
     @IsNotEmpty()
     @IsString()
-    unit: string; // 'gramos' o 'kg'
+    unit: string; 
 }

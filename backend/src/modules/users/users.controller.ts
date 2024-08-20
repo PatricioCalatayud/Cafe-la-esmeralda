@@ -15,23 +15,6 @@ export class UsersController {
         description: 
             'Este endpoint registra un usuario.'
     })
-    @Post('signup')
-    async signUp(@Body() userDTO: UserDTO): Promise<User> {
-        return await this.usersService.signUp(userDTO);
-    }
-
-    @ApiOperation({ 
-        summary: 'Inicio de sesión.',
-        description: 
-            'Este endpoint inicia la sesión del usuario. El usuario debe estar registrado.' 
-    })
-    @Post('signin')
-    async signIn(
-        @Body('email') email: string,
-        @Body('password') password: string,
-    ) {
-        return await this.usersService.signIn(email, password);
-    }
 
     @Get(':id')
     @ApiBearerAuth()

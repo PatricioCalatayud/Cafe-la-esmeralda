@@ -6,6 +6,9 @@ import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enum/roles.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @ApiTags('Productos')
 @Controller('products')
@@ -42,32 +45,34 @@ export class ProductsController {
         return this.productService.addProduct(productInfo,file)
     } 
     
-    @Get(":id")
+    @Get(':id')
     @ApiOperation({ summary: 'Obtiene un producto', description: 'Este endpoint retorna un producto.' })
-    async getById(@Query('id', ParseUUIDPipe) id: number) {
+    
+    async getById(@Param('id', ParseUUIDPipe) id: string) {
         console.log('Controlador - ID:', id); 
         const result = await this.productService.getById(id);
         console.log('Controlador - Resultado:', result); 
         return result;
     }
     @Put(':id')
-    @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Actualiza un producto', description: 'Este endpoint actualiza un producto por su ID.' })
-    @UseInterceptors(ProductValidationInterceptor)
     @UseInterceptors(FileInterceptor('file'))
     async updateProuct(
-        @Param('id', ParseUUIDPipe) id: number,
+        @Param('id', ParseUUIDPipe) id: string,
         @Body() productInfo:UpdatedProductDto,
         @UploadedFile()file?: Express.Multer.File) {
         return this.productService.updateProduct(id,productInfo,file)
     }
 
     @Delete(':id')
-    @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
     @ApiBearerAuth()
     @ApiOperation({ summary: 'Elimina un producto', description: 'Este endpoint elimina un producto por su ID.' })
-    async deleteProduct(@Param('id', ParseUUIDPipe) id: number) {
+    async deleteProduct(@Param('id', ParseUUIDPipe) id: string) {
         return await this.productService.deleteProduct(id)
     }
 }
