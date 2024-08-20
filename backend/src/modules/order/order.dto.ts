@@ -1,6 +1,6 @@
 import { Optional } from "@nestjs/common";
 import { Type } from "class-transformer";
-import { ArrayMinSize, ArrayNotEmpty, IsArray, IsDate, IsInt, IsNotEmpty, IsNumber, IsString, IsUUID, ValidateNested } from "class-validator";
+import { ArrayMinSize, ArrayNotEmpty, IsArray, IsDate, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, ValidateNested } from "class-validator";
 
 
 export class ProductInfo{
@@ -36,4 +36,30 @@ export class AddOrderDto{
     @ValidateNested({ each: true })
     @Type(() => ProductInfo)
     products: ProductInfo[]
+}
+
+export class UpdateOrderDto {
+    @IsUUID()
+    @IsOptional()
+    userId?: string;
+
+    @IsString()
+    @IsOptional()
+    address?: string;
+
+    @IsNumber()
+    @IsOptional()
+    discount?: number;
+
+    @Type(() => Date)
+    @IsDate()
+    @IsOptional()
+    deliveryDate?: Date;
+
+    @IsArray()
+    @IsOptional()
+    @ValidateNested({ each: true })
+    @Type(() => ProductInfo)
+    products?: ProductInfo[];
+
 }
