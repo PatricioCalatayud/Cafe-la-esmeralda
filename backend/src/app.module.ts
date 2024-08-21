@@ -27,6 +27,7 @@ import { StorageOrderModule } from './modules/storageOrder/storage-order.module'
 import { Storage } from './entities/storage.entity';
 import { ImageModule } from './modules/images/image.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { MailerModule } from './modules/mailer/mailer.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     CategoryModule,
     StorageOrderModule,
+    MailerModule
   ],
   controllers: [AppController],
   providers: [AppService, PreloadService],

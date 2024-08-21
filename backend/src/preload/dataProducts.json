@@ -22,7 +22,7 @@
     },
     {
         "description": "Cafe Mezcla",
-        "imgUrl" : "",
+        "imgUrl" : "https://imgur.com/tubPom4",
         "price" : 80000,
         "stock": 23,
         "category": "Coffee"
