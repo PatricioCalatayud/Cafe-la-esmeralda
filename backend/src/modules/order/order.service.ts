@@ -54,21 +54,18 @@ export class OrderService {
       const user = await this.userRepository.findOneBy({ id: userId, isDeleted: false });   
       if (!user) throw new BadRequestException(`User not found. ID: ${userId}`);
   
-      // Verifica existencia de productos y stock
       await Promise.all(productsInfo.map(async (product)=> {
           const foundProduct = await this.productRepository.findOneBy({ id: product.id });
           if (!foundProduct) throw new BadRequestException(`Product not found. ID: ${product.id}`);
           if (foundProduct.stock <= 0) throw new BadRequestException(`Producto sin stock. ID: ${foundProduct.id}`);
       }));
   
-      // Iniciamos transacción
       await this.dataSource.transaction(async (transactionalEntityManager) => {
           const order = transactionalEntityManager.create(Order, { user, date: new Date() });
           const newOrder = await transactionalEntityManager.save(order);
           createdOrder = newOrder;
   
           await Promise.all(productsInfo.map(async (product) => {
-              // Actualizamos el stock del producto
               await this.updateStock(product.id);
   
               const foundProduct = await transactionalEntityManager.findOneBy(Product, { id: product.id });
@@ -76,9 +73,8 @@ export class OrderService {
               
               total += ((foundProduct.price * product.quantity) * (1 - foundProduct.discount));
               
-              // Crear y guardar la relación ProductsOrder
               const productsOrder = transactionalEntityManager.create(ProductsOrder, {
-                  product: foundProduct, // Corregir para asociar correctamente el producto
+                  product: foundProduct, 
                   order: newOrder,
                   quantity: product.quantity
               });
@@ -98,7 +94,6 @@ export class OrderService {
   
           await transactionalEntityManager.save(OrderDetail, orderDetail);
   
-          // Agregamos estado
           await transactionalEntityManager.save(Transaccion, {
               status: OrderStatus.RECIBIDO,
               timestamp: new Date(),
@@ -121,7 +116,6 @@ export class OrderService {
         async updateOrder(orderId: string, productsInfo: ProductInfo[], address: string, discount: number, deliveryDate: Date) {
             let total = 0;
         
-            // Encuentra la orden existente
             const order = await this.orderRepository.findOne({
                 where: { id: orderId },
                 relations: ['productsOrder', 'productsOrder.product', 'orderDetail']
@@ -131,22 +125,18 @@ export class OrderService {
                 throw new NotFoundException('Orden no encontrada');
             }
         
-            // Verifica si productsInfo está definido y es un array
             if (!Array.isArray(productsInfo)) {
                 throw new BadRequestException('La información de los productos no es válida');
             }
         
-            // Actualiza el stock de los productos y calcula el total
             await Promise.all(productsInfo.map(async (product) => {
                 const foundProduct = await this.productRepository.findOne({ where: { id: product.id } });
                 if (!foundProduct) throw new BadRequestException(`Producto no encontrado. ID: ${product.id}`);
                 if (foundProduct.stock < product.quantity) throw new BadRequestException(`Stock insuficiente para el producto ID: ${product.id}`);
         
-                // Calcula el total para este producto
                 const productTotal = (foundProduct.price * product.quantity) * (1 - (foundProduct.discount / 100));
                 total += productTotal;
                 
-                // Actualiza o crea la relación en productsOrder
                 const existingProductOrder = order.productsOrder.find(p => p.product.id === product.id);
                 if (existingProductOrder) {
                     existingProductOrder.quantity = product.quantity;
@@ -160,7 +150,6 @@ export class OrderService {
                     await this.productsOrderRepository.save(newProductOrder);
                 }
         
-                // Actualiza el stock
                 for (let i = 0; i < product.quantity; i++) {
                     await this.updateStock(product.id);
                 }
@@ -172,10 +161,9 @@ export class OrderService {
                 console.log(`Total Calculado para este Producto: ${productTotal}`);
             }));
         
-            // Aplica el descuento general al total
             if (discount) total *= (1 - (discount / 100));
         
-            // Actualiza la orden
+
             order.orderDetail.addressDelivery = address || order.orderDetail.addressDelivery;
             order.orderDetail.totalPrice = Number(total.toFixed(2));
             order.orderDetail.cupoDescuento = discount || order.orderDetail.cupoDescuento;
@@ -184,9 +172,8 @@ export class OrderService {
             await this.orderDetailRepository.save(order.orderDetail);
             await this.orderRepository.save(order);
         
-            // Actualiza el estado de la transacción
             const transaction = this.transactionRepository.create({
-                status: OrderStatus.RECIBIDO, // Ajusta el estado según sea necesario
+                status: OrderStatus.RECIBIDO, 
                 timestamp: new Date(),
                 orderdetail: order.orderDetail
             });
