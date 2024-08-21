@@ -3,9 +3,10 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Order } from "src/entities/order.entity";
 import { ProductsOrder } from "src/entities/product-order.entity";
 import { Repository } from "typeorm";
-import { AddOrderDto, UpdateOrderDto } from "./order.dto";
+import {  OrderResponseDto, UpdateOrderDto } from "./order.dto";
 import { Product } from "src/entities/products/product.entity";
-
+import { OrderDetail } from "src/entities/orderdetail.entity";
+import { plainToInstance } from "class-transformer";
 @Injectable()
 export class OrderQuery {
 
@@ -105,18 +106,15 @@ export class OrderQuery {
         return orders;
     }
 
-    async updateOrder(orderId: string, updateOrderDto: UpdateOrderDto) {
+
+    async updateOrder(orderId: string, updateOrderDto: UpdateOrderDto): Promise<OrderResponseDto> {
         const order = await this.orderRepository.findOne({
             where: { id: orderId, isDeleted: false },
-            relations: ['productsOrder', 'productsOrder.product'],  
+            relations: ['productsOrder', 'productsOrder.product', 'orderDetail'],
         });
     
         if (!order) {
             throw new Error(`Order with ID ${orderId} not found`);
-        }
-    
-        if (updateOrderDto.userId) {
-            order.user.id = updateOrderDto.userId;
         }
     
         if (updateOrderDto.address) {
@@ -138,27 +136,32 @@ export class OrderQuery {
                 const productOrder = new ProductsOrder();
                 productOrder.quantity = productDto.quantity;
     
-                const product = await this.productRepository.findOne({
-                    where: { id: productDto.id },
-                });
+                const product = await this.productRepository.findOne({ where: { id: productDto.id } });
     
                 if (!product) {
                     throw new Error(`Product with ID ${productDto.id} not found`);
                 }
     
                 productOrder.product = product;
-                productOrder.order = order;  
+                productOrder.order = order;
     
                 await this.productsOrderRepository.save(productOrder);
-    
                 order.productsOrder.push(productOrder);
             }
         }
     
         await this.orderRepository.save(order);
     
-        return order;
+        return plainToInstance(OrderResponseDto, {
+            ...order,
+            productsOrder: order.productsOrder.map(po => ({
+                id: po.id,
+                quantity: po.quantity,
+                productId: po.product.id,
+            })),
+        });
     }
+    
     
     async deleteOrder(id: string) {
         const foundOrder = await this.orderRepository.findOneBy({ id });

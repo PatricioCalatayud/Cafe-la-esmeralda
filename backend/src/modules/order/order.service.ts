@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from 'src/entities/order.entity';
 import { OrderDetail } from 'src/entities/orderdetail.entity';
 import { DataSource, Repository } from 'typeorm';
-import { ProductInfo } from './order.dto';
+import { ProductInfo, UpdateOrderDto } from './order.dto';
 import { User } from 'src/entities/user.entity';
 import { Product } from 'src/entities/products/product.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
@@ -110,4 +110,8 @@ export class OrderService {
         await this.productRepository.update({ id },{ stock: product.stock - 1 });
 
         }
+
+    async updateOrder(id: string, updateOrderDto: UpdateOrderDto) {
+        return await this.orderQuery.updateOrder(id, updateOrderDto);
+    }
 }

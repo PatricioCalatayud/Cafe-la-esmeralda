@@ -53,20 +53,23 @@
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 5232,
         "stock": 13,
-        "category": "Sweetener"
+        "category": "Sweetener",
+        "discount":0
     },
     {
         "description": "Portasobres",
         "imgUrl" : "https://imgur.com/qFVuRNx.png",
         "price" : 2825,
         "stock": 92,
-        "category": "Accesory"
+        "category": "Accesory",
+        "discount": 20
     },
     {
         "description": "Capsulas Esmeralda x30",
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 14475,
         "stock": 113,
-        "category": "Sweetener"
+        "category": "Sweetener",
+        "discount": 10
     }
 ]
