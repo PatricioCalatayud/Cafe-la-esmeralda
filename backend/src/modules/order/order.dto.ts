@@ -52,36 +52,6 @@ export class AddOrderDto {
     @Type(() => ProductInfo)
     products: ProductInfo[];
 }
-export class FinalOrderDto {
-    @Type(() => Date)
-    @IsDate()
-    @IsNotEmpty()
-    date:Date
-    
-
-    @IsNotEmpty()
-    user: User
-    
-    @IsString()
-    @IsNotEmpty()
-    status:string
-    
-    @IsBoolean()
-    @IsNotEmpty()
-    isDeleted:boolean
-    
-    @IsArray()
-    @IsNotEmpty()
-    productsOrder:ProductsOrder[]
-    
-
-    @IsNotEmpty()
-    orderDetail:OrderDetail
-    
-    @IsNumber()
-    @IsNotEmpty()
-    finalPrice: number
-}
 
 export class UpdateOrderDto {
     @IsUUID()

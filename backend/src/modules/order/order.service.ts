@@ -32,23 +32,10 @@ export class OrderService {
     }
 
     async getOrderById(id: string) {
-        let finalOrder = new FinalOrderDto()
         const foundOrder = await this.orderQuery.getOrderById(id);
         if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-        const prices =  foundOrder.productsOrder.map(product => product.product.price)
-        const quantity =  foundOrder.productsOrder.map(quantity => quantity.quantity)
-
-        let finalPrice:number = 0
-        let partialPrice:number = 0
-        for (let i = 0; i < prices.length; i++) {
-            partialPrice= prices[i]*quantity[i]
-            finalPrice = finalPrice + partialPrice;
-        }
-        finalOrder = { 
-            ...foundOrder, 
-            finalPrice 
-          };
-        return finalOrder;
+ 
+        return foundOrder;
     }
 
     async getOrdersByUserId(id: string) {
@@ -127,13 +114,13 @@ export class OrderService {
         await this.productRepository.update({ id },{ stock: product.stock - 1 });
 
         }
-        async updateOrder(orderId: string, productsInfo: ProductInfo[], address: string, discount: number, deliveryDate: Date) {
+        async updateOrder(orderId: string, productsInfo: ProductInfo[], address: string, discount: number, deliveryDate: Date, status: OrderStatus) {
             let total = 0;
         
             const order = await this.orderRepository.findOne({
                 where: { id: orderId },
                 relations: ['productsOrder', 'productsOrder.product', 'orderDetail']
-            });
+            }); 
         
             if (!order) {
                 throw new NotFoundException('Orden no encontrada');
@@ -187,7 +174,7 @@ export class OrderService {
             await this.orderRepository.save(order);
         
             const transaction = this.transactionRepository.create({
-                status: OrderStatus.RECIBIDO, 
+                status: OrderStatus.ENTREGADO, 
                 timestamp: new Date(),
                 orderdetail: order.orderDetail
             });
