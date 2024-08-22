@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from 'src/entities/order.entity';
 import { OrderDetail } from 'src/entities/orderdetail.entity';
 import { DataSource, Repository } from 'typeorm';
-import { FinalOrderDto, ProductInfo } from './order.dto';
+import { ProductInfo, UpdateOrderDto } from './order.dto';
 import { User } from 'src/entities/user.entity';
 import { Product } from 'src/entities/products/product.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
@@ -19,8 +19,6 @@ export class OrderService {
         @InjectRepository(User) private userRepository: Repository<User>,
         @InjectRepository(Product) private productRepository: Repository<Product>,
         @InjectRepository(Transaccion) private transactionRepository: Repository<Transaccion>,
-        @InjectRepository(ProductsOrder) private productsOrderRepository: Repository<ProductsOrder>,
-
         private readonly orderQuery: OrderQuery,
         private readonly dataSource: DataSource
     ){}
@@ -31,23 +29,9 @@ export class OrderService {
     }
 
     async getOrderById(id: string) {
-        let finalOrder = new FinalOrderDto()
         const foundOrder = await this.orderQuery.getOrderById(id);
-        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-        const prices =  foundOrder.productsOrder.map(product => product.product.price)
-        const quantity =  foundOrder.productsOrder.map(quantity => quantity.quantity)
-
-        let finalPrice:number = 0
-        let partialPrice:number = 0
-        for (let i = 0; i < prices.length; i++) {
-            partialPrice= prices[i]*quantity[i]
-            finalPrice = finalPrice + partialPrice;
-        }
-        finalOrder = { 
-            ...foundOrder, 
-            finalPrice 
-          };
-        return finalOrder;
+        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);        
+        return foundOrder;
     }
 
     async getOrdersByUserId(id: string) {
@@ -87,6 +71,7 @@ export class OrderService {
                 total += ((foundProduct.price * product.quantity) * (1 - foundProduct.discount));
                 
                 const productsOrder = transactionalEntityManager.create(ProductsOrder, {
+                    
                     product: foundProduct, 
                     order: newOrder,
                     quantity: product.quantity
@@ -108,7 +93,7 @@ export class OrderService {
             await transactionalEntityManager.save(OrderDetail, orderDetail);
   
             await transactionalEntityManager.save(Transaccion, {
-                status: OrderStatus.SOLICITADO,
+                status: "Solicitado",
                 timestamp: new Date(),
                 orderdetail: orderDetail
             });
@@ -117,27 +102,22 @@ export class OrderService {
         return createdOrder;
     }
 
-    // MODIFICAR DTO
-    async updateOrder(orderId: string, productsInfo: ProductInfo[], address: string, discount: number, deliveryDate: Date) {
+    async updateOrder(id: string, data: UpdateOrderDto) {
         const order = await this.orderRepository.findOne({
-            where: { id: orderId },
-            relations: ['productsOrder', 'productsOrder.product', 'orderDetail']
+            where: { id },
+            relations: ['productsOrder', 'productsOrder.product', 'orderDetail', 'orderDetail.transactions']
         });
-    
         if (!order) throw new NotFoundException('Orden no encontrada');
+  
         
-        // SOLICITAMOS DELIVERYDATE EN EL DTO
-        order.orderDetail.deliveryDate = deliveryDate || order.orderDetail.deliveryDate;
+        await this.orderDetailRepository.update(
+            { id: order.orderDetail.id }, 
+            { deliveryDate: data.deliveryDate}
+        );
 
-        // ACÁ VA UPDATE DE ORDER Y ORDERDETAIL ANTES DEL SAVE (se hace con el id)
-        await this.orderDetailRepository.save(order.orderDetail);
-        await this.orderRepository.save(order);
-        
-        // ACÁ VA UPDATE DE STATUS DE TRANSACTION (se hace con el id así que hay que buscarlo en el repository)
-        const transaction = this.transactionRepository.create({ status: OrderStatus.SOLICITADO });
-        await this.transactionRepository.save(transaction);
-    
-        return order;
+        await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status });
+
+        return { HttpCode: 200 };
     }
   
     async deleteOrder(id: string) {

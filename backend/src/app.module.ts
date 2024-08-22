@@ -23,7 +23,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { TestimonyModule } from './modules/testimony/testimony.module';
 import { Testimony } from './entities/testimony.entity';
 import { CategoryModule } from './modules/categories/category.module';
-import { StorageOrderModule } from './modules/storageOrder/storage-order.module';
 import { Storage } from './entities/storage.entity';
 import { ImageModule } from './modules/images/image.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -55,7 +54,6 @@ import { MailerModule } from './modules/mailer/mailer.module';
       secret: process.env.JWT_SECRET,
     }),
     CategoryModule,
-    StorageOrderModule,
     MailerModule
   ],
   controllers: [AppController],
