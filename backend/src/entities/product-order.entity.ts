@@ -5,13 +5,13 @@ import { Order } from "./order.entity";
 @Entity({name:'productsOrder'})
 export class ProductsOrder{
 
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('uuid')
     id:string
 
     @Column()
     quantity: number
 
-    @ManyToOne(()=>Product,(product)=>product.productsOrder)
+    @ManyToOne(()=>Product,(product)=>product.productsOrder,{eager:true})
     product: Product
 
     @ManyToOne(()=>Order,(order)=>order.productsOrder)

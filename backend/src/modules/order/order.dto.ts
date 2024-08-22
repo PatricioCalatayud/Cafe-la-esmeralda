@@ -4,6 +4,7 @@ import {
     ArrayMinSize, 
     ArrayNotEmpty, 
     IsArray, 
+    IsBoolean, 
     IsDate, 
     IsInt, 
     IsNotEmpty, 
@@ -13,6 +14,9 @@ import {
     IsUUID, 
     ValidateNested 
 } from "class-validator";
+import { OrderDetail } from "src/entities/orderdetail.entity";
+import { ProductsOrder } from "src/entities/product-order.entity";
+import { User } from "src/entities/user.entity";
 
 export class ProductInfo {
     @IsUUID()
@@ -40,13 +44,43 @@ export class AddOrderDto {
     @IsDate()
     @Optional()
     deliveryDate?: Date;
-
+    
     @IsArray()
     @ArrayNotEmpty()
     @ArrayMinSize(1)
     @ValidateNested({ each: true })
     @Type(() => ProductInfo)
     products: ProductInfo[];
+}
+export class FinalOrderDto {
+    @Type(() => Date)
+    @IsDate()
+    @IsNotEmpty()
+    date:Date
+    
+
+    @IsNotEmpty()
+    user: User
+    
+    @IsString()
+    @IsNotEmpty()
+    status:string
+    
+    @IsBoolean()
+    @IsNotEmpty()
+    isDeleted:boolean
+    
+    @IsArray()
+    @IsNotEmpty()
+    productsOrder:ProductsOrder[]
+    
+
+    @IsNotEmpty()
+    orderDetail:OrderDetail
+    
+    @IsNumber()
+    @IsNotEmpty()
+    finalPrice: number
 }
 
 export class UpdateOrderDto {

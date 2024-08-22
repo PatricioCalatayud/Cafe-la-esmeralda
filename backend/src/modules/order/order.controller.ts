@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Post, Put, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { AddOrderDto, UpdateOrderDto } from './order.dto';
+import { AddOrderDto, ProductInfo, UpdateOrderDto } from './order.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Ordenes de compra')
@@ -32,12 +32,20 @@ export class OrderController {
         const { userId, products, address, discount, deliveryDate } = orderInfo;
         return await this.orderService.createOrder(userId, products, address, Number(discount), deliveryDate);
     }
-
     @Put(':id')
-    async updateOrder(@Param('id', ParseUUIDPipe) id: string, @Body() updateOrderDto: UpdateOrderDto) {
-        const foundOrder = await this.orderService.getOrderById(id);
-        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-        return await this.orderService.updateOrder(id, updateOrderDto);
+    async updateOrder(
+      @Param('id', ParseUUIDPipe) id: string,
+      @Body() updateOrderDto: UpdateOrderDto
+    ) {
+      const foundOrder = await this.orderService.getOrderById(id);
+      if (!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
+      return await this.orderService.updateOrder(
+        id,
+        updateOrderDto.products,
+        updateOrderDto.address,
+        updateOrderDto.discount,
+        updateOrderDto.deliveryDate
+      );
     }
 
 
