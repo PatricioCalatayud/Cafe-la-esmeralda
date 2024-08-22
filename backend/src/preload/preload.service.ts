@@ -127,12 +127,15 @@ export class PreloadService implements OnModuleInit {
     async addDefaultOrder() {
         try {
             const users = await this.userRepository.find();
-            const product_1 = await this.chocolateRepository.find();
-            const product_2 = await this.teRepository.find();
+            const product1 = await this.productRepository.findOneBy({ id: "71eb1c05-21e5-4286-8ad6-617332062210" });
+            const product2 = await this.productRepository.findOneBy({ id: "5da19309-b219-44b7-9111-1e56adebe1c7" });
+            if (!product1 || !product2) {
+                throw new Error("Productos no encontrados en la base de datos");
+            }  
 
             await this.orderService.createOrder(users[0].id, [
-                { id: product_1[0].id, quantity: 2 },
-                { id: product_2[0].id, quantity: 3 }
+                { id: product1.id, quantity: 2 },
+                { id: product2.id, quantity: 3 }
             ], "Tienda", 0, undefined);
 
             console.log("Precarga de preorder exitosa.");
