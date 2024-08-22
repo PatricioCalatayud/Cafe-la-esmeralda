@@ -1,4 +1,4 @@
-import {Controller, Post, Body, Get, Param, Put, Delete, UseGuards } from '@nestjs/common';
+import {Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from 'src/entities/user.entity';
 import { UserDTO } from 'src/modules/users/users.dto';
@@ -9,6 +9,11 @@ import { AuthGuard } from 'src/guards/auth.guard';
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
+
+    @Get()
+    async getUsers(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+      return await this.usersService.getUsers();
+    }
 
     @Get(':id')
     @ApiBearerAuth()
@@ -44,7 +49,7 @@ export class UsersController {
           'Esta ruta elimina un usuario, por un id enviado por parametro',
       })
       @UseGuards(AuthGuard)
-    async deleteUser(@Param('id') id: string): Promise<void> {
-    return await this.usersService.deleteUser(id);
+    async deleteUser(@Param('id') id: string) {
+      return await this.usersService.deleteUser(id);
     }
 }
