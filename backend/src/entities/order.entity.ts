@@ -21,7 +21,7 @@ export class Order {
     @JoinColumn({name:'userId'})
     user: User
 
-    @OneToMany(()=>ProductsOrder,(productsOrder)=>productsOrder.order)
+    @OneToMany(()=>ProductsOrder,(productsOrder)=>productsOrder.order, {cascade:true})
     productsOrder: ProductsOrder[]
 
     @OneToOne(()=>OrderDetail, (orderDetail)=>orderDetail.order)

@@ -21,13 +21,14 @@
         ]
     },
     {
+        "id":"71eb1c05-21e5-4286-8ad6-617332062210",
         "description": "Cafe Mezcla",
         "imgUrl" : "https://imgur.com/tubPom4",
         "price" : 80000,
         "stock": 23,
         "category": "Coffee"
     },
-    {
+    {   "id":"5da19309-b219-44b7-9111-1e56adebe1c7",
         "description": "Mate x 50",
         "imgUrl" : "https://imgur.com/RZnhckX.png",
         "price" : 3390,
@@ -53,20 +54,23 @@
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 5232,
         "stock": 13,
-        "category": "Sweetener"
+        "category": "Sweetener",
+        "discount":0
     },
     {
         "description": "Portasobres",
         "imgUrl" : "https://imgur.com/qFVuRNx.png",
         "price" : 2825,
         "stock": 92,
-        "category": "Accesory"
+        "category": "Accesory",
+        "discount": 20
     },
     {
         "description": "Capsulas Esmeralda x30",
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 14475,
         "stock": 113,
-        "category": "Sweetener"
+        "category": "Sweetener",
+        "discount": 10
     }
 ]
