@@ -6,6 +6,7 @@ import {
     IsArray, 
     IsBoolean, 
     IsDate, 
+    IsEnum, 
     IsInt, 
     IsNotEmpty, 
     IsNumber, 
@@ -76,6 +77,10 @@ export class UpdateOrderDto {
     @ValidateNested({ each: true })
     @Type(() => ProductInfo)
     products?: ProductInfo[];
+
+
+    @IsEnum(['Recibido','Empaquetado', 'Transito', 'Entregado'])
+    status: string;
 }
 
 export class ProductOrderResponseDto {

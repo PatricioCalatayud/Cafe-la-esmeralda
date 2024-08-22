@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Post, Put, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { AddOrderDto, FinalOrderDto, ProductInfo, UpdateOrderDto } from './order.dto';
+import { AddOrderDto, UpdateOrderDto } from './order.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Ordenes de compra')
@@ -16,7 +16,7 @@ export class OrderController {
 
     @ApiOperation({ summary: 'Obtiene una orden por ID.', description: 'Este endpoint retorna una orden por su ID.' })
     @Get(':id')
-    async getOrderById(@Param('id', ParseUUIDPipe) id: string): Promise<FinalOrderDto> {
+    async getOrderById(@Param('id', ParseUUIDPipe) id: string) {
         return await this.orderService.getOrderById(id)
     }
 
