@@ -3,13 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from 'src/entities/order.entity';
 import { OrderDetail } from 'src/entities/orderdetail.entity';
 import { DataSource, Repository } from 'typeorm';
-import { ProductInfo, UpdateOrderDto } from './order.dto';
+import { FinalOrderDto, ProductInfo, UpdateOrderDto } from './order.dto';
 import { User } from 'src/entities/user.entity';
 import { Product } from 'src/entities/products/product.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { OrderQuery } from './orders.query';
 import { Transaccion } from 'src/entities/transaction.entity';
 import { OrderStatus } from 'src/enum/orderStatus.enum';
+import { log } from 'console';
 
 
 @Injectable()
@@ -27,14 +28,28 @@ export class OrderService {
     ){}
 
     async getOrders() {
-        return await this.orderQuery.getOrders()
+        const orders = await this.orderQuery.getOrders()
+        return orders
     }
 
     async getOrderById(id: string) {
+        let finalOrder = new FinalOrderDto()
         const foundOrder = await this.orderQuery.getOrderById(id);
         if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
+        const prices =  foundOrder.productsOrder.map(product => product.product.price)
+        const quantity =  foundOrder.productsOrder.map(quantity => quantity.quantity)
 
-        return foundOrder;
+        let finalPrice:number = 0
+        let partialPrice:number = 0
+        for (let i = 0; i < prices.length; i++) {
+            partialPrice= prices[i]*quantity[i]
+            finalPrice = finalPrice + partialPrice;
+        }
+        finalOrder = { 
+            ...foundOrder, 
+            finalPrice 
+          };
+        return finalOrder;
     }
 
     async getOrdersByUserId(id: string) {
