@@ -33,8 +33,7 @@ export class AddOrderDto {
 
     @IsString()
     @IsNotEmpty()
-    @Optional()
-    address?: string;
+    address: string | 'Retira en local';
 
     @IsNumber()
     @Optional()
