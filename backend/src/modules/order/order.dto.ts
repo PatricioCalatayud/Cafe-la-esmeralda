@@ -4,9 +4,7 @@ import {
     ArrayMinSize, 
     ArrayNotEmpty, 
     IsArray, 
-    IsBoolean, 
     IsDate, 
-    IsEnum, 
     IsInt, 
     IsNotEmpty, 
     IsNumber, 
@@ -15,9 +13,6 @@ import {
     IsUUID, 
     ValidateNested 
 } from "class-validator";
-import { OrderDetail } from "src/entities/orderdetail.entity";
-import { ProductsOrder } from "src/entities/product-order.entity";
-import { User } from "src/entities/user.entity";
 
 export class ProductInfo {
     @IsUUID()
@@ -58,30 +53,14 @@ export class UpdateOrderDto {
     @IsOptional()
     userId?: string;
 
-    @IsString()
-    @IsOptional()
-    address?: string;
-
-    @IsNumber()
-    @IsOptional()
-    discount?: number;
-
     @Type(() => Date)
     @IsDate()
     @IsOptional()
     deliveryDate?: Date;
 
-    @IsArray()
-    @IsOptional()
-    @ValidateNested({ each: true })
-    @Type(() => ProductInfo)
-    products?: ProductInfo[];
-
-
-    @IsEnum(['Recibido','Empaquetado', 'Transito', 'Entregado'])
+    @IsString()
     status: string;
 }
-
 export class ProductOrderResponseDto {
     @IsUUID()
     id: string;

@@ -37,15 +37,7 @@ export class OrderController {
       @Param('id', ParseUUIDPipe) id: string,
       @Body() updateOrderDto: UpdateOrderDto
     ) {
-      const foundOrder = await this.orderService.getOrderById(id);
-      if (!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-      return await this.orderService.updateOrder(
-        id,
-        updateOrderDto.products,
-        updateOrderDto.address,
-        updateOrderDto.discount,
-        updateOrderDto.deliveryDate
-      );
+      return await this.orderService.updateOrder(id, updateOrderDto);
     }
 
 

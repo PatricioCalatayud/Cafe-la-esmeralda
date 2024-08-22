@@ -15,7 +15,6 @@ import { Endulzante } from 'src/entities/products/product-endulzante.entity';
 import { Accesorio } from 'src/entities/products/product-accesorio.entity';
 import { User } from 'src/entities/user.entity';
 import { OrderService } from 'src/modules/order/order.service';
-import { StorageOrderService } from 'src/modules/storageOrder/storage-order.service';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import * as bcrypt from 'bcrypt';
 import { Testimony } from 'src/entities/testimony.entity';
@@ -37,7 +36,6 @@ export class PreloadService implements OnModuleInit {
         @InjectRepository(Category) private categoryRepository: Repository<Category>,
         @InjectRepository(User) private userRepository: Repository<User>,
         private readonly orderService: OrderService,
-        private readonly storageService: StorageOrderService
     ) {
         this.repositories = {
             "Coffee": { repository: coffeeRepository, class: Coffee },
@@ -156,11 +154,17 @@ export class PreloadService implements OnModuleInit {
             const users = await this.userRepository.find();
             const product_1 = await this.chocolateRepository.find();
             const product_2 = await this.teRepository.find();
+            const address= "Lo de pato";
+            const discount = 0;
+            let deliveryDate: Date = new Date();
+            deliveryDate.setDate(deliveryDate.getDate() + 7);
 
-            await this.storageService.storage(users[0].id, [
+            await this.orderService.createOrder(users[0].id, [
                 { id: product_1[0].id, quantity: 5 },
                 { id: product_2[0].id, quantity: 1 }
-            ]);
+            ],address, discount, deliveryDate
+            
+        );
 
             console.log("Precarga de storage exitosa.");
         } catch (error) {
