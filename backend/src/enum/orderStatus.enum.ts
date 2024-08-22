@@ -1,5 +1,5 @@
 export enum OrderStatus {
-    RECIBIDO = 'Recibido',
+    SOLICITADO = 'Solicitado',
     EMPAQUETADO = 'Empaquetado',
     TRANSITO = 'Transito',
     ENTREGADO = 'Entregado'
