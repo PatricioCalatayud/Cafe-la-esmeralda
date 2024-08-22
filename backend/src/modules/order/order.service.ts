@@ -110,7 +110,7 @@ export class OrderService {
         if (!order) throw new NotFoundException('Orden no encontrada');
   
         
-        const result = await this.orderDetailRepository.update(
+        await this.orderDetailRepository.update(
             { id: order.orderDetail.id }, 
             { deliveryDate: data.deliveryDate}
         );
