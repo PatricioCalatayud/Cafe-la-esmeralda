@@ -17,11 +17,11 @@ export class ProductsController {
 
     @Get()
     @ApiOperation({ summary: 'Obtiene todos los productos', description: 'Este endpoint retorna todos los productos.' })
-    async getAll(@Query('category') category: string){
+    async getAll(@Query('category') category: string, @Query('page') page: number = 1, @Query('limit') limit: number = 10){
         if(category) 
-            return this.productService.getAllByCategory(category)
+            return this.productService.getAllByCategory(category, page, limit);
         else
-            return this.productService.getAll()
+            return this.productService.getAll(page, limit);
     }
 
     @Get("available")

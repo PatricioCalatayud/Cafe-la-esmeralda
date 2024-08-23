@@ -16,7 +16,6 @@ export class ImageController {
     })
     @UseGuards(AuthGuard)
     @Post()
-
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile(
         new ParseFilePipeBuilder()
