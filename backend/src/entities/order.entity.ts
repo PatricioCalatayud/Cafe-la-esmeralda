@@ -12,18 +12,18 @@ export class Order {
     date: Date;
     
     @Column({default:false})
-    isDeleted:boolean
+    isDeleted: boolean;
 
-    @Column({ default: 'Pendiente' })
+    @Column({ default: 'Pendiente de pago' })
     status: string;
 
-    @ManyToOne(()=>User,(user) => user.orders )
-    @JoinColumn({name:'userId'})
-    user: User
+    @ManyToOne(()=> User, (user) => user.orders)
+    @JoinColumn({ name: 'userId' })
+    user: User;
 
     @OneToMany(()=>ProductsOrder,(productsOrder)=>productsOrder.order, {cascade:true})
-    productsOrder: ProductsOrder[]
+    productsOrder: ProductsOrder[];
 
     @OneToOne(()=>OrderDetail, (orderDetail)=>orderDetail.order)
-    orderDetail: OrderDetail
+    orderDetail: OrderDetail;
 }

@@ -4,6 +4,7 @@ import {
     ArrayMinSize, 
     ArrayNotEmpty, 
     IsArray, 
+    IsBoolean, 
     IsDate, 
     IsInt, 
     IsNotEmpty, 
@@ -30,15 +31,6 @@ export class AddOrderDto {
     @IsString()
     @IsNotEmpty()
     address: string | 'Retira en local';
-
-    @IsNumber()
-    @Optional()
-    discount?: number;
-
-    @Type(() => Date)
-    @IsDate()
-    @Optional()
-    deliveryDate?: Date;
     
     @IsArray()
     @ArrayNotEmpty()
@@ -46,13 +38,13 @@ export class AddOrderDto {
     @ValidateNested({ each: true })
     @Type(() => ProductInfo)
     products: ProductInfo[];
+
+    @IsBoolean()
+    @IsOptional()
+    account?: boolean;
 }
 
 export class UpdateOrderDto {
-    @IsUUID()
-    @IsOptional()
-    userId?: string;
-
     @Type(() => Date)
     @IsDate()
     @IsOptional()
@@ -61,6 +53,7 @@ export class UpdateOrderDto {
     @IsString()
     status: string;
 }
+
 export class ProductOrderResponseDto {
     @IsUUID()
     id: string;
