@@ -80,7 +80,7 @@ export class OrderQuery {
         return orders;
       }
       
-      async getOrders(page: number = 1, limit: number = 10) {
+      async getOrders(page: number, limit: number) {
         const skip = (page - 1) * limit;
       
         const orders = await this.orderRepository
