@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { preference, payment } from 'src/config/mercadopago.config';
 import { PaymentDto } from './payment.dto';
 import { OrderService } from '../order/order.service';
@@ -27,8 +27,9 @@ export class MercadoPagoService {
           notification_url: 'https://a076-2800-810-434-680-7859-b9cf-4d33-276c.ngrok-free.app/mercadopago/webhook',
           payer: { name: data.orderId }
         }
+        
       });
-      
+      console.log(data.price)
       return response.init_point;
     } catch (error) {
       throw new Error(`Error creando el pago. ERROR: ${error.message}`);
