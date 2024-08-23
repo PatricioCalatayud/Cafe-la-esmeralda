@@ -22,9 +22,8 @@ export class OrderService {
         private readonly dataSource: DataSource
     ){}
 
-    async getOrders(page: number = 1, limit: number = 10) {
-        const skip = (page - 1) * limit;
-        const orders = await this.orderQuery.getOrders(skip, limit);
+    async getOrders(page: number, limit: number) {
+        const orders = await this.orderQuery.getOrders(page, limit);
         return orders;
     }
 
@@ -113,7 +112,6 @@ export class OrderService {
     }
 
     async MercadoPagoUpdate(id: string) {
-        console.log('tamo aca')
         const foundOrder = await this.orderRepository.findOne(
             { where: { id }, 
             relations: { orderDetail: { transactions: true } } 

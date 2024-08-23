@@ -1,4 +1,4 @@
-import {Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
+import {Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Query, DefaultValuePipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from 'src/entities/user.entity';
 import { UserDTO } from 'src/modules/users/users.dto';
@@ -11,8 +11,10 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
     @Get()
-    async getUsers(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
-      return await this.usersService.getUsers();
+    async getUsers(
+      @Query('page', new DefaultValuePipe(1)) page: number, 
+      @Query('limit', new DefaultValuePipe(10)) limit: number) {
+        return await this.usersService.getUsers(page, limit);
     }
 
     @Get(':id')

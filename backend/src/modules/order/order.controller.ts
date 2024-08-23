@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { AddOrderDto, UpdateOrderDto } from './order.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -10,8 +10,10 @@ export class OrderController {
 
     @ApiOperation({ summary: 'Obtiene todas las ordenes', description: 'Este endpoint retorna todas las ordenes.' })
     @Get()
-    async getOrders(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
-      return await this.orderService.getOrders(page, limit);
+    async getOrders(
+      @Query('page', new DefaultValuePipe(1)) page: number,
+      @Query('limit', new DefaultValuePipe(10)) limit: number) {
+        return await this.orderService.getOrders(page, limit);
     }
 
     @ApiOperation({ summary: 'Obtiene una orden por ID.', description: 'Este endpoint retorna una orden por su ID.' })

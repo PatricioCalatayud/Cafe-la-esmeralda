@@ -19,7 +19,7 @@ export class ProductsService {
         private readonly imageService: ImageService,
     ){}
 
-    async getAll(page: number = 1, limit: number = 10): Promise<Product[]> {
+    async getAll(page: number, limit: number): Promise<Product[]> {
         const skip = (page - 1) * limit;
       
         const products = await this.productRepository.find({
