@@ -7,7 +7,7 @@ export class OrderDetail {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ default: "Tienda" })
+    @Column({ default: "Retiro en local" })
     addressDelivery: string;
 
     @Column({ type: 'timestamp' })

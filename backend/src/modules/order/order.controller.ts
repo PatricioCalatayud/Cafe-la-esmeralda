@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseUUIDPipe, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { AddOrderDto, UpdateOrderDto } from './order.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -26,12 +26,14 @@ export class OrderController {
         return await this.orderService.getOrdersByUserId(id)
     }
 
-    @ApiOperation({ summary: 'Crea una orden de compra usando AddOrderDto.', description: 'Este endpoint crea una orden de compra usando AddOrderDto.' })
+    @ApiOperation({ summary: 'Crea una orden de compra.', description: 'Este endpoint crea una orden de compra usando AddOrderDto.' })
     @Post()
     async createOrder(@Body() orderInfo: AddOrderDto) {
-        const { userId, products, address, discount, deliveryDate } = orderInfo;
-        return await this.orderService.createOrder(userId, products, address, Number(discount), deliveryDate);
+        const { userId, products, address, account } = orderInfo;
+        return await this.orderService.createOrder(userId, products, address, account);
     }
+
+    @ApiOperation({ summary: 'Actualiza una orden de compra.', description: 'Este endpoint actualiza una orden de compra, recibe el ID de la orden por param y updateOrderDto por body.'})
     @Put(':id')
     async updateOrder(
       @Param('id', ParseUUIDPipe) id: string,
@@ -40,12 +42,9 @@ export class OrderController {
       return await this.orderService.updateOrder(id, updateOrderDto);
     }
 
-
     @ApiOperation({ summary: 'Elimina una orden de la base de datos por su ID.', description: 'Este endpoint elimina una orden de la base de datos por su ID.' })
     @Delete(':id')
     async deleteOrder(@Param('id', ParseUUIDPipe) id: string) {
-        const foundOrder = await this.orderService.getOrderById(id);
-        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
         return await this.orderService.deleteOrder(id);
     }        
 }
