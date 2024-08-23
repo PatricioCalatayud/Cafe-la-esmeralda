@@ -29,8 +29,8 @@ export class AddOrderDto {
     userId: string;
 
     @IsString()
-    @IsNotEmpty()
-    address: string | 'Retira en local';
+    @IsOptional()
+    address?: string | 'Retira en local';
     
     @IsArray()
     @ArrayNotEmpty()
