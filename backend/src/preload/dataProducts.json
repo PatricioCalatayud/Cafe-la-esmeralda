@@ -1,5 +1,6 @@
 [
     {
+        "id":"5da19309-b219-44b7-9111-1e56adebe1c7",
         "description": "Cafe Santos",
         "imgUrl" : "https://imgur.com/U9juK3e.png",
         "price" : 25990,
@@ -27,14 +28,14 @@
         ]
     },
     {
-        "id":"71eb1c05-21e5-4286-8ad6-617332062210",
+        
         "description": "Cafe Mezcla",
         "imgUrl" : "https://imgur.com/tubPom4",
         "price" : 80000,
         "stock": 23,
         "category": "Coffee"
     },
-    {   "id":"5da19309-b219-44b7-9111-1e56adebe1c7",
+    {  
         "description": "Mate x 50",
         "imgUrl" : "https://imgur.com/RZnhckX.png",
         "price" : 3390,
@@ -55,7 +56,7 @@
         "stock": 113,
         "category": "Chocolate"
     },
-    {
+    {   "id":"71eb1c05-21e5-4286-8ad6-617332062210",
         "description": "Capsulas Esmeralda x10",
         "imgUrl" : "https://imgur.com/LIVIrsc.png",
         "price" : 5232,

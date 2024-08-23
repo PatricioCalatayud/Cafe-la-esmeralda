@@ -50,6 +50,7 @@ export class OrderQuery {
             .leftJoinAndSelect('orders.user', 'user')
             .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
             .leftJoinAndSelect('productsOrder.product', 'products')
+            .leftJoinAndSelect('products.subproducts', 'subproducts')
             .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
             .leftJoinAndSelect('orderDetails.transactions', 'transaction')
             .where('user.id = :orID', { orID: id })
@@ -64,11 +65,18 @@ export class OrderQuery {
                 'transaction.status',
                 'transaction.timestamp',
                 'productsOrder.quantity', 
+                'subproducts.id',
+                'subproducts.price',
+                'subproducts.product',
+                'subproducts.stock',
+                'subproducts.amount',
+                'subproducts.unit',
                 'products.id',
                 'products.description',
                 'products.price',
                 'products.discount',
                 'products.imgUrl',
+                
             ])
             .getMany();
     
