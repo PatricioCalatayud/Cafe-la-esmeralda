@@ -23,7 +23,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { TestimonyModule } from './modules/testimony/testimony.module';
 import { Testimony } from './entities/testimony.entity';
 import { CategoryModule } from './modules/categories/category.module';
-import { Storage } from './entities/storage.entity';
 import { ImageModule } from './modules/images/image.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailerModule } from './modules/mailer/mailer.module';
@@ -40,7 +39,7 @@ import { MailerModule } from './modules/mailer/mailer.module';
       useFactory: (ConfigService: ConfigService) =>
         ConfigService.get('typeorm'),
     }),
-    TypeOrmModule.forFeature([Testimony,Product,Subproduct,Category,User,Coffee,Mate,Endulzante,Chocolate,Te,Accesorio,Storage]),
+    TypeOrmModule.forFeature([Testimony,Product,Subproduct,Category,User,Coffee,Mate,Endulzante,Chocolate,Te,Accesorio]),
     AuthModule,
     ImageModule,
     UsersModule,

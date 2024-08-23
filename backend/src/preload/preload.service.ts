@@ -134,41 +134,11 @@ export class PreloadService implements OnModuleInit {
             await this.orderService.createOrder(users[0].id, [
                 { id: product1.id, quantity: 2 },
                 { id: product2.id, quantity: 3 }
-            ], "Tienda", 0, undefined);
+            ], "Tienda", false);
 
             console.log("Precarga de preorder exitosa.");
         } catch (error) {
             console.error(`Error al crear el pedido: ${error.message}`);
-        }
-    }
-
-    async addDefaultStorage() {
-        try {
-            const existingRecords = await this.userRepository.find({ where: { id: In(dataUser.map(user => user.id)) } });
-
-            if (existingRecords.length > 0) {
-                console.log("Precarga de storage exitosa.");
-                return;
-            }
-
-            const users = await this.userRepository.find();
-            const product_1 = await this.chocolateRepository.find();
-            const product_2 = await this.teRepository.find();
-            const address= "Lo de pato";
-            const discount = 0;
-            let deliveryDate: Date = new Date();
-            deliveryDate.setDate(deliveryDate.getDate() + 7);
-
-            await this.orderService.createOrder(users[0].id, [
-                { id: product_1[0].id, quantity: 5 },
-                { id: product_2[0].id, quantity: 1 }
-            ],address, discount, deliveryDate
-            
-        );
-
-            console.log("Precarga de storage exitosa.");
-        } catch (error) {
-            console.error(`Error al crear el almacenamiento: ${error.message}`);
         }
     }
 
@@ -196,7 +166,6 @@ export class PreloadService implements OnModuleInit {
         await this.addDefaultProducts(dataProducts);
         await this.addDefaultUser(dataUser);
         await this.addDefaultOrder();
-        await this.addDefaultStorage();
         await this.addDefaultTestimonies();
     }
 }

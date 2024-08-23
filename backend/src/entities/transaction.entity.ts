@@ -10,9 +10,9 @@ export class Transaccion {
     status: string;
 
     @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    timestamp:Date;
+    timestamp: Date;
 
     @ManyToOne(() => OrderDetail, (orderdetail) => orderdetail.transactions)
     @JoinColumn({name: 'orderdetailsId'})
-    orderdetail: OrderDetail
+    orderdetail: OrderDetail;
 }
