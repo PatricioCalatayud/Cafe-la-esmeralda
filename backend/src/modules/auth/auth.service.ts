@@ -48,7 +48,6 @@ export class AuthService {
             const payload = {
                 name: user.name, 
                 email: user.email,
-                password: user.password,
                 phone: user.phone, 
                 sub: user.id,
                 roles: userRoles,
@@ -62,19 +61,16 @@ export class AuthService {
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        
         if (!isPasswordValid) throw new BadRequestException('Invalid credentials');
     
         const payload = { 
             name: user.name,
             email: user.email,
-            password: user.password,
             phone: user.phone, 
             sub: user.id, 
             roles: userRoles,
             isAvailable: user.isAvailable,
             isDeleted: user.isDeleted
-    
         }
         
         const accessToken = this.jwtService.sign(payload);

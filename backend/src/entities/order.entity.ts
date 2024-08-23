@@ -8,22 +8,22 @@ export class Order {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({type: 'timestamp'})
+    @Column({ type: 'timestamp' })
     date: Date;
     
-    @Column({default:false})
-    isDeleted:boolean
+    @Column({ default: false })
+    isDeleted: boolean;
 
-    @Column({ default: 'Pendiente' })
+    @Column({ type: 'varchar', default: 'Retiro en local' })
     status: string;
 
-    @ManyToOne(()=>User,(user) => user.orders )
-    @JoinColumn({name:'userId'})
-    user: User
+    @ManyToOne(() => User, (user) => user.orders)
+    @JoinColumn({ name: 'userId' })
+    user: User;
 
-    @OneToMany(()=>ProductsOrder,(productsOrder)=>productsOrder.order, {cascade:true})
-    productsOrder: ProductsOrder[]
+    @OneToMany(() => ProductsOrder, (productsOrder) => productsOrder.order, { cascade: true })
+    productsOrder: ProductsOrder[];
 
-    @OneToOne(()=>OrderDetail, (orderDetail)=>orderDetail.order)
-    orderDetail: OrderDetail
+    @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.order)
+    orderDetail: OrderDetail;
 }

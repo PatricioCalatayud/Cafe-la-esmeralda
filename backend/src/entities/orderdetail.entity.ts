@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./order.entity";
 import { Transaccion } from "./transaction.entity";
 
@@ -7,7 +7,7 @@ export class OrderDetail {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ default: "Tienda" })
+    @Column({ type: 'varchar' })
     addressDelivery: string;
 
     @Column({ type: 'timestamp' })
@@ -19,12 +19,12 @@ export class OrderDetail {
     @Column({ type: 'int', default: 0 })
     cupoDescuento: number;
 
-    @OneToOne(()=>Order, (order) => order.orderDetail)
+    @OneToOne(() => Order, (order) => order.orderDetail)
     @JoinColumn({ name: 'orderId' })
     order: Order;
 
-    @OneToMany(()=>Transaccion, (transaccion) => transaccion.orderdetail)
-    transactions : Transaccion[];
+    @OneToOne(() => Transaccion, (transaccion) => transaccion.orderdetail)
+    transactions: Transaccion;
 
     @BeforeInsert()
     setDefaultEventDate() {

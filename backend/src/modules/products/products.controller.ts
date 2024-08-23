@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductValidationInterceptor } from 'src/interceptors/productValidatorInterceptor';
 import { CreateProductDto } from './dtos/products.dto';
@@ -17,11 +17,12 @@ export class ProductsController {
 
     @Get()
     @ApiOperation({ summary: 'Obtiene todos los productos', description: 'Este endpoint retorna todos los productos.' })
-    async getAll(@Query('category') category: string){
-        if(category) 
-            return this.productService.getAllByCategory(category)
-        else
-            return this.productService.getAll()
+    async getAll(
+        @Query('category') category: string, 
+        @Query('page', new DefaultValuePipe(1)) page: number, 
+        @Query('limit', new DefaultValuePipe(10)) limit: number) {
+            if(category) return this.productService.getAllByCategory(category, page, limit);
+            else return this.productService.getAll(page, limit);
     }
 
     @Get("available")
