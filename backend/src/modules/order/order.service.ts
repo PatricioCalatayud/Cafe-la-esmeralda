@@ -22,9 +22,10 @@ export class OrderService {
         private readonly dataSource: DataSource
     ){}
 
-    async getOrders() {
-        const orders = await this.orderQuery.getOrders()
-        return orders
+    async getOrders(page: number = 1, limit: number = 10) {
+        const skip = (page - 1) * limit;
+        const orders = await this.orderQuery.getOrders(skip, limit);
+        return orders;
     }
 
     async getOrderById(id: string) {
@@ -33,8 +34,10 @@ export class OrderService {
         return foundOrder;
     }
 
-    async getOrdersByUserId(id: string) {
-        return await this.orderQuery.getOrdersByUserId(id);
+    async getOrdersByUserId(id: string, page: number, limit: number) {
+        const skip = (page - 1) * limit;
+        const orders = await this.orderQuery.getOrdersByUserId(id, skip, limit);
+        return orders;
     }
 
     async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account: boolean) {

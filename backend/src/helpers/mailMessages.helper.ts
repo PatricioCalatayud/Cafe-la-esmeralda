@@ -8,7 +8,7 @@ export const sendEmailPassword = (link) => {
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
     <meta name="x-apple-disable-message-reformatting">
 
-    <title>Información de Restablecimiento de Contraseña</title>
+    <title>Restablecimiento de Contraseña</title>
 
     <style>
         body {
@@ -112,15 +112,15 @@ export const sendEmailPassword = (link) => {
         <tr>
             <td align="center" valign="top" style="padding-top: 20px;">
                 <div class="container">
-                    <h1>Información de Restablecimiento de Contraseña</h1>
+                    <h1>Restablecimiento de Contraseña</h1>
                     <div class="content">
                         <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Si no realizaste esta solicitud, por favor ignora este correo.</p>
-                        <p>Para restablecer tu contraseña, haz clic en el botón a continuación:</p>
-                        <a href="${link}" class="cta-button">Restablecer Contraseña</a>
+                        <p>Para restablecer tu contraseña, haz clic en el siguiente botón:</p>
+                        <a href="${link}" class="cta-button">Restablecer contraseña</a>
                         <p style="padding-top: 20px;"><strong>Este enlace expirará en 24 horas.</strong> Si no solicitaste una nueva contraseña, por favor ignora este mensaje.</p>
                     </div>
                     <div class="footer">
-                        <p>© 2024 La Esmeralda Cafe. Todos los derechos reservados.</p>
+                        <p>© 2024 La Esmeralda Cafe - Todos los derechos reservados.</p>
                     </div>
                 </div>
             </td>

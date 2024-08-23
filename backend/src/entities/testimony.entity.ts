@@ -14,5 +14,4 @@ export class Testimony {
   
   @ManyToOne(() => User, user => user.testimonies)
   user: User;
-
 }
