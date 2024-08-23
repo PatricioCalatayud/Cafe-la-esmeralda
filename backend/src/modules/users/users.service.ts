@@ -8,7 +8,7 @@ import { UserDTO } from './users.dto';
 export class UsersService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-    async getUsers(page: number = 1, limit: number = 10): Promise<Partial<Omit<User, "password">[]>> {
+    async getUsers(page: number, limit: number): Promise<Partial<Omit<User, "password">[]>> {
         const skip = (page - 1) * limit;
       
         const users = await this.userRepository.find({
