@@ -7,6 +7,12 @@
         "category": "Coffee",
         "subproducts": [
             {
+                "price": 13000,
+                "stock": 10,
+                "amount": 250,
+                "unit": "gramos"
+            },
+            {
                 "price": 23000,
                 "stock": 10,
                 "amount": 500,
@@ -55,7 +61,15 @@
         "price" : 5232,
         "stock": 13,
         "category": "Sweetener",
-        "discount":0
+        "discount":0,
+        "subproducts": [
+            {
+                "price": 5232,
+                "stock": 13,
+                "amount": 10,
+                "unit": "Unidades"
+            }
+        ]
     },
     {
         "description": "Portasobres",

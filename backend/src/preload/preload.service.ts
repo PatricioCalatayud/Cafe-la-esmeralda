@@ -15,7 +15,6 @@ import { Endulzante } from 'src/entities/products/product-endulzante.entity';
 import { Accesorio } from 'src/entities/products/product-accesorio.entity';
 import { User } from 'src/entities/user.entity';
 import { OrderService } from 'src/modules/order/order.service';
-import { StorageOrderService } from 'src/modules/storageOrder/storage-order.service';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import * as bcrypt from 'bcrypt';
 import { Testimony } from 'src/entities/testimony.entity';
@@ -37,7 +36,6 @@ export class PreloadService implements OnModuleInit {
         @InjectRepository(Category) private categoryRepository: Repository<Category>,
         @InjectRepository(User) private userRepository: Repository<User>,
         private readonly orderService: OrderService,
-        private readonly storageService: StorageOrderService
     ) {
         this.repositories = {
             "Coffee": { repository: coffeeRepository, class: Coffee },
@@ -136,35 +134,11 @@ export class PreloadService implements OnModuleInit {
             await this.orderService.createOrder(users[0].id, [
                 { id: product1.id, quantity: 2 },
                 { id: product2.id, quantity: 3 }
-            ], "Tienda", 0, undefined);
+            ], "Tienda", false);
 
             console.log("Precarga de preorder exitosa.");
         } catch (error) {
             console.error(`Error al crear el pedido: ${error.message}`);
-        }
-    }
-
-    async addDefaultStorage() {
-        try {
-            const existingRecords = await this.userRepository.find({ where: { id: In(dataUser.map(user => user.id)) } });
-
-            if (existingRecords.length > 0) {
-                console.log("Precarga de storage exitosa.");
-                return;
-            }
-
-            const users = await this.userRepository.find();
-            const product_1 = await this.chocolateRepository.find();
-            const product_2 = await this.teRepository.find();
-
-            await this.storageService.storage(users[0].id, [
-                { id: product_1[0].id, quantity: 5 },
-                { id: product_2[0].id, quantity: 1 }
-            ]);
-
-            console.log("Precarga de storage exitosa.");
-        } catch (error) {
-            console.error(`Error al crear el almacenamiento: ${error.message}`);
         }
     }
 
@@ -192,7 +166,6 @@ export class PreloadService implements OnModuleInit {
         await this.addDefaultProducts(dataProducts);
         await this.addDefaultUser(dataUser);
         await this.addDefaultOrder();
-        await this.addDefaultStorage();
         await this.addDefaultTestimonies();
     }
 }
