@@ -113,7 +113,6 @@ export class OrderService {
     }
 
     async MercadoPagoUpdate(id: string) {
-        console.log('tamo aca')
         const foundOrder = await this.orderRepository.findOne(
             { where: { id }, 
             relations: { orderDetail: { transactions: true } } 
