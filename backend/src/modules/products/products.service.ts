@@ -19,25 +19,39 @@ export class ProductsService {
         private readonly imageService: ImageService,
     ){}
 
-    async getAll() {
-        return await this.productRepository.find({ where: { isDeleted: false }, relations: { category: true, subproducts: true }}); 
+    async getAll(page: number = 1, limit: number = 10): Promise<Product[]> {
+        const skip = (page - 1) * limit;
+      
+        const products = await this.productRepository.find({
+            where: { isDeleted: false },
+            relations: { category: true, subproducts: true },
+            skip,
+            take: limit,
+        });
+      
+        return products;
     }
 
     async getAvailable() {
         return await this.productRepository.find({ where: { isAvailable: true, isDeleted: false }});
     }
 
-    async getAllByCategory(category: string) {
+    async getAllByCategory(category: string, page: number = 1, limit: number = 10) {
         const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});
-        
-        if(!categoryFound) throw new NotFoundException(`No se encontró la categoría "${category}".`);
-
-        return await this.productRepository.createQueryBuilder('products')
-            .innerJoinAndSelect('products.category', 'categories')
-            .where('categories.id = :categoriaId', { categoriaId: categoryFound.id })
-            .andWhere('products.isDeleted = :isDeleted', { isDeleted: false })
-            .getMany();
-        }
+        if (!categoryFound) throw new NotFoundException(`No se encontró la categoría "${category}".`);
+      
+        const skip = (page - 1) * limit;
+      
+        const products = await this.productRepository.createQueryBuilder('products')
+          .innerJoinAndSelect('products.category', 'categories')
+          .where('categories.id = :categoriaId', { categoriaId: categoryFound.id })
+          .andWhere('products.isDeleted = :isDeleted', { isDeleted: false })
+          .skip(skip)
+          .take(limit)
+          .getMany();
+      
+        return products;
+      }
 
     async getAvailableByCategory(category: string) {
         const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});

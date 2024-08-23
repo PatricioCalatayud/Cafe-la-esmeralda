@@ -44,70 +44,76 @@ export class OrderQuery {
         return order;
     }
     
-    async getOrdersByUserId(id: string) {
+    async getOrdersByUserId(id: string, page: number = 1, limit: number = 10) {
+        const skip = (page - 1) * limit;
+      
         const orders = await this.orderRepository
-            .createQueryBuilder('orders')
-            .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
-            .leftJoinAndSelect('productsOrder.product', 'products')
-            .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
-            .leftJoinAndSelect('orderDetails.transactions', 'transaction')
-            .where('user.id = :orID', { orID: id })
-            .andWhere('orders.isDeleted = :isDeleted', { isDeleted: false })
-            .select([
-                'user.id',
-                'user.name',
-                'orders.id',
-                'orders.date',
-                'orderDetails.totalPrice',
-                'orderDetails.deliveryDate',
-                'transaction.status',
-                'transaction.timestamp',
-                'productsOrder.quantity', 
-                'products.id',
-                'products.description',
-                'products.price',
-                'products.discount',
-                'products.imgUrl',
-            ])
-            .getMany();
-    
+          .createQueryBuilder('orders')
+          .leftJoinAndSelect('orders.user', 'user')
+          .leftJoinAndSelect('orders.productsOrder', 'productsOrder')
+          .leftJoinAndSelect('productsOrder.product', 'products')
+          .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
+          .leftJoinAndSelect('orderDetails.transactions', 'transaction')
+          .where('user.id = :orID', { orID: id })
+          .andWhere('orders.isDeleted = :isDeleted', { isDeleted: false })
+          .skip(skip)
+          .take(limit)
+          .select([
+            'user.id',
+            'user.name',
+            'orders.id',
+            'orders.date',
+            'orderDetails.totalPrice',
+            'orderDetails.deliveryDate',
+            'transaction.status',
+            'transaction.timestamp',
+            'productsOrder.quantity',
+            'productsOrder.id',
+            'products.id',
+            'products.description',
+            'products.price',
+            'products.discount',
+            'products.imgUrl',
+          ])
+          .getMany();
+      
+        return orders;
+      }
+      
+      async getOrders(page: number = 1, limit: number = 10) {
+        const skip = (page - 1) * limit;
+      
+        const orders = await this.orderRepository
+          .createQueryBuilder('orders')
+          .leftJoinAndSelect('orders.user', 'user')
+          .leftJoinAndSelect('orders.productsOrder', 'productsOrder')
+          .leftJoinAndSelect('productsOrder.product', 'products')
+          .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
+          .leftJoinAndSelect('orderDetails.transactions', 'transaction')
+          .where('orders.isDeleted = :isDeleted', { isDeleted: false })
+          .skip(skip)
+          .take(limit)
+          .select([
+            'user.id',
+            'user.name',
+            'orders.id',
+            'orders.date',
+            'orderDetails.totalPrice',
+            'orderDetails.deliveryDate',
+            'transaction.status',
+            'transaction.timestamp',
+            'productsOrder.quantity',
+            'productsOrder.id',
+            'products.id',
+            'products.description',
+            'products.price',
+            'products.discount',
+            'products.imgUrl',
+          ])
+          .getMany();
+      
         return orders;
     }
-    
-    async getOrders() {
-        const orders = await this.orderRepository
-            .createQueryBuilder('orders')
-            .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
-            .leftJoinAndSelect('productsOrder.product', 'products')
-            .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
-            .leftJoinAndSelect('orderDetails.transactions', 'transaction')
-            .where('orders.isDeleted = :isDeleted', { isDeleted: false })
-            .select([
-                'user.id',
-                'user.name',
-                'orders.id',
-                'orders.date',
-                'orderDetails.totalPrice',
-                'orderDetails.deliveryDate',
-                'transaction.status',
-                'transaction.timestamp',
-                'productsOrder.quantity',
-                'productsOrder.id',
-                'products.id',
-                'products.description',
-                'products.price',
-                'products.discount',
-                'products.imgUrl',
-            ])
-            .getMany();
-    
-        return orders;
-    }
-
-    
-  
     
     async deleteOrder(id: string) {
         const foundOrder = await this.orderRepository.findOneBy({ id });
@@ -117,5 +123,4 @@ export class OrderQuery {
 
         return foundOrder;
     }
-    
 }
