@@ -1,4 +1,4 @@
-import { Body, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { preference, payment } from 'src/config/mercadopago.config';
 import { PaymentDto } from './payment.dto';
 import { OrderService } from '../order/order.service';
@@ -29,7 +29,7 @@ export class MercadoPagoService {
         }
         
       });
-      console.log(data.price)
+
       return response.init_point;
     } catch (error) {
       throw new Error(`Error creando el pago. ERROR: ${error.message}`);
