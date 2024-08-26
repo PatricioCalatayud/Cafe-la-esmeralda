@@ -129,3 +129,9 @@ export const sendEmailPassword = (link) => {
 </body>
 </html>`
 }
+
+export const sendEmailOrderExpired = () => {
+    return `
+    ACÁ VA EL TEXTO DE PATO
+    `
+}
