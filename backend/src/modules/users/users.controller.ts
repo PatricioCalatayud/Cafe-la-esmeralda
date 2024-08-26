@@ -13,19 +13,18 @@ export class UsersController {
     @Get()
     async getUsers(
       @Query('page', new DefaultValuePipe(1)) page: number, 
-      @Query('limit', new DefaultValuePipe(10)) limit: number) {
+      @Query('limit', new DefaultValuePipe(10)) limit: number
+    ): Promise<{ data: Partial<Omit<User, "password">[]>, total: number }> {
         return await this.usersService.getUsers(page, limit);
     }
 
     @Get(':id')
-    @ApiBearerAuth()
     @ApiOperation({
       summary: 'Obtener un usuario por id',
       description:
         'Esta ruta devuelve un usuario registrado, por un id enviado por parametro',
     })
-    @UseGuards(AuthGuard)
-    async getUserById(@Param('id') id: string): Promise<User | undefined> {
+    async getUserById(@Param('id') id: string): Promise<Omit<User, "password"> | undefined> {
         return await this.usersService.getUserById(id);
     }
 
@@ -40,7 +39,7 @@ export class UsersController {
     async updateUser(
         @Param('id') id: string,
         @Body() userDTO: Partial<UserDTO>,
-    ): Promise<User | undefined> {
+    ): Promise<Omit<User, "password"> | undefined> {
         return await this.usersService.updateUser(id, userDTO);
     }
 
