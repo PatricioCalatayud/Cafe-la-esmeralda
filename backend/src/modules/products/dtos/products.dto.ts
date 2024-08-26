@@ -9,16 +9,6 @@ export class CreateProductDto {
     @IsString()
     description: string;
 
-    @ApiProperty({ description: 'Stock.' })
-    @IsNotEmpty()
-    @Type(() => Number)
-    @IsPositive()
-    @IsNumber()
-    @Type(() => Number)
-    @IsPositive()
-    @IsInt()
-    stock: number; 
-
     @ApiProperty({ description: 'Descuento.' })
     @IsOptional()
     @Type(() => Number)
