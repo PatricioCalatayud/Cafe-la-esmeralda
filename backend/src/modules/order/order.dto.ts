@@ -14,6 +14,7 @@ import {
     ValidateNested 
 } from "class-validator";
 
+
 export class ProductInfo {
     @IsUUID()
     id: string;
@@ -21,8 +22,11 @@ export class ProductInfo {
     @IsInt()
     @IsNotEmpty()
     quantity: number;
-}
 
+    @IsOptional() 
+    @IsUUID()
+    subproductId?: string;
+}
 export class AddOrderDto {
     @IsUUID()
     userId: string;

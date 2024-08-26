@@ -9,7 +9,7 @@ import { Product } from 'src/entities/products/product.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { OrderQuery } from './orders.query';
 import { Transaccion } from 'src/entities/transaction.entity';
-import { OrderStatus } from 'src/enum/orderStatus.enum';
+import { Subproduct } from 'src/entities/products/subprodcut.entity';
 
 @Injectable()
 export class OrderService {
@@ -19,6 +19,7 @@ export class OrderService {
         @InjectRepository(User) private userRepository: Repository<User>,
         @InjectRepository(Product) private productRepository: Repository<Product>,
         @InjectRepository(Transaccion) private transactionRepository: Repository<Transaccion>,
+        @InjectRepository(Subproduct) private subproductRepository: Repository<Subproduct>,
         private readonly orderQuery: OrderQuery,
         private readonly dataSource: DataSource
     ){}
@@ -38,6 +39,9 @@ export class OrderService {
         return await this.orderQuery.getOrdersByUserId(id)
     }
 
+    
+      
+      
     async createOrder(
       userId: string, 
       productsInfo: ProductInfo[], 
@@ -65,7 +69,8 @@ export class OrderService {
             await Promise.all(productsInfo.map(async (product) => {
                 await this.updateStock(product.id);
     
-                const foundProduct = await transactionalEntityManager.findOneBy(Product, { id: product.id });
+                const foundProduct = await transactionalEntityManager.findOneBy(Product, 
+                    { id: product.id });
                 if (!foundProduct) throw new BadRequestException(`Product not found. ID: ${product.id}`);
                 
                 total += ((foundProduct.price * product.quantity) * (1 - foundProduct.discount));
