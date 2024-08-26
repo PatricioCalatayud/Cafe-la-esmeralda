@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
 import { Category } from "src/entities/category.entity";
-import { CreateCoffeeDto, UpdateCoffeDto } from "src/modules/products/dtos/coffee.dto";
+import { CreateCoffeeDto, UpdateCoffeeDto } from "src/modules/products/dtos/coffee.dto";
 import { CreateProductDto } from "src/modules/products/dtos/products.dto";
 import { UpdatedProductDto } from "src/modules/products/dtos/updatedproduct.dto";
 import { Repository } from "typeorm";
@@ -33,7 +33,7 @@ export class ProductValidationInterceptor implements NestInterceptor {
         
         let dtoClass;
         if (foundCategory.name.toLowerCase() === 'coffee') {
-            dtoClass = method === 'POST' ? CreateCoffeeDto : UpdateCoffeDto;
+            dtoClass = method === 'POST' ? CreateCoffeeDto : UpdateCoffeeDto;
         } else {
             dtoClass = method === 'POST' ? CreateProductDto : UpdatedProductDto;
         }

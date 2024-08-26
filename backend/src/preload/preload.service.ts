@@ -1,51 +1,29 @@
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from 'src/entities/category.entity';
-import { Product } from 'src/entities/products/product.entity';
 import { Repository, In } from 'typeorm';
 import * as dataCategory from './dataCategory.json';
-import * as dataProducts from './dataProducts.json';
+import * as dataProducts1 from './dataProducts.json';
 import * as dataUser from './dataUser.json';
 import * as dataTestimony from './dataTestimony.json';
-import { Coffee } from 'src/entities/products/product-coffee.entity';
-import { Chocolate } from 'src/entities/products/product-chocolate.entity';
-import { Mate } from 'src/entities/products/product-mate.entity';
-import { Te } from 'src/entities/products/product-te.entity';
-import { Endulzante } from 'src/entities/products/product-endulzante.entity';
-import { Accesorio } from 'src/entities/products/product-accesorio.entity';
+import { Category } from 'src/entities/category.entity';
+import { Product } from 'src/entities/products/product.entity';
+import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { User } from 'src/entities/user.entity';
 import { OrderService } from 'src/modules/order/order.service';
-import { Subproduct } from 'src/entities/products/subprodcut.entity';
-import * as bcrypt from 'bcrypt';
 import { Testimony } from 'src/entities/testimony.entity';
+import * as bcrypt from 'bcrypt';
+import { Medida } from 'src/enum/medidas.enum';
 
 @Injectable()
 export class PreloadService implements OnModuleInit {
-    private repositories: { [key: string]: { repository: Repository<any>, class: any } };
-
     constructor(
-        @InjectRepository(Testimony) private testimonyRepository: Repository<Testimony>,
-        @InjectRepository(Subproduct) private subproductRepository: Repository<Subproduct>,
-        @InjectRepository(Product) private productRepository: Repository<Product>,
-        @InjectRepository(Coffee) private coffeeRepository: Repository<Coffee>,
-        @InjectRepository(Chocolate) private chocolateRepository: Repository<Chocolate>,
-        @InjectRepository(Mate) private mateRepository: Repository<Mate>,
-        @InjectRepository(Te) private teRepository: Repository<Te>,
-        @InjectRepository(Endulzante) private endulzanteRepository: Repository<Endulzante>,
-        @InjectRepository(Accesorio) private accesorioRepository: Repository<Accesorio>,
         @InjectRepository(Category) private categoryRepository: Repository<Category>,
+        @InjectRepository(Product) private productRepository: Repository<Product>,
+        @InjectRepository(Subproduct) private subproductRepository: Repository<Subproduct>,
         @InjectRepository(User) private userRepository: Repository<User>,
+        @InjectRepository(Testimony) private testimonyRepository: Repository<Testimony>,
         private readonly orderService: OrderService,
-    ) {
-        this.repositories = {
-            "Coffee": { repository: coffeeRepository, class: Coffee },
-            "Chocolate": { repository: chocolateRepository, class: Chocolate },
-            "Mate": { repository: mateRepository, class: Mate },
-            "Tea": { repository: teRepository, class: Te },
-            "Sweetener": { repository: endulzanteRepository, class: Endulzante },
-            "Accesory": { repository: accesorioRepository, class: Accesorio },
-        }
-    }
+    ) {}
 
     async addDefaultCategories() {
         await Promise.all(dataCategory.map(async (category) => {
@@ -64,43 +42,47 @@ export class PreloadService implements OnModuleInit {
         console.log(`Precarga de categorías exitosa.`);
     }
 
-    async addDefaultProducts(dataProducts) {
+    async addDefaultProducts() {
+        const dataProducts = dataProducts1;
+    
         await Promise.all(dataProducts.map(async (product) => {
             try {
                 const existCategory = await this.categoryRepository.findOne({ where: { name: product.category } });
                 if (!existCategory) throw new Error(`Categoría ${product.category} no encontrada en la base de datos.`);
-
-                const repository = this.repositories[product.category].repository;
-
-                const createdProduct = repository.create({
-                    ...product,
-                    category: existCategory.id
+    
+                const createdProduct = this.productRepository.create({
+                    description: product.description,
+                    imgUrl: product.imgUrl,
+                    category: existCategory,
                 });
-
-                await repository.save(createdProduct);
-
+    
+                const savedProduct = await this.productRepository.save(createdProduct);
+    
                 if (product.subproducts && product.subproducts.length > 0) {
-                    const subproductRepository = this.subproductRepository;
-
                     const subproducts = product.subproducts.map(subproduct => {
-                        return subproductRepository.create({
-                            ...subproduct,
-                            product: createdProduct
+                        return this.subproductRepository.create({
+                            price: subproduct.price,
+                            stock: subproduct.stock,
+                            amount: subproduct.amount,
+                            unit: subproduct.unit as Medida, 
+                            product: savedProduct 
                         });
                     });
-
-                    await subproductRepository.save(subproducts);
+    
+                    await this.subproductRepository.save(subproducts);
                 }
+    
             } catch (error) {
-                console.error(`Error al insertar el producto ${product.name}: ${error.message}`);
+                console.error(`Error al insertar el producto ${product.description}: ${error.message}`);
             }
         }));
         console.log(`Precarga de productos exitosa.`);
     }
-
+    
+    
     async addDefaultUser(dataUser) {
         const existingUsers = await this.userRepository.find({ where: { id: In(dataUser.map(user => user.id)) } });
-
+        
         await Promise.all(dataUser.map(async (user) => {
             try {
                 if (user.password) {
@@ -125,58 +107,49 @@ export class PreloadService implements OnModuleInit {
     async addDefaultOrder() {
         try {
             const users = await this.userRepository.find();
-            const product1 = await this.productRepository.findOneBy({ id: "71eb1c05-21e5-4286-8ad6-617332062210" });
-            const product2 = await this.productRepository.findOneBy({ id: "5da19309-b219-44b7-9111-1e56adebe1c7" });
-            if (!product1 || !product2) {
-                throw new Error("Productos no encontrados en la base de datos");
-            }  
-
+    
+            const product1 = await this.productRepository.findOne({
+                where: { description: "Cafe Mezcla" },  // Buscar por nombre
+                relations: ['subproducts'],
+            });
+    
+            const product2 = await this.productRepository.findOne({
+                where: { description: "Portasobres" },  // Buscar por nombre
+                relations: ['subproducts'],
+            });
+    
+            if (!product1) {
+                console.error("Producto 'Cafe Mezcla' no encontrado");
+            } else if (!product1.subproducts.length) {
+                console.error("Producto 'Cafe Mezcla' encontrado pero no tiene subproductos");
+            }
+    
+            if (!product2) {
+                console.error("Producto 'Portasobres' no encontrado");
+            } else if (!product2.subproducts.length) {
+                console.error("Producto 'Portasobres' encontrado pero no tiene subproductos");
+            }
+    
+            if (!product1 || !product2 || !product1.subproducts.length || !product2.subproducts.length) {
+                throw new Error("Productos o subproductos no encontrados en la base de datos");
+            }
+    
             await this.orderService.createOrder(users[0].id, [
-                { id: product1.id, quantity: 2 },
-                { id: product2.id, quantity: 3 }
-            ], "Tienda", 0, undefined);
-
-            console.log("Precarga de preorder exitosa.");
+                { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
+                { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id }
+            ], "Tienda", false);
+    
+            console.log("Precarga de pedido exitosa.");
         } catch (error) {
             console.error(`Error al crear el pedido: ${error.message}`);
         }
     }
-
-    async addDefaultStorage() {
-        try {
-            const existingRecords = await this.userRepository.find({ where: { id: In(dataUser.map(user => user.id)) } });
-
-            if (existingRecords.length > 0) {
-                console.log("Precarga de storage exitosa.");
-                return;
-            }
-
-            const users = await this.userRepository.find();
-            const product_1 = await this.chocolateRepository.find();
-            const product_2 = await this.teRepository.find();
-            const address= "Lo de pato";
-            const discount = 0;
-            let deliveryDate: Date = new Date();
-            deliveryDate.setDate(deliveryDate.getDate() + 7);
-
-            await this.orderService.createOrder(users[0].id, [
-                { id: product_1[0].id, quantity: 5 },
-                { id: product_2[0].id, quantity: 1 }
-            ],address, discount, deliveryDate
-            
-        );
-
-            console.log("Precarga de storage exitosa.");
-        } catch (error) {
-            console.error(`Error al crear el almacenamiento: ${error.message}`);
-        }
-    }
-
+    
     async addDefaultTestimonies() {
         await Promise.all(dataTestimony.map(async (testimony) => {
             try {
                 const userFound = await this.userRepository.findOneBy({ id: testimony.userID });
-                if (!userFound) throw new Error(`User with ID ${testimony.userID} not found.`);
+                if (!userFound) throw new Error(`Usuario con ID ${testimony.userID} no encontrado.`);
 
                 const newTestimony = this.testimonyRepository.create({
                     ...testimony,
@@ -193,10 +166,9 @@ export class PreloadService implements OnModuleInit {
 
     async onModuleInit() {
         await this.addDefaultCategories();
-        await this.addDefaultProducts(dataProducts);
+        await this.addDefaultProducts();
         await this.addDefaultUser(dataUser);
         await this.addDefaultOrder();
-        await this.addDefaultStorage();
         await this.addDefaultTestimonies();
     }
 }

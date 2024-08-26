@@ -1,68 +1,88 @@
 [
     {
-        "id":"5da19309-b219-44b7-9111-1e56adebe1c7",
         "description": "Cafe Santos",
-        "imgUrl" : "https://imgur.com/U9juK3e.png",
-        "price" : 25990,
-        "stock": 23,
+        "imgUrl": "https://imgur.com/U9juK3e.png",
         "category": "Coffee",
         "subproducts": [
             {
                 "price": 13000,
                 "stock": 10,
                 "amount": 250,
-                "unit": "gramos"
+                "unit": "Gramos"
             },
             {
                 "price": 23000,
                 "stock": 10,
                 "amount": 500,
-                "unit": "gramos"
+                "unit": "Gramos"
             },
             {
                 "price": 33000,
                 "stock": 13,
                 "amount": 1,
-                "unit": "kg"
+                "unit": "Kilo"
             }
         ]
     },
     {
-        
+        "id": "71eb1c05-21e5-4286-8ad6-617332062210",
         "description": "Cafe Mezcla",
-        "imgUrl" : "https://imgur.com/tubPom4",
-        "price" : 80000,
-        "stock": 23,
-        "category": "Coffee"
+        "imgUrl": "https://imgur.com/tubPom4",
+        "category": "Coffee",
+        "subproducts": [
+            {
+                "price": 80000,
+                "stock": 23,
+                "amount": 1,
+                "unit": "Kilo"
+            }
+        ]
     },
-    {  
+    {
+        "id": "5da19309-b219-44b7-9111-1e56adebe1c7",
         "description": "Mate x 50",
-        "imgUrl" : "https://imgur.com/RZnhckX.png",
-        "price" : 3390,
-        "stock": 54,
-        "category": "Mate"
+        "imgUrl": "https://imgur.com/RZnhckX.png",
+        "category": "Mate",
+        "subproducts": [
+            {
+                "price": 3390,
+                "stock": 54,
+                "amount": 50,
+                "unit": "Sobre"
+            }
+        ]
     },
     {
         "description": "Te x 100 saquitos Green Hills",
-        "imgUrl" : "https://imgur.com/aD3vPHv.png",
-        "price" : 3000,
-        "stock": 84,
-        "category": "Tea"
+        "imgUrl": "https://imgur.com/aD3vPHv.png",
+        "category": "Tea",
+        "subproducts": [
+            {
+                "price": 3000,
+                "stock": 84,
+                "amount": 100,
+                "unit": "Sobre"
+            }
+        ]
     },
     {
         "description": "Chocolate x 50 MAPSA",
-        "imgUrl" :"https://imgur.com/zmremPu.png",
-        "price" : 22600,
-        "stock": 113,
-        "category": "Chocolate"
+        "imgUrl": "https://imgur.com/zmremPu.png",
+        "category": "Chocolate",
+        "subproducts": [
+            {
+                "price": 22600,
+                "stock": 113,
+                "amount": 50,
+                "unit": "Unidades"
+            }
+        ]
     },
-    {   "id":"71eb1c05-21e5-4286-8ad6-617332062210",
+    {
         "description": "Capsulas Esmeralda x10",
-        "imgUrl" : "https://imgur.com/LIVIrsc.png",
-        "price" : 5232,
-        "stock": 13,
+        "imgUrl": "https://imgur.com/LIVIrsc.png",
         "category": "Sweetener",
-        "discount":0,
+        "discount": 0,
         "subproducts": [
             {
                 "price": 5232,
@@ -74,18 +94,30 @@
     },
     {
         "description": "Portasobres",
-        "imgUrl" : "https://imgur.com/qFVuRNx.png",
-        "price" : 2825,
-        "stock": 92,
+        "imgUrl": "https://imgur.com/qFVuRNx.png",
         "category": "Accesory",
-        "discount": 20
+        "discount": 20,
+        "subproducts": [
+            {
+                "price": 2825,
+                "stock": 92,
+                "amount": 1,
+                "unit": "Unidades"
+            }
+        ]
     },
     {
         "description": "Capsulas Esmeralda x30",
-        "imgUrl" : "https://imgur.com/LIVIrsc.png",
-        "price" : 14475,
-        "stock": 113,
+        "imgUrl": "https://imgur.com/LIVIrsc.png",
         "category": "Sweetener",
-        "discount": 10
+        "discount": 10,
+        "subproducts": [
+            {
+                "price": 14475,
+                "stock": 113,
+                "amount": 30,
+                "unit": "Unidades"
+            }
+        ]
     }
 ]

@@ -12,7 +12,7 @@ export class Storage {
     @ManyToOne(()=>User,(user)=>user.storage)
     user:User
 
-    @ManyToOne(()=>Product,(product)=>product.storage)
+    @ManyToOne(()=>Product,(product)=>product)
     product:Product
 
     @Column()

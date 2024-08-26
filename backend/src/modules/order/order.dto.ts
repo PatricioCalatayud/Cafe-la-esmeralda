@@ -1,97 +1,69 @@
-import { Optional } from "@nestjs/common";
+import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { 
     ArrayMinSize, 
     ArrayNotEmpty, 
     IsArray, 
+    IsBoolean, 
     IsDate, 
     IsInt, 
     IsNotEmpty, 
-    IsNumber, 
     IsOptional, 
     IsString, 
     IsUUID, 
     ValidateNested 
 } from "class-validator";
 
-
 export class ProductInfo {
+    @ApiProperty({ description: 'ID del producto.' })
     @IsUUID()
-    id: string;
+    @IsNotEmpty()
+    productId: string;
 
+    @ApiProperty({ description: 'Cantidad de subproductos de la orden.' })
     @IsInt()
     @IsNotEmpty()
     quantity: number;
 
-    @IsOptional() 
+    @ApiProperty({ description: 'ID del subproducto (opcional).' })
     @IsUUID()
+    @IsOptional()
     subproductId?: string;
 }
+
+
 export class AddOrderDto {
+    @ApiProperty({ description: 'ID del usuario.' })
     @IsUUID()
     userId: string;
 
+    @ApiProperty({ description: 'Dirección de envío.' })
     @IsString()
-    @IsNotEmpty()
-    address: string | 'Retira en local';
-
-    @IsNumber()
-    @Optional()
-    discount?: number;
-
-    @Type(() => Date)
-    @IsDate()
-    @Optional()
-    deliveryDate?: Date;
+    @IsOptional()
+    address?: string | 'Retira en local';
     
+    @ApiProperty({ description: 'Array de productos.' })
     @IsArray()
     @ArrayNotEmpty()
     @ArrayMinSize(1)
     @ValidateNested({ each: true })
     @Type(() => ProductInfo)
     products: ProductInfo[];
+
+    @ApiProperty({ description: 'Propiedad para cuentas corrientes, en caso de ser true la orden se pone "En preparación".' })
+    @IsBoolean()
+    @IsOptional()
+    account?: boolean;
 }
 
 export class UpdateOrderDto {
-    @IsUUID()
-    @IsOptional()
-    userId?: string;
-
+    @ApiProperty({ description: 'Fecha de envío.' })
     @Type(() => Date)
     @IsDate()
     @IsOptional()
     deliveryDate?: Date;
 
+    @ApiProperty({ description: 'Estado del tracking.' })
     @IsString()
     status: string;
-}
-export class ProductOrderResponseDto {
-    @IsUUID()
-    id: string;
-
-    @IsInt()
-    quantity: number;
-
-    @IsUUID()
-    productId: string;
-}
-
-export class OrderResponseDto {
-    @IsUUID()
-    id: string;
-
-    @IsString()
-    address: string;
-
-    @IsNumber()
-    discount: number;
-
-    @Type(() => Date)
-    @IsDate()
-    deliveryDate: Date;
-
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ProductOrderResponseDto)
-    productsOrder: ProductOrderResponseDto[];
 }
