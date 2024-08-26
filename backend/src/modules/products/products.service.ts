@@ -17,41 +17,36 @@ export class ProductsService {
         private readonly imageService: ImageService,
     ){}
 
-    async getAll(page: number, limit: number): Promise<Product[]> {
-        const skip = (page - 1) * limit;
-      
-        const products = await this.productRepository.find({
-            where: { isDeleted: false },
-            relations: { category: true, subproducts: true },
-            skip,
+    async getAll(page: number, limit: number): Promise<{ data: Product[], total: number }> {
+        const [data, total] = await this.productRepository.findAndCount({
+            skip: (page - 1) * limit,
             take: limit,
-        });
+            where: { isDeleted: false },
+            relations: { category: true, subproducts: true }
+        })
       
-        return products;
+        return { data, total };
+    }
+
+    async getAllByCategory(category: string, page: number = 1, limit: number = 10): Promise<{ data: Product[], total: number }> {
+        const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});
+        if (!categoryFound) throw new NotFoundException(`No se encontró la categoría "${category}".`);
+      
+        const [data, total] = await this.productRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit,
+            where: { isDeleted: false, category: { name: categoryFound.id } },
+            relations: { category: true, subproducts: true }
+        })
+
+        return { data, total };
     }
 
     async getAvailable(): Promise<Product[]> {
         return await this.productRepository.find({ where: { isDeleted: false }});
     }
 
-    async getAllByCategory(category: string, page: number = 1, limit: number = 10): Promise<Product[]> {
-        const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});
-        if (!categoryFound) throw new NotFoundException(`No se encontró la categoría "${category}".`);
-      
-        const skip = (page - 1) * limit;
-      
-        const products = await this.productRepository.createQueryBuilder('products')
-          .innerJoinAndSelect('products.category', 'categories')
-          .where('categories.id = :categoryId', { categoryId: categoryFound.id })
-          .andWhere('products.isDeleted = :isDeleted', { isDeleted: false })
-          .skip(skip)
-          .take(limit)
-          .getMany();
-      
-        return products;
-    }
-
-    async getAvailableByCategory(category: string): Promise<Product[]> {
+    async getAvailableByCategory(category: string) {
         const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});
         if(!categoryFound) throw new NotFoundException(`No se encontró la categoría "${category}".`);
 
@@ -59,7 +54,6 @@ export class ProductsService {
             .innerJoinAndSelect('products.category', 'categories')
             .where('categories.id = :categoryId', { categoryId: categoryFound.id })
             .andWhere('products.isDeleted = :isDeleted', { isDeleted: false })
-            .andWhere('products.isAvailable = :isAvailable', { isAvailable: true })
             .getMany();
     }
 

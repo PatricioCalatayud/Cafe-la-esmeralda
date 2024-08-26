@@ -1,9 +1,10 @@
 import { BadRequestException, Body, Controller, Post, Put } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/entities/user.entity';
 import { UserDTO } from 'src/modules/users/users.dto';
 import { AuthService } from './auth.service';
 
+@ApiTags('Autenticación')
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}

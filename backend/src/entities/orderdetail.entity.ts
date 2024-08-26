@@ -7,7 +7,7 @@ export class OrderDetail {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ default: "Tienda" })
+    @Column({ type: 'varchar' })
     addressDelivery: string;
 
     @Column({ type: 'timestamp' })
@@ -19,7 +19,7 @@ export class OrderDetail {
     @Column({ type: 'int', default: 0 })
     cupoDescuento: number;
 
-    @OneToOne(()=>Order, (order) => order.orderDetail)
+    @OneToOne(() => Order, (order) => order.orderDetail)
     @JoinColumn({ name: 'orderId' })
     order: Order;
 

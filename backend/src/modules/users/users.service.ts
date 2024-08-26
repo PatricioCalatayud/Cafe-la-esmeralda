@@ -8,27 +8,34 @@ import { UserDTO } from './users.dto';
 export class UsersService {
     constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-    async getUsers(page: number = 1, limit: number = 10): Promise<Partial<Omit<User, "password">[]>> {
-        const skip = (page - 1) * limit;
-      
-        const users = await this.userRepository.find({
-            skip,
-            take: limit,
+    async getUsers(page: number, limit: number): Promise<{ data: Omit<User, "password">[], total: number }> {
+        const [data, total] = await this.userRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit
         });
-      
-        return users.map((user) => {
+        
+        data.map((user) => {
             delete user.password;
             return user;
         })
+
+        return { data, total };
     }
 
-    async getUserById(id: string): Promise<User | undefined> {
-        return await this.userRepository.findOne({ where: { id } });
+    async getUserById(id: string): Promise<Omit<User, "password"> | undefined> {
+        const user = await this.userRepository.findOne({ where: { id } });
+        delete user.password;
+
+        return user;
     }
 
-    async updateUser(id: string, userDTO: Partial<UserDTO>): Promise<User | undefined> {
+    async updateUser(id: string, userDTO: Partial<UserDTO>): Promise<Omit<User, "password"> | undefined> {
         await this.userRepository.update(id, userDTO);
-        return await this.userRepository.findOne({ where: { id } });
+
+        const updatedUser = await this.userRepository.findOne({ where: { id } });
+        delete updatedUser.password;
+
+        return updatedUser;
     }
 
     async deleteUser(id: string) {

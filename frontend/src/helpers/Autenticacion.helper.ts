@@ -1,6 +1,7 @@
-import { IUserProps } from "@/interfaces/IUser";
+import { IUserProps, IUserUpdateProps } from "@/interfaces/IUser";
 import { ILoginProps } from "@/interfaces/ILogin";
 import axios from "axios";
+import { ISession } from "@/interfaces/ISession";
 const apiURL = process.env.NEXT_PUBLIC_API_URL;
 
 
@@ -12,12 +13,7 @@ export async function LoginUser(user: ILoginProps) {
         "Content-Type": "application/json",
       },
     });
-    if (res.status !== 200 && res.status !== 201) {
-      console.log(`Error al iniciar sesión : ${res.status} - ${res.data.message}`);
-    }
-    console.log(res.data);
-    const login = res.data as ILoginProps;
-    return login;
+    return res;
   } catch (error: any) {
     if (error.response) {
       console.log(`Error iniciando sesión: ${error.response.status} - ${
@@ -33,7 +29,7 @@ export async function LoginUser(user: ILoginProps) {
 }
 //! Funcion para registrar usuario
 
-export async function NewUser(user: IUserProps): Promise<IUserProps | undefined> {
+export async function NewUser(user: any) {
   try {
     const res = await axios.post(`${apiURL}/auth/signup`, user, {
       headers: {
@@ -43,10 +39,8 @@ export async function NewUser(user: IUserProps): Promise<IUserProps | undefined>
     if (res.status !== 200 && res.status !== 201) {
       console.log(`Error registrando usuario: ${res.status} - ${res.data.message}`);
     }
-    console.log(res.data);
-    const newUser = res.data as IUserProps;
 
-    return newUser;
+    return res;
   } catch (error: any) {
     if (error.response) {
       console.log(`Error registrando usuario: ${error.response.status} - ${error.response.data.message}`);
@@ -58,14 +52,19 @@ export async function NewUser(user: IUserProps): Promise<IUserProps | undefined>
   }
 }
 
-export async function getUsers(token: string | undefined) {
+export async function getUsers(token: string | undefined, page?: number, limit?: number) {
   try {
     const response = await axios.get(`${apiURL}/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: {
+        page,  // Pasar el número de página
+        limit, // Pasar el límite de resultados por página
+      },
     });
-    const users: IUserProps[] = response.data;
+    console.log(response);
+    const users: ISession[] = response.data;
     return users;
   } catch (error: any) {
     console.log(error);
@@ -85,15 +84,15 @@ export async function getUser(userId: string, token: string | undefined) {
   }
 }
 
-export async function putUser(userId: string, user: IUserProps, token: string | undefined) {
+export async function putUser(userId: string, user: IUserUpdateProps, token: string | undefined) {
   try {
     const response = await axios.put(`${apiURL}/users/${userId}`, user, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    const updatedUser: IUserProps = response.data; // Renombrar a 'updatedUser'
-    return updatedUser;
+
+    return response;
   } catch (error: any) {
     console.log(error);
   }

@@ -23,36 +23,13 @@ export class OrderService {
         private readonly dataSource: DataSource
     ) {}
 
-    async getOrders(page: number, limit: number) {
-        const skip = (page - 1) * limit;
-        return await this.orderRepository
-            .createQueryBuilder('orders')
-            .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productsOrder', 'productsOrder')
-            .leftJoinAndSelect('productsOrder.product', 'products')
-            .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
-            .leftJoinAndSelect('orderDetails.transactions', 'transaction')
-            .where('orders.isDeleted = :isDeleted', { isDeleted: false })
-            .skip(skip)
-            .take(limit)
-            .select([
-                'user.id',
-                'user.name',
-                'orders.id',
-                'orders.date',
-                'orderDetails.totalPrice',
-                'orderDetails.deliveryDate',
-                'transaction.status',
-                'transaction.timestamp',
-                'productsOrder.quantity',
-                'productsOrder.id',
-                'products.id',
-                'products.description',
-                'products.price',
-                'products.discount',
-                'products.imgUrl',
-            ])
-            .getMany();
+    async getOrders(page: number, limit: number): Promise<{ data: Order[], total: number }> {
+        const [data, total] = await this.orderRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit
+        })
+      
+        return { data, total };
     }
 
     async getOrderById(id: string) {
@@ -87,38 +64,17 @@ export class OrderService {
         return order;
     }
 
-    async getOrdersByUserId(id: string, page: number, limit: number) {
-        const skip = (page - 1) * limit;
+    async getOrdersByUserId(id: string, page: number, limit: number): Promise<{ data: Order[], total: number }> {
+        const user = await this.userRepository.findOneBy({ id, isDeleted: false });   
+        if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
 
-        return await this.orderRepository
-            .createQueryBuilder('orders')
-            .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productsOrder', 'productsOrder')
-            .leftJoinAndSelect('productsOrder.product', 'products')
-            .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
-            .leftJoinAndSelect('orderDetails.transactions', 'transaction')
-            .where('user.id = :orID', { orID: id })
-            .andWhere('orders.isDeleted = :isDeleted', { isDeleted: false })
-            .skip(skip)
-            .take(limit)
-            .select([
-                'user.id',
-                'user.name',
-                'orders.id',
-                'orders.date',
-                'orderDetails.totalPrice',
-                'orderDetails.deliveryDate',
-                'transaction.status',
-                'transaction.timestamp',
-                'productsOrder.quantity',
-                'productsOrder.id',
-                'products.id',
-                'products.description',
-                'products.price',
-                'products.discount',
-                'products.imgUrl',
-            ])
-            .getMany();
+        const [data, total] = await this.orderRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit,
+            where: { user }
+        })
+      
+        return { data, total };
     }
 
     async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account: boolean) {
@@ -173,9 +129,8 @@ export class OrderService {
                 orderdetail: orderDetail
             });
         });
-    
+  
         delete createdOrder.user.password;
-        console.log(createdOrder);
         return createdOrder;
     }
     

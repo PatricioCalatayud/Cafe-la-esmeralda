@@ -1,6 +1,6 @@
 "use client";
 import { LoginUser } from "@/helpers/Autenticacion.helper";
-import { ILoginErrorProps, ILoginProps } from "@/interfaces/ILogin";
+import { ILogin, ILoginErrorProps } from "@/interfaces/ILogin";
 import { validateLoginForm } from "@/utils/loginFormValidation";
 import { useRouter } from "next/navigation";
 import Link from "next/link"; 
@@ -30,7 +30,7 @@ const theme = createTheme();
 const Login = () => {
   const Router = useRouter();
 
-  const initialUserData: ILoginProps = {
+  const initialUserData: ILogin = {
     email: "",
     password: "",
   };
@@ -39,7 +39,7 @@ const Login = () => {
     password: "",
   };
 
-  const [dataUser, setDataUser] = useState<ILoginProps>(initialUserData);
+  const [dataUser, setDataUser] = useState<ILogin>(initialUserData);
   const [error, setError] = useState<ILoginErrorProps>(initialErrorState);
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -50,7 +50,7 @@ const Login = () => {
     password: false,
   });
   const [showPassword, setShowPassword] = useState(false);
-  const{setSession} = useAuthContext();
+  const{setSession,setUserId,setToken} = useAuthContext();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -105,23 +105,24 @@ const Login = () => {
 
     try {
       const response = await LoginUser(dataUser);
-
+      const responseData = response?.data;
       if (response) {
-        const decodedToken: any = jwtDecode(response.accessToken as string);
+        const decodedToken: any = jwtDecode(responseData.accessToken as string);
         setSession({
+          id: decodedToken.sub,
           name: decodedToken.name,
           email: decodedToken.email,
           image: undefined,
           role: decodedToken.roles[0],
           phone: decodedToken.phone,
         })
+        setUserId(decodedToken.sub);
+        responseData.accessToken && setToken(responseData.accessToken);
+        
       }
-      
-      
-      console.log(response);
 
-      if (response) {
-        localStorage.setItem("userSession", JSON.stringify(response));
+      if (responseData) {
+        localStorage.setItem("userSession", JSON.stringify(responseData));
 
         Swal.fire({
           icon: "success",
@@ -241,27 +242,11 @@ const Login = () => {
                   }}
                 />
                 <div className="flex flex-wrap items-center gap-4 justify-between mt-4">
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="shrink-0 h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded-md"
-                    />
-                    <label
-                      htmlFor="remember-me"
-                      className="ml-3 block text-sm text-gray-800"
-                    >
-                      Recordar
-                    </label>
-                  </div>
                   <div className="text-sm">
-  <Link href="/forgotPassword" className="text-teal-600 font-semibold hover:underline" passHref>
-    
-      ¿Olvidaste tu contraseña?
-    
-  </Link>
-</div>
+                    <Link href="/forgotPassword" className="text-teal-600 font-semibold hover:underline" passHref>
+                      ¿Olvidaste tu contraseña?
+                    </Link>
+                  </div>
                 </div>
                 <Button
                   type="submit"

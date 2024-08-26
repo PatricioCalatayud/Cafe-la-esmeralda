@@ -9,6 +9,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enum/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { Product } from 'src/entities/products/product.entity';
 
 @ApiTags('Productos')
 @Controller('products')
@@ -20,9 +21,11 @@ export class ProductsController {
     async getAll(
         @Query('category') category: string, 
         @Query('page', new DefaultValuePipe(1)) page: number, 
-        @Query('limit', new DefaultValuePipe(10)) limit: number) {
-            if(category) return this.productService.getAllByCategory(category, page, limit);
-            else return this.productService.getAll(page, limit);
+        @Query('limit', new DefaultValuePipe(10)) limit: number)
+        : Promise<{ data: Product[], total: number }>
+    {
+        if(category) return this.productService.getAllByCategory(category, page, limit);
+        else return this.productService.getAll(page, limit);
     }
 
     @Get("available")

@@ -31,6 +31,7 @@ export class SubproductDto {
     @IsEnum(Medida)
     unit: Medida;
 
+    @ApiProperty({ description: 'Peso.' })
     @IsNotEmpty()
     @IsEnum(Presentacion)
     presentacion: Presentacion;

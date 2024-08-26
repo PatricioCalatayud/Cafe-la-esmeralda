@@ -109,12 +109,12 @@ export class PreloadService implements OnModuleInit {
             const users = await this.userRepository.find();
     
             const product1 = await this.productRepository.findOne({
-                where: { description: "Cafe Mezcla" },  // Buscar por nombre
+                where: { description: "Cafe Mezcla" },  
                 relations: ['subproducts'],
             });
     
             const product2 = await this.productRepository.findOne({
-                where: { description: "Portasobres" },  // Buscar por nombre
+                where: { description: "Portasobres" }, 
                 relations: ['subproducts'],
             });
     

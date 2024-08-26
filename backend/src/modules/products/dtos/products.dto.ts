@@ -9,7 +9,6 @@ export class CreateProductDto {
     @IsString()
     description: string;
 
-
     @ApiProperty({ description: 'Descuento.' })
     @IsOptional()
     @Type(() => Number)
