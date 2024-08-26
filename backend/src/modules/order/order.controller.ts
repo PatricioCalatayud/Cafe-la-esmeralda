@@ -2,6 +2,7 @@ import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseUUIDPipe, 
 import { OrderService } from './order.service';
 import { AddOrderDto, UpdateOrderDto } from './order.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Order } from 'src/entities/order.entity';
 
 @ApiTags('Ordenes de compra')
 @Controller('order')
@@ -12,8 +13,10 @@ export class OrderController {
     @Get()
     async getOrders(
       @Query('page', new DefaultValuePipe(1)) page: number,
-      @Query('limit', new DefaultValuePipe(10)) limit: number) {
-        return await this.orderService.getOrders(page, limit);
+      @Query('limit', new DefaultValuePipe(10)) limit: number)
+      : Promise<{ data: Order[], total: number }>
+    {
+      return await this.orderService.getOrders(page, limit);
     }
 
     @ApiOperation({ summary: 'Obtiene una orden por ID.', description: 'Este endpoint retorna una orden por su ID.' })
@@ -24,7 +27,12 @@ export class OrderController {
 
     @ApiOperation({ summary: 'Obtiene ordenes de un usuario por su ID.', description: 'Este endpoint retorna todas las ordenes de un usuario por su ID' })
     @Get('user/:id')
-    async getOrdersByUserId(@Param('id', ParseUUIDPipe) id: string, @Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    async getOrdersByUserId (
+      @Param('id', ParseUUIDPipe) id: string,
+      @Query('page', new DefaultValuePipe(1)) page: number,
+      @Query('limit', new DefaultValuePipe(10)) limit: number)
+      : Promise<{ data: Order[], total: number }>
+    {
       return await this.orderService.getOrdersByUserId(id, page, limit);
     }
 
