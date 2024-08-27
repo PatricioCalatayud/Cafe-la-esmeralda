@@ -10,7 +10,7 @@ export class ImageController {
     constructor(private readonly uploadService: ImageService){}
 
     @ApiOperation({
-        summary: 'Almacenar imagenes',
+        summary: 'Almacena imagenes',
         description:
             'Esta ruta permite subir imagenes con los datos enviados por body',
     })
