@@ -18,7 +18,7 @@ export class OrderQuery {
           .createQueryBuilder('orders')
           .leftJoinAndSelect('orders.user', 'user')
           .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
-          .leftJoinAndSelect('productsOrder.subproduct', 'subproduct')  // Asegúrate de seleccionar 'subproduct'
+          .leftJoinAndSelect('productsOrder.subproduct', 'subproduct') 
           .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
           .leftJoinAndSelect('orderDetails.transactions', 'transaction')
           .where('orders.id = :orID', { orID: id })
@@ -34,8 +34,15 @@ export class OrderQuery {
               'transaction.status',
               'transaction.timestamp',
               'productsOrder.quantity',  
-              'subproduct.id',  // Incluye subproduct en la selección
+              'subproduct.id',
               'subproduct.price',
+              'subproduct.stock',
+              'subproduct.amount',
+              'subproduct.unit',
+              'subproduct.presentacion',
+              'subproduct.tipoGrano',
+              'subproduct.isAvailable',
+              
           ])
           .getOne();
   
