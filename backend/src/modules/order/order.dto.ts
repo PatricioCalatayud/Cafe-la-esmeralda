@@ -8,7 +8,6 @@ import {
     IsDate, 
     IsInt, 
     IsNotEmpty, 
-    IsNumber, 
     IsOptional, 
     IsString, 
     IsUUID, 
@@ -18,13 +17,20 @@ import {
 export class ProductInfo {
     @ApiProperty({ description: 'ID del producto.' })
     @IsUUID()
-    id: string;
+    @IsNotEmpty()
+    productId: string;
 
-    @ApiProperty({ description: 'Cantidad de productos de la orden.'})
+    @ApiProperty({ description: 'Cantidad de subproductos de la orden.' })
     @IsInt()
     @IsNotEmpty()
     quantity: number;
+
+    @ApiProperty({ description: 'ID del subproducto (opcional).' })
+    @IsUUID()
+    @IsOptional()
+    subproductId?: string;
 }
+
 
 export class AddOrderDto {
     @ApiProperty({ description: 'ID del usuario.' })

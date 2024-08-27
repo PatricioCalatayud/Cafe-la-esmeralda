@@ -1,17 +1,17 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Product } from "./products/product.entity";
+import { Subproduct } from "./products/subprodcut.entity";
 import { Order } from "./order.entity";
 
-@Entity({name:'productsOrder'})
-export class ProductsOrder{
+@Entity({ name: 'productsOrder' })
+export class ProductsOrder {
     @PrimaryGeneratedColumn('uuid')
-    id:string;
+    id: string;
 
     @Column()
     quantity: number;
 
-    @ManyToOne(() => Product, (product) => product.productsOrder, { eager: true })
-    product: Product;
+    @ManyToOne(() => Subproduct, (subproduct) => subproduct.productsOrder, { eager: true })
+    subproduct: Subproduct;
 
     @ManyToOne(() => Order, (order) => order.productsOrder)
     order: Order;
