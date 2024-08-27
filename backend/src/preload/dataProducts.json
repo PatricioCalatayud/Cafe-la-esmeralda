@@ -31,6 +31,7 @@
         "category": "Coffee",
         "subproducts": [
             {
+                "discount":10,
                 "price": 80000,
                 "stock": 23,
                 "amount": 1,
