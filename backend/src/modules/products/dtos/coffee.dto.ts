@@ -20,19 +20,19 @@ export class CreateCoffeeDto extends CreateProductDto {
     medida: Medida;
 }
 
-export class UpdateCoffeDto extends UpdatedProductDto{
+export class UpdateCoffeeDto extends UpdatedProductDto{
     @ApiProperty({ description: 'Presentación del café.' })
     @IsOptional()
     @IsEnum(Presentacion)
-    presentacion: Presentacion;
+    presentacion?: Presentacion;
     
     @ApiProperty({ description: 'Tipo de grano.' })
     @IsOptional()
     @IsEnum(TipoGrano)
-    tipoGrano: TipoGrano;
+    tipoGrano?: TipoGrano;
     
     @ApiProperty({ description: 'Medida del producto.' })
     @IsOptional()
     @IsEnum(Medida)
-    medida: Medida;
+    medida?: Medida;
 }
