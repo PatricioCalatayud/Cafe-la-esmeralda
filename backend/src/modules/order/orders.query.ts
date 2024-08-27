@@ -14,36 +14,33 @@ export class OrderQuery {
     ) {}
 
     async getOrderById(id: string) {
-        const order = await this.orderRepository
-            .createQueryBuilder('orders')
-            .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
-            .leftJoinAndSelect('productsOrder.product', 'products')
-            .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
-            .leftJoinAndSelect('orderDetails.transactions', 'transaction')
-            .where('orders.id = :orID', { orID: id })
-            .andWhere('orders.isDeleted = :isDeleted', { isDeleted: false })
-            .select([
-                'user.id',
-                'user.name',
-                'user.email',
-                'orders.id',
-                'orders.date',
-                'orderDetails.totalPrice',
-                'orderDetails.deliveryDate',
-                'transaction.status',
-                'transaction.timestamp',
-                'productsOrder.quantity',  
-                'products.id',
-                'products.description',
-                'products.price',
-                'products.discount',
-                'products.imgUrl',
-            ])
-            .getOne();
-    
-        return order;
-    }
+      const order = await this.orderRepository
+          .createQueryBuilder('orders')
+          .leftJoinAndSelect('orders.user', 'user')
+          .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
+          .leftJoinAndSelect('productsOrder.subproduct', 'subproduct')  // Asegúrate de seleccionar 'subproduct'
+          .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
+          .leftJoinAndSelect('orderDetails.transactions', 'transaction')
+          .where('orders.id = :orID', { orID: id })
+          .andWhere('orders.isDeleted = :isDeleted', { isDeleted: false })
+          .select([
+              'user.id',
+              'user.name',
+              'user.email',
+              'orders.id',
+              'orders.date',
+              'orderDetails.totalPrice',
+              'orderDetails.deliveryDate',
+              'transaction.status',
+              'transaction.timestamp',
+              'productsOrder.quantity',  
+              'subproduct.id',  // Incluye subproduct en la selección
+              'subproduct.price',
+          ])
+          .getOne();
+  
+      return order;
+  }
     
     async getOrdersByUserId(id: string, page: number = 1, limit: number = 10) {
         const skip = (page - 1) * limit;
