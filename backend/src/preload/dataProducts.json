@@ -96,12 +96,12 @@
         "description": "Portasobres",
         "imgUrl": "https://imgur.com/qFVuRNx.png",
         "category": "Accesory",
-        "discount": 20,
         "subproducts": [
             {
                 "price": 2825,
                 "stock": 92,
                 "amount": 1,
+                "discount": 20,
                 "unit": "Unidades"
             }
         ]
@@ -110,10 +110,10 @@
         "description": "Capsulas Esmeralda x30",
         "imgUrl": "https://imgur.com/LIVIrsc.png",
         "category": "Sweetener",
-        "discount": 10,
         "subproducts": [
             {
                 "price": 14475,
+                "discount": 10,
                 "stock": 113,
                 "amount": 30,
                 "unit": "Unidades"
