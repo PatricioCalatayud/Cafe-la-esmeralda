@@ -10,7 +10,7 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
     
     @ApiOperation({ 
-        summary: 'Registro de usuario.',
+        summary: 'Registro de usuario',
         description: 
             'Este endpoint registra un usuario.'
     })
@@ -20,7 +20,7 @@ export class AuthController {
     }
     
     @ApiOperation({ 
-        summary: 'Inicio de sesión.',
+        summary: 'Inicio de sesión',
         description: 
             'Este endpoint inicia la sesión del usuario. El usuario debe estar registrado.' 
     })
@@ -33,7 +33,7 @@ export class AuthController {
     }
 
     @ApiOperation({
-        summary: 'Restablecimiento de contraseña.',
+        summary: 'Restablecimiento de contraseña',
         description: 'Este endpoint envía un correo a un usuario para restablecer la contraseña.'
     })
     @Post('reset-password')
@@ -43,7 +43,7 @@ export class AuthController {
     }
 
     @ApiOperation({
-        summary: 'Restablecimiento de contraseña.',
+        summary: 'Restablecimiento de contraseña',
         description: 'Este endpoint actualiza la contraseña del usuario que solicitó restablecerla.'
     })
     @Put('update-password')
