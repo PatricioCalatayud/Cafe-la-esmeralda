@@ -82,9 +82,9 @@
         "description": "Capsulas Esmeralda x10",
         "imgUrl": "https://imgur.com/LIVIrsc.png",
         "category": "Sweetener",
-        "discount": 0,
         "subproducts": [
             {
+                "discount": 10,
                 "price": 5232,
                 "stock": 13,
                 "amount": 10,
