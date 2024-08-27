@@ -10,7 +10,7 @@ export class TestimonyController {
     constructor(private readonly testimonyService:TestimonyService){}
     @Get()
     @ApiOperation({ 
-        summary: 'Obtener calificaciones.',
+        summary: 'Obtiene calificaciones',
         description: 
             'Este endpoint permite obtener todas las calificaciones. No es necesario el registro'
     })
@@ -20,7 +20,7 @@ export class TestimonyController {
 
     @Post()
     @ApiOperation({ 
-        summary: 'Crear calificación.',
+        summary: 'Crea calificación.',
         description: 
             'Este endpoint permite crear una calificación.'
     })
@@ -30,5 +30,4 @@ export class TestimonyController {
         const { userId, ...testimonyEntity } = testimony
         return this.testimonyService.createTestimony(userId, testimonyEntity)
     }
-
 }

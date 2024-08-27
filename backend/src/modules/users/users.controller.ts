@@ -1,4 +1,4 @@
-import {Controller, Post, Body, Get, Param, Put, Delete, UseGuards, Query, DefaultValuePipe } from '@nestjs/common';
+import {Controller, Body, Get, Param, Put, Delete, UseGuards, Query, DefaultValuePipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from 'src/entities/user.entity';
 import { UserDTO } from 'src/modules/users/users.dto';
@@ -20,7 +20,7 @@ export class UsersController {
 
     @Get(':id')
     @ApiOperation({
-      summary: 'Obtener un usuario por id',
+      summary: 'Obtiene un usuario por ID',
       description:
         'Esta ruta devuelve un usuario registrado, por un id enviado por parametro',
     })
@@ -31,7 +31,7 @@ export class UsersController {
     @Put(':id')
     @ApiBearerAuth()
     @ApiOperation({
-      summary: 'Actualizar un usuario por id',
+      summary: 'Actualiza un usuario por ID',
       description:
         'Esta ruta actualiza un usuario, por un id enviado por parametro y datos nuevos, de tipo UserDto enviados por body',
     })
@@ -45,7 +45,7 @@ export class UsersController {
 
     @Delete(':id')
     @ApiOperation({
-        summary: 'Eliminar un usuario por id',
+        summary: 'Elimina un usuario por ID',
         description:
           'Esta ruta elimina un usuario, por un id enviado por parametro',
       })

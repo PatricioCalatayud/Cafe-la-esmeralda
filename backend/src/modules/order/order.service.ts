@@ -33,35 +33,10 @@ export class OrderService {
     }
 
     async getOrderById(id: string) {
-        const order = await this.orderRepository
-            .createQueryBuilder('orders')
-            .leftJoinAndSelect('orders.user', 'user')
-            .leftJoinAndSelect('orders.productsOrder', 'productsOrder')
-            .leftJoinAndSelect('productsOrder.product', 'products')
-            .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
-            .leftJoinAndSelect('orderDetails.transactions', 'transaction')
-            .where('orders.id = :orID', { orID: id })
-            .andWhere('orders.isDeleted = :isDeleted', { isDeleted: false })
-            .select([
-                'user.id',
-                'user.name',
-                'orders.id',
-                'orders.date',
-                'orderDetails.totalPrice',
-                'orderDetails.deliveryDate',
-                'transaction.status',
-                'transaction.timestamp',
-                'productsOrder.quantity',
-                'products.id',
-                'products.description',
-                'products.price',
-                'products.discount',
-                'products.imgUrl',
-            ])
-            .getOne();
+        const foundOrder = await this.orderQuery.getOrderById(id);
+        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
 
-        if (!order) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-        return order;
+        return foundOrder;
     }
 
     async getOrdersByUserId(id: string, page: number, limit: number): Promise<{ data: Order[], total: number }> {
@@ -152,11 +127,10 @@ export class OrderService {
     }
 
     async MercadoPagoUpdate(id: string) {
-        const foundOrder = await this.orderRepository.findOne(
-            {
-                where: { id },
-                relations: { orderDetail: { transactions: true } }
-            });
+        const foundOrder = await this.orderRepository.findOne({ 
+            where: { id }, 
+            relations: { orderDetail: { transactions: true }, user: true } 
+        });
         if (!foundOrder) throw new BadRequestException(`Orden no encontrada. ID: ${id}`);
 
         await this.orderRepository.update(id, { status: 'Pagado' });

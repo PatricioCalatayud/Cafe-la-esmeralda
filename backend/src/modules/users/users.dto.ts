@@ -1,5 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
+import { ApiProperty, PickType } from "@nestjs/swagger";
+import { Transform } from "class-transformer";
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Role } from "src/enum/roles.enum";
 
 export class UserDTO {
@@ -8,8 +9,10 @@ export class UserDTO {
     name: string;
 
     @ApiProperty({ description: 'Email.' })
+    @IsString()
     @IsNotEmpty()
     @IsEmail()
+    @Transform(({ value }) => value.toLowerCase())
     email: string;
 
     @ApiProperty({ description: 'Rol.' })
@@ -25,3 +28,7 @@ export class UserDTO {
     @IsOptional()
     phone?: string;
 }
+
+export class LoginUserDto extends PickType(UserDTO, ['email', 'password']) {}
+
+export class Email extends PickType(UserDTO, ['email']) {}
