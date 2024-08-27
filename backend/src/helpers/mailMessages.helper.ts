@@ -135,3 +135,9 @@ export const sendEmailOrderExpired = () => {
     ACÁ VA EL TEXTO DE PATO
     `
 }
+
+export const sendEmailOrderPaid = (order) => {
+    return `
+    ACÁ VA EL TEXTO DE PATO
+    `
+}

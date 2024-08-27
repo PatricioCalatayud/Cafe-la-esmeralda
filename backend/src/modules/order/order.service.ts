@@ -33,7 +33,8 @@ export class OrderService {
 
     async getOrderById(id: string) {
         const foundOrder = await this.orderQuery.getOrderById(id);
-        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);        
+        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
+
         return foundOrder;
     }
 
@@ -123,9 +124,9 @@ export class OrderService {
     }
 
     async MercadoPagoUpdate(id: string) {
-        const foundOrder = await this.orderRepository.findOne(
-            { where: { id }, 
-            relations: { orderDetail: { transactions: true } } 
+        const foundOrder = await this.orderRepository.findOne({ 
+            where: { id }, 
+            relations: { orderDetail: { transactions: true }, user: true } 
         });
         if (!foundOrder) throw new BadRequestException(`Orden no encontrada. ID: ${id}`);
 
