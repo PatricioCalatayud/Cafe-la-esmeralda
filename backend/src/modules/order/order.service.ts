@@ -11,6 +11,7 @@ import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { OrderQuery } from './orders.query';
 
+
 @Injectable()
 export class OrderService {
     constructor(
@@ -41,16 +42,12 @@ export class OrderService {
         return foundOrder;
     }
 
-    async getOrdersByUserId(id: string, page: number, limit: number): Promise<{ data: Order[], total: number }> {
+    async getOrdersByUserId(id: string, page: number = 1, limit: number = 10): Promise<{ data: Order[], total: number }> {
         const user = await this.userRepository.findOneBy({ id, isDeleted: false });   
         if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
+        
+        const { data, total } = await this.orderQuery.getOrdersByUserId(id, page, limit);
 
-        const [data, total] = await this.orderRepository.findAndCount({
-            skip: (page - 1) * limit,
-            take: limit,
-            where: { user }
-        })
-      
         return { data, total };
     }
 
