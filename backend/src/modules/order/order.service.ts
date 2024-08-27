@@ -9,6 +9,7 @@ import { Product } from 'src/entities/products/product.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
+import { OrderQuery } from './orders.query';
 
 @Injectable()
 export class OrderService {
@@ -20,7 +21,8 @@ export class OrderService {
         @InjectRepository(Transaccion) private readonly transactionRepository: Repository<Transaccion>,
         @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
-        private readonly dataSource: DataSource
+        private readonly dataSource: DataSource,
+        private readonly orderQuery: OrderQuery
     ) {}
 
     async getOrders(page: number, limit: number): Promise<{ data: Order[], total: number }> {
