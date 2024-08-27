@@ -35,7 +35,7 @@ export class ProductsService {
         const [data, total] = await this.productRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
-            where: { isDeleted: false, category: { name: categoryFound.id } },
+            where: { isDeleted: false, category: { id: categoryFound.id } },
             relations: { category: true, subproducts: true }
         })
 
