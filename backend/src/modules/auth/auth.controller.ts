@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/entities/user.entity';
-import { UserDTO } from 'src/modules/users/users.dto';
+import { Email, LoginUserDto, UserDTO } from 'src/modules/users/users.dto';
 import { AuthService } from './auth.service';
 
 @ApiTags('Autenticación')
@@ -25,11 +25,8 @@ export class AuthController {
             'Este endpoint inicia la sesión del usuario. El usuario debe estar registrado.' 
     })
     @Post('signin')
-    async signIn(
-        @Body('email') email: string,
-        @Body('password') password: string,
-    ) {
-        return await this.authService.signIn(email, password);
+    async signIn(@Body() user: LoginUserDto) {
+        return await this.authService.signIn(user.email, user.password);
     }
 
     @ApiOperation({
@@ -37,9 +34,8 @@ export class AuthController {
         description: 'Este endpoint envía un correo a un usuario para restablecer la contraseña.'
     })
     @Post('reset-password')
-    async resetPassword(@Body('email') email: string) {
-        if (!email) throw new BadRequestException('El email es requerido.')
-        return await this.authService.resetPassword(email);
+    async resetPassword(@Body() email: Email) {
+        return await this.authService.resetPassword(email.email);
     }
 
     @ApiOperation({

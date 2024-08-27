@@ -3,7 +3,7 @@ import { config as dotenvConfig } from 'dotenv';
 
 dotenvConfig({ path: '.env.development'});
 
-export const email = 'tech@robolsolutions.com';
+export const email = 'info@cafelaesmeralda.com.ar';
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.hostinger.com',
