@@ -61,8 +61,8 @@ export class OrderQuery {
                 .createQueryBuilder('orders')
                 .leftJoinAndSelect('orders.user', 'user')
                 .leftJoinAndSelect('orders.productsOrder', 'productsOrder')
-                .leftJoinAndSelect('productsOrder.product', 'products')
-                .leftJoinAndSelect('productsOrder.subproduct', 'subproduct') 
+                .leftJoinAndSelect('productsOrder.subproduct', 'subproduct')
+                .leftJoinAndSelect('subproduct.product', 'product')
                 .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
                 .leftJoinAndSelect('orderDetails.transactions', 'transaction')
                 .where('user.id = :userId', { userId: id })
@@ -79,16 +79,17 @@ export class OrderQuery {
                     'transaction.status',
                     'transaction.timestamp',
                     'productsOrder.quantity', 
-                    'subproducts.id',
-                    'subproducts.price',
-                    'subproducts.product',
-                    'subproducts.stock',
-                    'subproducts.amount',
-                    'subproducts.unit',
-                    'subproducts.discount',
-                    'products.id',
-                    'products.description',
-                    'products.imgUrl',
+                    'subproduct.id',
+                    'subproduct.price',
+                    'subproduct.product',
+                    'subproduct.stock',
+                    'subproduct.amount',
+                    'subproduct.unit',
+                    'subproduct.discount',
+                    'subproduct.productId',
+                    'product.id',
+                    'product.description',
+                    'product.imgUrl'
                 ])
                 .getManyAndCount(); 
         

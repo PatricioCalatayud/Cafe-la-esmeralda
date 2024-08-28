@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./product.entity";
 import { Presentacion } from "src/enum/presentacion.enum";
 import { TipoGrano } from "src/enum/tipoGrano.enum";
@@ -46,6 +46,7 @@ export class Subproduct {
     isAvailable:boolean
 
     @ManyToOne(() => Product, (product) => product.subproducts)
+    @JoinColumn({ name: 'productId' })
     product: Product;
 
     @OneToMany(() => ProductsOrder, (productsOrder) => productsOrder.subproduct)  
