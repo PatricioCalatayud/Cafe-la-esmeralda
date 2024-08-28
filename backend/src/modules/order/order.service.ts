@@ -29,11 +29,19 @@ export class OrderService {
     async getOrders(page: number, limit: number): Promise<{ data: Order[], total: number }> {
         const [data, total] = await this.orderRepository.findAndCount({
             skip: (page - 1) * limit,
-            take: limit
-        })
-      
+            take: limit,
+            relations: [
+                'user',
+                'productsOrder',
+                'productsOrder.subproduct',
+                'orderDetail',
+                'orderDetail.transactions',
+            ],
+        });
+    
         return { data, total };
     }
+    
 
     async getOrderById(id: string) {
         const foundOrder = await this.orderQuery.getOrderById(id);
@@ -78,7 +86,7 @@ export class OrderService {
                 const foundSubproduct = await transactionalEntityManager.findOneBy(Subproduct, { id: product.subproductId });
                 if (!foundSubproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${product.subproductId}`);
     
-                total += ((foundSubproduct.price * product.quantity) * (1 - foundSubproduct.discount));
+                total += (foundSubproduct.price * product.quantity * (1 - (foundSubproduct.discount/100)));
     
                 const productsOrder = transactionalEntityManager.create(ProductsOrder, {
                     subproduct: foundSubproduct,
