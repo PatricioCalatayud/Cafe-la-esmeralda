@@ -110,7 +110,7 @@ export class ProductsService {
         });
         if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
     
-        const { categoryID, subproducts, ...updateData } = infoProduct;
+        const { categoryID, subproducts, presentacion, tipoGrano, ...updateData } = infoProduct;
     
         if (file) {
             const imgURL = await this.imageService.uploadFile(file);

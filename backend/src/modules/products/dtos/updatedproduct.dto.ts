@@ -43,6 +43,15 @@ export class UpdatedProductDto {
     @IsUUID()
     categoryID?: string;
 
+    
+    @IsOptional()
+    @IsEnum(Presentacion)
+    presentacion?: Presentacion;
+
+    @IsOptional()
+    @IsEnum(TipoGrano)
+    tipoGrano?: TipoGrano;
+
     @ApiProperty({ description: 'Array de subproductos.' })
     @IsOptional()
     @ValidateNested({ each: true })
@@ -77,13 +86,6 @@ export class UpdatedSubproductDto {
     @IsInt()
     discount?: number;
 
-    @IsOptional()
-    @IsEnum(Presentacion)
-    presentacion?: Presentacion;
-
-    @IsOptional()
-    @IsEnum(TipoGrano)
-    tipoGrano?: TipoGrano;
 
     @IsOptional()
     @IsBoolean()
