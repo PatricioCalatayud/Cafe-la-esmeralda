@@ -8,13 +8,15 @@
                 "price": 13000,
                 "stock": 10,
                 "amount": 250,
-                "unit": "Gramos"
+                "unit": "Gramos",
+                "discount":10
             },
             {
                 "price": 23000,
                 "stock": 10,
                 "amount": 500,
-                "unit": "Gramos"
+                "unit": "Gramos",
+                "discount": 10
             },
             {
                 "price": 33000,
