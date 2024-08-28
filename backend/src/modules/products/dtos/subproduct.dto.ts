@@ -6,6 +6,8 @@ import { Presentacion } from "src/enum/presentacion.enum";
 import { TipoGrano } from "src/enum/tipoGrano.enum";
 
 export class SubproductDto {
+    id:string
+
     @ApiProperty({ description: 'Precio.' })
     @IsNotEmpty()
     @Type(() => Number)

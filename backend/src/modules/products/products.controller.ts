@@ -1,8 +1,6 @@
 import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { ProductValidationInterceptor } from 'src/interceptors/productValidatorInterceptor';
 import { CreateProductDto } from './dtos/products.dto';
-import { UpdateCoffeeDto } from './dtos/coffee.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -10,6 +8,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enum/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Product } from 'src/entities/products/product.entity';
+import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 
 @ApiTags('Productos')
 @Controller('products')
@@ -66,7 +65,7 @@ export class ProductsController {
     @UseInterceptors(FileInterceptor('file'))
     async updateProduct(
         @Param('id', ParseUUIDPipe) id: string,
-        @Body() productInfo: UpdateCoffeeDto,
+        @Body() productInfo: UpdatedProductDto,  
         @UploadedFile() file?: Express.Multer.File) {
         return this.productService.updateProduct(id, productInfo, file);
     }
