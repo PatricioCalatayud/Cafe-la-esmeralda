@@ -65,8 +65,7 @@ export class PreloadService implements OnModuleInit {
                             stock: subproduct.stock,
                             amount: subproduct.amount,
                             unit: subproduct.unit as Medida, 
-                            product: savedProduct ,
-                            discount: subproduct.discount
+                            product: savedProduct 
                         });
                     });
     
