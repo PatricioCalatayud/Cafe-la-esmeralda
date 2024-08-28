@@ -8,13 +8,15 @@
                 "price": 13000,
                 "stock": 10,
                 "amount": 250,
-                "unit": "Gramos"
+                "unit": "Gramos",
+                "discount":10
             },
             {
                 "price": 23000,
                 "stock": 10,
                 "amount": 500,
-                "unit": "Gramos"
+                "unit": "Gramos",
+                "discount": 10
             },
             {
                 "price": 33000,
@@ -31,6 +33,7 @@
         "category": "Coffee",
         "subproducts": [
             {
+                "discount":10,
                 "price": 80000,
                 "stock": 23,
                 "amount": 1,
@@ -66,7 +69,7 @@
         ]
     },
     {
-        "description": "Chocolate x 50 MAPSA",
+        "description": "Chocolate x 50 MAPSA ",
         "imgUrl": "https://imgur.com/zmremPu.png",
         "category": "Chocolate",
         "subproducts": [
@@ -82,9 +85,9 @@
         "description": "Capsulas Esmeralda x10",
         "imgUrl": "https://imgur.com/LIVIrsc.png",
         "category": "Sweetener",
-        "discount": 0,
         "subproducts": [
             {
+                "discount": 10,
                 "price": 5232,
                 "stock": 13,
                 "amount": 10,
@@ -96,12 +99,12 @@
         "description": "Portasobres",
         "imgUrl": "https://imgur.com/qFVuRNx.png",
         "category": "Accesory",
-        "discount": 20,
         "subproducts": [
             {
                 "price": 2825,
                 "stock": 92,
                 "amount": 1,
+                "discount": 20,
                 "unit": "Unidades"
             }
         ]
@@ -110,10 +113,10 @@
         "description": "Capsulas Esmeralda x30",
         "imgUrl": "https://imgur.com/LIVIrsc.png",
         "category": "Sweetener",
-        "discount": 10,
         "subproducts": [
             {
                 "price": 14475,
+                "discount": 10,
                 "stock": 113,
                 "amount": 30,
                 "unit": "Unidades"
