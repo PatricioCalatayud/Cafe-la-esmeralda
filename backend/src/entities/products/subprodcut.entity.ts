@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "./product.entity";
-import { Presentacion } from "src/enum/presentacion.enum";
-import { TipoGrano } from "src/enum/tipoGrano.enum";
+
 import { Medida } from "src/enum/medidas.enum";
 import { ProductsOrder } from "../product-order.entity";
 
@@ -28,19 +27,6 @@ export class Subproduct {
     @Column({ type: 'int', default: 0 })
     discount: number;
 
-    @Column({
-        type: 'enum',
-        enum: Presentacion,
-        default: Presentacion.GRANO
-    })
-    presentacion: Presentacion;
-
-    @Column({
-        type: 'enum',
-        enum: TipoGrano,
-        nullable: true 
-    })
-    tipoGrano?: TipoGrano;
 
     @Column({default: true})
     isAvailable:boolean
@@ -51,4 +37,4 @@ export class Subproduct {
 
     @OneToMany(() => ProductsOrder, (productsOrder) => productsOrder.subproduct)  
     productsOrder: ProductsOrder[];
-}
+} 

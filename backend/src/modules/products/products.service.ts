@@ -78,12 +78,14 @@ export class ProductsService {
             if (!imgURL) throw new UnprocessableEntityException(`Error al cargar la imagen`);
         }
     
-        const { categoryID, subproducts, ...productData } = infoProduct;
+        const { categoryID, subproducts,presentacion,tipoGrano, ...productData } = infoProduct;
     
         const newProduct = this.productRepository.create({
             ...productData,
             imgUrl: imgURL,
             category: foundCategory,
+            presentacion,
+            tipoGrano
         });
     
         const savedProduct = await this.productRepository.save(newProduct);

@@ -3,10 +3,6 @@ import { OrderService } from './order.service';
 import { AddOrderDto, UpdateOrderDto } from './order.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Order } from 'src/entities/order.entity';
-import { Roles } from 'src/decorators/roles.decorator';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { Role } from 'src/enum/roles.enum';
 
 @ApiTags('Ordenes de compra')
 @Controller('order')
@@ -31,9 +27,6 @@ export class OrderController {
 
 
     @Get('user/:id')
-    // @Roles(Role.USER)
-    // @UseGuards(AuthGuard, RolesGuard)
-    // @ApiBearerAuth()
     @ApiOperation({ summary: 'Obtener órdenes de un usuario', description: 'Devuelve las órdenes de un usuario paginadas.' })
     @ApiQuery({ name: 'page', required: false, description: 'Número de la página', example: 1 })
     @ApiQuery({ name: 'limit', required: false, description: 'Límite de resultados por página', example: 10 })
