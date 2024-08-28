@@ -41,8 +41,6 @@ export class OrderQuery {
               'subproduct.stock',
               'subproduct.amount',
               'subproduct.unit',
-              'subproduct.presentacion',
-              'subproduct.tipoGrano',
               'subproduct.isAvailable',
               
             ])
