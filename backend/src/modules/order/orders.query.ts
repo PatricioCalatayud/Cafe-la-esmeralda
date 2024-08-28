@@ -91,7 +91,7 @@ export class OrderQuery {
                     'product.description',
                     'product.imgUrl'
                 ])
-                .getManyAndCount(); 
+                .getManyAndCount();
         
             return { data: orders, total };
         }

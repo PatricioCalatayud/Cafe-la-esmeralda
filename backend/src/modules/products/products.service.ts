@@ -5,7 +5,6 @@ import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dtos/products.dto';
-import { UpdateCoffeeDto } from './dtos/coffee.dto';
 import { ImageService } from '../images/image.service';
 import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 
@@ -78,12 +77,14 @@ export class ProductsService {
             if (!imgURL) throw new UnprocessableEntityException(`Error al cargar la imagen`);
         }
     
-        const { categoryID, subproducts, ...productData } = infoProduct;
+        const { categoryID, subproducts,presentacion,tipoGrano, ...productData } = infoProduct;
     
         const newProduct = this.productRepository.create({
             ...productData,
             imgUrl: imgURL,
             category: foundCategory,
+            presentacion,
+            tipoGrano
         });
     
         const savedProduct = await this.productRepository.save(newProduct);
@@ -108,7 +109,7 @@ export class ProductsService {
         });
         if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
     
-        const { categoryID, subproducts, ...updateData } = infoProduct;
+        const { categoryID, subproducts, presentacion, tipoGrano, ...updateData } = infoProduct;
     
         if (file) {
             const imgURL = await this.imageService.uploadFile(file);
