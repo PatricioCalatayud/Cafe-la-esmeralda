@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Post, Put } from '@nestjs/common';
+import { Body, Controller, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/entities/user.entity';
 import { Email, LoginUserDto, UserDTO } from 'src/modules/users/users.dto';
