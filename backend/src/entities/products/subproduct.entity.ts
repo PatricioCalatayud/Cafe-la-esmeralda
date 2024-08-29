@@ -27,7 +27,6 @@ export class Subproduct {
     @Column({ type: 'int', default: 0 })
     discount: number;
 
-
     @Column({default: true})
     isAvailable:boolean
 

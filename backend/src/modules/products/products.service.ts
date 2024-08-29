@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, UnprocessableEntity
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
-import { Subproduct } from 'src/entities/products/subprodcut.entity';
+import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dtos/products.dto';
 import { ImageService } from '../images/image.service';

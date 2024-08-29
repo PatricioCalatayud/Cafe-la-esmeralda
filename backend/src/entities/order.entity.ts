@@ -14,8 +14,8 @@ export class Order {
     @Column({ default: false })
     isDeleted: boolean;
 
-    @Column({ type: 'varchar', default: 'Retiro en local' })
-    status: string;
+    @Column({ type: 'boolean', default: false })
+    orderStatus: boolean;
 
     @ManyToOne(() => User, (user) => user.orders)
     @JoinColumn({ name: 'userId' })

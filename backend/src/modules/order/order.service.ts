@@ -5,11 +5,11 @@ import { OrderDetail } from 'src/entities/orderdetail.entity';
 import { DataSource, Repository } from 'typeorm';
 import { ProductInfo, UpdateOrderDto } from './order.dto';
 import { User } from 'src/entities/user.entity';
-import { Product } from 'src/entities/products/product.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Transaccion } from 'src/entities/transaction.entity';
-import { Subproduct } from 'src/entities/products/subprodcut.entity';
+import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { OrderQuery } from './orders.query';
+import { MailerService } from '../mailer/mailer.service';
 
 
 @Injectable()
@@ -18,12 +18,12 @@ export class OrderService {
         @InjectRepository(Order) private readonly orderRepository: Repository<Order>,
         @InjectRepository(OrderDetail) private readonly orderDetailRepository: Repository<OrderDetail>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
-        @InjectRepository(Product) private readonly productRepository: Repository<Product>,
         @InjectRepository(Transaccion) private readonly transactionRepository: Repository<Transaccion>,
         @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
         private readonly dataSource: DataSource,
-        private readonly orderQuery: OrderQuery
+        private readonly orderQuery: OrderQuery,
+        private readonly mailerService: MailerService
     ) {}
 
     async getOrders(page: number, limit: number): Promise<{ data: Order[], total: number }> {
@@ -66,25 +66,17 @@ export class OrderService {
         const user = await this.userRepository.findOneBy({ id: userId, isDeleted: false });
         if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${userId}`);
     
-        await Promise.all(productsInfo.map(async (product) => {
-            const foundSubproduct = await this.subproductRepository.findOne({
-                where: { id: product.subproductId },
-                relations: ['product']
-            });
-            if (!foundSubproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${product.subproductId}`);
-            if (foundSubproduct.stock <= 0) throw new BadRequestException(`Subproducto sin stock. ID: ${foundSubproduct.id}`);
-        }));
-    
         await this.dataSource.transaction(async (transactionalEntityManager) => {
             const order = transactionalEntityManager.create(Order, { user, date: new Date() });
             const newOrder = await transactionalEntityManager.save(order);
             createdOrder = newOrder;
     
             await Promise.all(productsInfo.map(async (product) => {
-                await this.updateStock(product.subproductId);
+                await this.updateStock(product.subproductId, product.quantity);
     
                 const foundSubproduct = await transactionalEntityManager.findOneBy(Subproduct, { id: product.subproductId });
                 if (!foundSubproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${product.subproductId}`);
+                if (foundSubproduct.stock <= 0) throw new BadRequestException(`Subproducto sin stock. ID: ${foundSubproduct.id}`);
     
                 total += (foundSubproduct.price * product.quantity * (1 - (foundSubproduct.discount/100)));
     
@@ -123,25 +115,21 @@ export class OrderService {
         });
         if (!order) throw new NotFoundException('Orden no encontrada');
 
+        if(data.orderStatus) {
+            await this.orderRepository.update(
+                { id: order.id },
+                { orderStatus: true }
+            )
+
+            await this.mailerService.sendEmailOrderPaid(order);
+        }
+
         await this.orderDetailRepository.update(
             { id: order.orderDetail.id },
             { deliveryDate: data.deliveryDate }
         );
 
         await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status });
-
-        return { HttpCode: 200 };
-    }
-
-    async MercadoPagoUpdate(id: string) {
-        const foundOrder = await this.orderRepository.findOne({ 
-            where: { id }, 
-            relations: { orderDetail: { transactions: true }, user: true } 
-        });
-        if (!foundOrder) throw new BadRequestException(`Orden no encontrada. ID: ${id}`);
-
-        await this.orderRepository.update(id, { status: 'Pagado' });
-        await this.transactionRepository.update({ id: foundOrder.orderDetail.transactions.id }, { status: 'En preparación' });
 
         return { HttpCode: 200 };
     }
@@ -155,11 +143,10 @@ export class OrderService {
         return foundOrder;
     }
 
-    async updateStock(subproductId: string) {
+    async updateStock(subproductId: string, quantity: number) {
         const subproduct = await this.subproductRepository.findOne({ where: { id: subproductId } });
         if (!subproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${subproductId}`);
         
-        await this.subproductRepository.update({ id: subproductId }, { stock: subproduct.stock - 1 });
+        await this.subproductRepository.update({ id: subproductId }, { stock: subproduct.stock - quantity });
     }
-    
 }

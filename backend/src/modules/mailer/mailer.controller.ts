@@ -9,7 +9,7 @@ export class MailerController {
 
     @ApiOperation({ summary: 'Mail para ordenes expiradas', description: 'Este endpoint envía un mail a un usuario que se le expiró una orden.' })
     @Post()
-    async sendEmailOrderExpired(@Body() to: string) {
-        return await this.mailerService.sendEmailOrderExpired(to);
+    async sendEmailOrderExpired(@Body() to: string, orderId: string) {
+        return await this.mailerService.sendEmailOrderExpired(to, orderId);
     }
 }

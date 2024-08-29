@@ -27,8 +27,8 @@ export class ProductInfo {
 
     @ApiProperty({ description: 'ID del subproducto (opcional).' })
     @IsUUID()
-    @IsOptional()
-    subproductId?: string;
+    @IsNotEmpty()
+    subproductId: string;
 }
 
 
@@ -66,4 +66,9 @@ export class UpdateOrderDto {
     @ApiProperty({ description: 'Estado del tracking.' })
     @IsString()
     status: string;
+
+    @ApiProperty({ description: 'Estado de la orden.' })
+    @IsBoolean()
+    @IsOptional()
+    orderStatus?: boolean;
 }
