@@ -10,6 +10,7 @@ import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subprodcut.entity';
 import { OrderQuery } from './orders.query';
+import { Console } from 'console';
 
 
 @Injectable()
@@ -60,6 +61,9 @@ export class OrderService {
     }
 
     async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account: boolean) {
+        //status de transactions pertenece al tracking
+        //status de order pago o pendiente de pago.
+
         let total = 0;
         let createdOrder;
     
@@ -76,7 +80,11 @@ export class OrderService {
         }));
     
         await this.dataSource.transaction(async (transactionalEntityManager) => {
-            const order = transactionalEntityManager.create(Order, { user, date: new Date() });
+            const order = transactionalEntityManager.create(Order, { 
+                user,
+                date: new Date(),
+                status: account ? 'En preparacion' : 'Pendiente de pago'
+            });
             const newOrder = await transactionalEntityManager.save(order);
             createdOrder = newOrder;
     
@@ -119,17 +127,28 @@ export class OrderService {
     async updateOrder(id: string, data: UpdateOrderDto) {
         const order = await this.orderRepository.findOne({
             where: { id },
-            relations: ['productsOrder', 'productsOrder.product', 'orderDetail', 'orderDetail.transactions']
+            relations: ['productsOrder', 'productsOrder.subproduct', 'orderDetail', 'orderDetail.transactions']
         });
         if (!order) throw new NotFoundException('Orden no encontrada');
 
-        await this.orderDetailRepository.update(
-            { id: order.orderDetail.id },
-            { deliveryDate: data.deliveryDate }
-        );
+        if (data.deliveryDate) {
+            await this.orderDetailRepository.update(
+                { id: order.orderDetail.id },
+                { deliveryDate: data.deliveryDate }
+            );
+        }
+        
 
-        await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status });
-
+        if (data.status) {
+            console.log(data.status)
+            console.log(order.orderDetail.transactions.id);
+            
+            await this.transactionRepository.update(
+                { id: order.orderDetail.transactions.id },
+                { status: data.status }
+            );
+        }
+        
         return { HttpCode: 200 };
     }
 
@@ -146,13 +165,11 @@ export class OrderService {
         return { HttpCode: 200 };
     }
 
-    async deleteOrder(id: string) {
-        const foundOrder = await this.getOrderById(id);
-        if (!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-
-        await this.orderRepository.update(id, { isDeleted: true });
-
-        return foundOrder;
+    async deleteOrder(id: string): Promise<{ message: string }> {
+        const result = await this.orderRepository.delete(id);
+        if (result.affected === 0) throw new NotFoundException(`No se encontró la orden. ID: ${id}`);
+    
+        return { message: `La orden con id ${id} fue eliminada permanentemente` };
     }
 
     async updateStock(subproductId: string) {

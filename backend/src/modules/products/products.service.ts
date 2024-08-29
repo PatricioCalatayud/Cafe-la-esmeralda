@@ -157,11 +157,9 @@ export class ProductsService {
     }
     
     async deleteProduct(id: string): Promise<{ message: string }> {
-        const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
-        if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
-        
-        await this.productRepository.update(id, { isDeleted: true });
-
-        return { message: `El producto con id ${id} fue eliminado` };
+        const result = await this.productRepository.delete(id);
+        if (result.affected === 0) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
+    
+        return { message: `El producto con id ${id} fue eliminado permanentemente` };
     }
 }

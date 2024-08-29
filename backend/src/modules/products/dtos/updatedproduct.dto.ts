@@ -12,7 +12,7 @@ export class UpdatedProductDto {
     @IsOptional()
     @IsString()
     description?: string;
-
+ 
     @ApiProperty({ description: 'Precio.' })
     @IsOptional()
     @Type(() => Number)
