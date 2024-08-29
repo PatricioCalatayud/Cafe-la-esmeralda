@@ -8,7 +8,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { PreloadService } from './preload/preload.service';
 import { Category } from './entities/category.entity';
 import { Product } from './entities/products/product.entity';
-import { Subproduct } from './entities/products/subprodcut.entity';
+import { Subproduct } from './entities/products/subproduct.entity';
 import { User } from 'src/entities/user.entity';
 import { UsersModule } from './modules/users/users.module';
 import { OrderModule } from './modules/order/order.module';
