@@ -54,4 +54,8 @@ export class MercadoPagoService {
       }
     }
   }
+
+  async checkTransfer() {
+    
+  }
 }
