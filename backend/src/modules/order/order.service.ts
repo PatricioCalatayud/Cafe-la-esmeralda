@@ -133,6 +133,13 @@ export class OrderService {
         return { HttpCode: 200 };
     }
 
+    async updateStock(subproductId: string, quantity: number) {
+        const subproduct = await this.subproductRepository.findOne({ where: { id: subproductId } });
+        if (!subproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${subproductId}`);
+        
+        await this.subproductRepository.update({ id: subproductId }, { stock: subproduct.stock - quantity });
+    
+    }
     async deleteOrder(id: string) {
         const foundOrder = await this.getOrderById(id);
         if (!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
@@ -140,12 +147,5 @@ export class OrderService {
         await this.orderRepository.update(id, { isDeleted: true });
 
         return foundOrder;
-    }
-
-    async updateStock(subproductId: string, quantity: number) {
-        const subproduct = await this.subproductRepository.findOne({ where: { id: subproductId } });
-        if (!subproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${subproductId}`);
-        
-        await this.subproductRepository.update({ id: subproductId }, { stock: subproduct.stock - quantity });
     }
 }
