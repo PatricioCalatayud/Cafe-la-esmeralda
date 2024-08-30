@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -22,27 +22,27 @@ export class UsersService {
         return { data, total };
     }
 
-    async getUserById(id: string): Promise<Omit<User, "password"> | undefined> {
+    async getUserById(id: string): Promise<Omit<User, "password">> {
         const user = await this.userRepository.findOne({ where: { id } });
+        if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
+        
         delete user.password;
-
         return user;
     }
 
-    async updateUser(id: string, userDTO: Partial<UserDTO>): Promise<Omit<User, "password"> | undefined> {
+    async updateUser(id: string, userDTO: Partial<UserDTO>): Promise<Omit<User, "password">> {
         await this.userRepository.update(id, userDTO);
 
         const updatedUser = await this.userRepository.findOne({ where: { id } });
+        if (!updatedUser) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
+        
         delete updatedUser.password;
-
         return updatedUser;
     }
 
     async deleteUser(id: string) {
         const result = await this.userRepository.delete(id);
-        if (result.affected === 0) {
-            throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
-        }
+        if (result.affected === 0) throw new NotFoundException(`Usuario con ID ${id} no encontrado`);
 
         return { HttpCode: 200 };
     }

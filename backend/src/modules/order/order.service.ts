@@ -64,7 +64,6 @@ export class OrderService {
         let createdOrder;
     
         const user = await this.userRepository.findOneBy({ id: userId, isDeleted: false });
-        if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${userId}`);
     
         await this.dataSource.transaction(async (transactionalEntityManager) => {
             const order = transactionalEntityManager.create(Order, { user, date: new Date() });
