@@ -143,12 +143,11 @@ export class OrderService {
         await this.subproductRepository.update({ id: subproductId }, { stock: subproduct.stock - quantity });
     
     }
-    async deleteOrder(id: string) {
-        const foundOrder = await this.getOrderById(id);
-        if (!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
 
-        await this.orderRepository.update(id, { isDeleted: true });
-
-        return foundOrder;
+    async deleteOrder(id: string): Promise<{ message: string }> {
+        const result = await this.orderRepository.delete(id);
+        if (result.affected === 0) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
+    
+        return { message: `La orden con id ${id} fue eliminada permanentemente` };
     }
 }
