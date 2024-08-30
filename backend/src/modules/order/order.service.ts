@@ -8,7 +8,6 @@ import { User } from 'src/entities/user.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
-import { OrderQuery } from './orders.query';
 import { MailerService } from '../mailer/mailer.service';
 
 @Injectable()
@@ -21,7 +20,6 @@ export class OrderService {
         @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
         private readonly dataSource: DataSource,
-        private readonly orderQuery: OrderQuery,
         private readonly mailerService: MailerService
     ) {}
 
