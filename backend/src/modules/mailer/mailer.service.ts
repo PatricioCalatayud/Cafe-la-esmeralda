@@ -19,7 +19,7 @@ export class MailerService {
         } else throw new Error('Error al enviar el correo.');
     }
 
-    async sendEmailOrderPay(order: Order) {
+    async sendEmailOrderCreated(order: Order) {
         const html = sendEmailOrderPay(order);
 
         const mail = { from: email, to: order.user.email, subject: 'Datos de tu pedido', html };
@@ -47,6 +47,7 @@ export class MailerService {
         const html = sendEmailOrderExpired(orderId);
 
         const mail = { from: email, to, subject: 'Orden expirada', html };
+        console.log(to)
 
         const info = await transporter.sendMail(mail);
 
