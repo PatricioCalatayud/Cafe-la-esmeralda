@@ -39,6 +39,6 @@ export class Product {
     category: Category;
 
     @OneToMany(() => Subproduct, (subproduct) => subproduct.product)
-    subproducts: Subproduct[];
+    subproducts?: Subproduct[];
     
 }
