@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, ParseFilePipeBuilder, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpStatus, ParseFilePipeBuilder, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -20,8 +20,8 @@ export class ImageController {
     async uploadFile(@UploadedFile(
         new ParseFilePipeBuilder()
         .addMaxSizeValidator({
-            maxSize: 500000,
-            message: 'El archivo es muy largo, el tamaño maximo es de 500KB',
+            maxSize: 10000000,
+            message: 'El archivo es muy grande, el tamaño maximo es de 10MB',
         })
         .build({
             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -32,5 +32,23 @@ export class ImageController {
         return {url};
     }
 
+    @ApiOperation({
+        summary: 'Sube imagen del comprobante de transferencia.',
+        description:
+            'Esta ruta permite subir imagenes de los comprobantes de transferencia.',
+    })
+    @Put('transfer')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadImageTransfer(@UploadedFile(
+        new ParseFilePipeBuilder()
+        .addMaxSizeValidator({
+            maxSize: 10000000,
+            message: 'El archivo es muy grande, el tamaño maximo es de 10MB',
+        })
+        .build({
+            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        })
+    ) file: Express.Multer.File, @Body('id') id: string){
+        return await this.uploadService.uploadImageTransfer(file, id);
+    }
 }
-

@@ -2,11 +2,11 @@ import { BadRequestException, Injectable, NotFoundException, UnprocessableEntity
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
-import { Subproduct } from 'src/entities/products/subprodcut.entity';
+import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dtos/products.dto';
+import { UpdateCoffeeDto } from './dtos/coffee.dto';
 import { ImageService } from '../images/image.service';
-import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 
 @Injectable()
 export class ProductsService {
@@ -77,14 +77,12 @@ export class ProductsService {
             if (!imgURL) throw new UnprocessableEntityException(`Error al cargar la imagen`);
         }
     
-        const { categoryID, subproducts,presentacion,tipoGrano, ...productData } = infoProduct;
+        const { categoryID, subproducts, ...productData } = infoProduct;
     
         const newProduct = this.productRepository.create({
             ...productData,
             imgUrl: imgURL,
             category: foundCategory,
-            presentacion,
-            tipoGrano
         });
     
         const savedProduct = await this.productRepository.save(newProduct);
@@ -102,66 +100,33 @@ export class ProductsService {
         return savedProduct;
     }
     
-    async updateProduct(id: string, infoProduct: UpdatedProductDto, file?: Express.Multer.File): Promise<Product> {
-        const product = await this.productRepository.findOne({ 
-            where: { id }, 
-            relations: { category: true, subproducts: true } 
-        });
+    async updateProduct(id: string, infoProduct: Partial<UpdateCoffeeDto>, file?: Express.Multer.File): Promise<Product> {
+        const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
         if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
-    
-        const { categoryID, subproducts, presentacion, tipoGrano, ...updateData } = infoProduct;
+        
+        const { categoryID, ...updateData } = infoProduct;
     
         if (file) {
             const imgURL = await this.imageService.uploadFile(file);
             if (!imgURL) throw new UnprocessableEntityException(`Error al cargar la imagen`);
             updateData["imgUrl"] = imgURL;
         }
-    
+
         if (categoryID) {
             const foundCategory = await this.categoryRepository.findOneBy({ id: categoryID });
             if (!foundCategory) throw new NotFoundException(`Categoria "${categoryID}" no existe.`);
             updateData["category"] = foundCategory;
         }
-    
-        await this.productRepository.update(id, updateData);
-    
-        if (subproducts && subproducts.length > 0) {
-            for (const subproductDto of subproducts) {
-                const { id: subproductId, ...subproductData } = subproductDto;
-    
-                if (subproductId) {
-                    const existingSubproduct = await this.subproductRepository.findOneBy({ id: subproductId });
-                    if (existingSubproduct) {
-                        await this.subproductRepository.update(subproductId, subproductData);
-                    }
-                } else {
-                    const newSubproduct = this.subproductRepository.create({
-                        ...subproductData,
-                        product: product,
-                    });
-                    await this.subproductRepository.save(newSubproduct);
-                }
-            }
-    
-            const subproductIds = subproducts.map(sp => sp.id).filter(id => id);
-            const subproductsToRemove = product.subproducts.filter(sp => !subproductIds.includes(sp.id));
-            for (const subproduct of subproductsToRemove) {
-                await this.subproductRepository.delete(subproduct.id);
-            }
-        }
-    
-        return this.productRepository.findOne({ 
-            where: { id }, 
-            relations: { category: true, subproducts: true }
-        });
-    }
-    
-    async deleteProduct(id: string): Promise<{ message: string }> {
-        const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
-        if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
-        
-        await this.productRepository.update(id, { isDeleted: true });
 
-        return { message: `El producto con id ${id} fue eliminado` };
+        await this.productRepository.update(id, updateData);
+
+        return product;
+    }
+
+    async deleteProduct(id: string): Promise<{ message: string }> {
+        const result = await this.productRepository.delete(id);
+        if (result.affected === 0) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
+    
+        return { message: `El producto con id ${id} fue eliminado permanentemente.` };
     }
 }

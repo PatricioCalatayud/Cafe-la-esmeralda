@@ -7,7 +7,7 @@ import * as dataUser from './dataUser.json';
 import * as dataTestimony from './dataTestimony.json';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
-import { Subproduct } from 'src/entities/products/subprodcut.entity';
+import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { User } from 'src/entities/user.entity';
 import { OrderService } from 'src/modules/order/order.service';
 import { Testimony } from 'src/entities/testimony.entity';
@@ -65,8 +65,7 @@ export class PreloadService implements OnModuleInit {
                             stock: subproduct.stock,
                             amount: subproduct.amount,
                             unit: subproduct.unit as Medida, 
-                            product: savedProduct ,
-                            discount: subproduct.discount
+                            product: savedProduct 
                         });
                     });
     
@@ -138,7 +137,7 @@ export class PreloadService implements OnModuleInit {
             await this.orderService.createOrder(users[0].id, [
                 { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
                 { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id }
-            ], "Tienda", false);
+            ], "Calle Wallaby 42 Sidney");
     
             console.log("Precarga de pedido exitosa.");
         } catch (error) {

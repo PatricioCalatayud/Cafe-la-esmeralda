@@ -47,11 +47,15 @@ export class MercadoPagoService {
       if(data.status === 'approved') {
         const order = await this.orderService.getOrderById(data.additional_info.payer.first_name);
         
-        this.orderService.MercadoPagoUpdate(order.id);
+        this.orderService.updateOrder(order.id, { orderStatus: true, status: 'En preparación' });
         this.mailerService.sendEmailOrderPaid(order);
 
         return { HttpCode: 200 }
       }
     }
+  }
+
+  async checkTransfer() {
+    
   }
 }
