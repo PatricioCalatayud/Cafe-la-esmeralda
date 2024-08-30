@@ -21,20 +21,6 @@ export class Product {
     @Column({type: 'text', default: 'https://example.com/default-image.png'})
     imgUrl?: string;
 
-    @Column({
-        type: 'enum',
-        enum: Presentacion,
-        default: Presentacion.GRANO
-    })
-    presentacion: Presentacion;
-
-    @Column({
-        type: 'enum',
-        enum: TipoGrano,
-        nullable: true 
-    })
-    tipoGrano?: TipoGrano;
-
     @ManyToOne(() => Category, (category) => category.products)
     category: Category;
 
