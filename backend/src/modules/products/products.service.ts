@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, UnprocessableEntity
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
-import { Subproduct } from 'src/entities/products/subprodcut.entity';
+import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dtos/products.dto';
 import { UpdateCoffeeDto } from './dtos/coffee.dto';
@@ -124,11 +124,9 @@ export class ProductsService {
     }
 
     async deleteProduct(id: string): Promise<{ message: string }> {
-        const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
-        if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
-        
-        await this.productRepository.update(id, { isDeleted: true });
-
-        return { message: `El producto con id ${id} fue eliminado` };
+        const result = await this.productRepository.delete(id);
+        if (result.affected === 0) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
+    
+        return { message: `El producto con id ${id} fue eliminado permanentemente` };
     }
 }

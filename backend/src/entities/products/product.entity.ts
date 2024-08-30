@@ -1,6 +1,8 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Category } from "../category.entity";
-import { Subproduct } from "./subprodcut.entity";
+import { Subproduct } from "./subproduct.entity";
+import { Presentacion } from "src/enum/presentacion.enum";
+import { TipoGrano } from "src/enum/tipoGrano.enum";
 
 @Entity({ name:"products" })
 export class Product {

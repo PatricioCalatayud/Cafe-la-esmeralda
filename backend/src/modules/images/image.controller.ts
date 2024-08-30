@@ -20,8 +20,8 @@ export class ImageController {
     async uploadFile(@UploadedFile(
         new ParseFilePipeBuilder()
         .addMaxSizeValidator({
-            maxSize: 500000,
-            message: 'El archivo es muy largo, el tamaño maximo es de 500KB',
+            maxSize: 10000000,
+            message: 'El archivo es muy grande, el tamaño maximo es de 10MB',
         })
         .build({
             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -31,6 +31,4 @@ export class ImageController {
         const url = await this.uploadService.uploadFile(file);
         return {url};
     }
-
 }
-
