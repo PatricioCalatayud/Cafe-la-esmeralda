@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGene
 import { ProductsOrder } from "./product-order.entity";
 import { OrderDetail } from "./orderdetail.entity";
 import { User } from "./user.entity";
+import { Receipt } from "./receipt.entity";
 
 @Entity({ name:'orders' })
 export class Order {
@@ -14,8 +15,8 @@ export class Order {
     @Column({ default: false })
     isDeleted: boolean;
 
-    @Column({ type: 'varchar', default: 'Retiro en local' })
-    status: string;
+    @Column({ type: 'boolean', default: false })
+    orderStatus: boolean;
 
     @ManyToOne(() => User, (user) => user.orders)
     @JoinColumn({ name: 'userId' })
@@ -26,4 +27,7 @@ export class Order {
 
     @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.order)
     orderDetail: OrderDetail;
+
+    @OneToOne(() => Receipt, (receipt) => receipt.order, { cascade: true })
+    receipt: Receipt;
 }
