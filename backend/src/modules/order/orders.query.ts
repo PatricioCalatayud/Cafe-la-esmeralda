@@ -105,13 +105,4 @@ export class OrderQuery {
   
     return orders;
   }
-    
-  async deleteOrder(id: string) {
-      const foundOrder = await this.orderRepository.findOneBy({ id });
-      if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-      
-      await this.orderRepository.update(id, {isDeleted:true});
-
-      return foundOrder;
-  }
 }
