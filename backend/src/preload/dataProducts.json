@@ -8,13 +8,15 @@
                 "price": 13000,
                 "stock": 10,
                 "amount": 250,
-                "unit": "Gramos"
+                "unit": "Gramos",
+                "discount":10
             },
             {
                 "price": 23000,
                 "stock": 10,
                 "amount": 500,
-                "unit": "Gramos"
+                "unit": "Gramos",
+                "discount": 10
             },
             {
                 "price": 33000,
@@ -27,10 +29,11 @@
     {
         "id": "71eb1c05-21e5-4286-8ad6-617332062210",
         "description": "Cafe Mezcla",
-        "imgUrl": "https://imgur.com/tubPom4",
+        "imgUrl": "https://imgur.com/tubPom4.png",
         "category": "Coffee",
         "subproducts": [
             {
+                "discount":10,
                 "price": 80000,
                 "stock": 23,
                 "amount": 1,
@@ -40,7 +43,7 @@
     },
     {
         "id": "5da19309-b219-44b7-9111-1e56adebe1c7",
-        "description": "Mate x 50",
+        "description": "Mate Natura",
         "imgUrl": "https://imgur.com/RZnhckX.png",
         "category": "Mate",
         "subproducts": [
@@ -53,7 +56,7 @@
         ]
     },
     {
-        "description": "Te x 100 saquitos Green Hills",
+        "description": "Te Green Hills",
         "imgUrl": "https://imgur.com/aD3vPHv.png",
         "category": "Tea",
         "subproducts": [
@@ -66,7 +69,7 @@
         ]
     },
     {
-        "description": "Chocolate x 50 MAPSA",
+        "description": "Chocolate MAPSA ",
         "imgUrl": "https://imgur.com/zmremPu.png",
         "category": "Chocolate",
         "subproducts": [
@@ -76,46 +79,39 @@
                 "amount": 50,
                 "unit": "Unidades"
             }
-        ]
-    },
-    {
-        "description": "Capsulas Esmeralda x10",
-        "imgUrl": "https://imgur.com/LIVIrsc.png",
-        "category": "Sweetener",
-        "discount": 0,
-        "subproducts": [
-            {
-                "price": 5232,
-                "stock": 13,
-                "amount": 10,
-                "unit": "Unidades"
-            }
-        ]
+                    ]
+
     },
     {
         "description": "Portasobres",
         "imgUrl": "https://imgur.com/qFVuRNx.png",
         "category": "Accesory",
-        "discount": 20,
         "subproducts": [
             {
                 "price": 2825,
                 "stock": 92,
                 "amount": 1,
+                "discount": 20,
                 "unit": "Unidades"
             }
         ]
     },
     {
-        "description": "Capsulas Esmeralda x30",
+        "description": "Capsulas Esmeralda",
         "imgUrl": "https://imgur.com/LIVIrsc.png",
         "category": "Sweetener",
-        "discount": 10,
         "subproducts": [
             {
                 "price": 14475,
+                "discount": 10,
                 "stock": 113,
                 "amount": 30,
+                "unit": "Unidades"
+            },
+            {
+                "price": 22600,
+                "stock": 113,
+                "amount": 50,
                 "unit": "Unidades"
             }
         ]

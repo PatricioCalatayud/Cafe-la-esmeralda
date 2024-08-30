@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { preference, payment } from 'src/config/mercadopago.config';
 import { PaymentDto } from './payment.dto';
 import { OrderService } from '../order/order.service';
+import { MailerService } from '../mailer/mailer.service';
 
 @Injectable()
 export class MercadoPagoService {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly mailerService: MailerService
+  ) {}
 
   async createPayment(data: PaymentDto) {
     try {
@@ -24,7 +28,7 @@ export class MercadoPagoService {
           success: `https://cafe-la-esmeralda.vercel.app/PaymentSuccess/?orderId=${data.orderId}`,
           failure: `https://cafe-la-esmeralda.vercel.app/PaymentFailure/?orderId=${data.orderId}`
           },
-          notification_url: 'https://cafeteriaesmeralda.onrender.com/mercadopago/webhook',
+          notification_url: 'https://valentino-tunnel.flamefactory.io/mercadopago/webhook',
           payer: { name: data.orderId }
         }
         
@@ -41,9 +45,10 @@ export class MercadoPagoService {
       const data = await payment.get({ id: paid.data.id });
       
       if(data.status === 'approved') {
-        const orderId = data.additional_info.payer.first_name;
+        const order = await this.orderService.getOrderById(data.additional_info.payer.first_name);
         
-        this.orderService.MercadoPagoUpdate(orderId);
+        this.orderService.updateOrder(order.id, { orderStatus: true, status: 'En preparación' });
+        this.mailerService.sendEmailOrderPaid(order);
 
         return { HttpCode: 200 }
       }

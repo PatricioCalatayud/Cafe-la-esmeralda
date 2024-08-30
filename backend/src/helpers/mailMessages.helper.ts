@@ -1,4 +1,6 @@
-export const sendEmailPassword = (link) => {
+import { Order } from "src/entities/order.entity"
+
+export const sendEmailPassword = (link: string) => {
     return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -130,8 +132,25 @@ export const sendEmailPassword = (link) => {
 </html>`
 }
 
-export const sendEmailOrderExpired = () => {
+export const sendEmailOrderExpired = (orderId: string) => {
     return `
     ACÁ VA EL TEXTO DE PATO
+    `
+}
+
+export const sendEmailOrderPay = (order: Order) => {
+    return `
+    ACÁ VA EL TEXTO DE PATO
+    `
+}
+
+export const sendEmailOrderPaid = (order: Order) => {
+    if (order.user.role === 'Usuario') {
+        return `
+        ACÁ VA EL TEXTO SI ES USUARIO (sin las cuentas a transferir)
+        `
+    }
+    return `
+    ACÁ VA EL TEXTO SI ES CLIENTE (foto en wsp del ejemplo de compragamer con las cuentas a transferir)
     `
 }

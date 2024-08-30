@@ -7,7 +7,7 @@ import * as dataUser from './dataUser.json';
 import * as dataTestimony from './dataTestimony.json';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
-import { Subproduct } from 'src/entities/products/subprodcut.entity';
+import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { User } from 'src/entities/user.entity';
 import { OrderService } from 'src/modules/order/order.service';
 import { Testimony } from 'src/entities/testimony.entity';
@@ -65,7 +65,8 @@ export class PreloadService implements OnModuleInit {
                             stock: subproduct.stock,
                             amount: subproduct.amount,
                             unit: subproduct.unit as Medida, 
-                            product: savedProduct 
+                            product: savedProduct ,
+                            discount: subproduct.discount
                         });
                     });
     

@@ -1,7 +1,9 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID, ValidateNested, IsArray } from "class-validator";
+import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUUID, ValidateNested, IsArray, IsEnum } from "class-validator";
 import { SubproductDto } from "./subproduct.dto"; 
 import { ApiProperty } from "@nestjs/swagger";
+import { Presentacion } from "src/enum/presentacion.enum";
+import { TipoGrano } from "src/enum/tipoGrano.enum";
 
 export class CreateProductDto {
     @ApiProperty({ description: 'Descripción.' })
@@ -31,4 +33,13 @@ export class CreateProductDto {
     @Type(() => SubproductDto)
     @IsArray()
     subproducts?: SubproductDto[];
+
+    @ApiProperty({ description: 'Peso.' })
+    @IsNotEmpty()
+    @IsEnum(Presentacion)
+    presentacion: Presentacion;
+    
+    @IsOptional()
+    @IsEnum(TipoGrano)
+    tipoGrano?: TipoGrano;
 }

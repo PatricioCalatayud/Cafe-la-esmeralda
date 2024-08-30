@@ -1,6 +1,8 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Category } from "../category.entity";
-import { Subproduct } from "./subprodcut.entity";
+import { Subproduct } from "./subproduct.entity";
+import { Presentacion } from "src/enum/presentacion.enum";
+import { TipoGrano } from "src/enum/tipoGrano.enum";
 
 @Entity({ name:"products" })
 export class Product {
@@ -18,6 +20,20 @@ export class Product {
 
     @Column({type: 'text', default: 'https://example.com/default-image.png'})
     imgUrl?: string;
+
+    @Column({
+        type: 'enum',
+        enum: Presentacion,
+        default: Presentacion.GRANO
+    })
+    presentacion: Presentacion;
+
+    @Column({
+        type: 'enum',
+        enum: TipoGrano,
+        nullable: true 
+    })
+    tipoGrano?: TipoGrano;
 
     @ManyToOne(() => Category, (category) => category.products)
     category: Category;
