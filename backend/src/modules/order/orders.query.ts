@@ -17,9 +17,11 @@ export class OrderQuery {
           .createQueryBuilder('orders')
           .leftJoinAndSelect('orders.user', 'user')
           .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
-          .leftJoinAndSelect('productsOrder.product', 'products')
+          .leftJoinAndSelect('productsOrder.subproduct', 'subproduct')
+          .leftJoinAndSelect('subproduct.product', 'product')
           .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
           .leftJoinAndSelect('orderDetails.transactions', 'transaction')
+          .leftJoinAndSelect('orders.receipt', 'receipt')
           .where('orders.id = :orID', { orID: id })
           .andWhere('orders.isDeleted = :isDeleted', { isDeleted: false })
           .select([
@@ -28,16 +30,21 @@ export class OrderQuery {
               'user.email',
               'orders.id',
               'orders.date',
+              'orders.orderStatus',
               'orderDetails.totalPrice',
               'orderDetails.deliveryDate',
+              'orderDetails.addressDelivery',
               'transaction.status',
               'transaction.timestamp',
-              'productsOrder.quantity',  
-              'products.id',
-              'products.description',
-              'products.price',
-              'products.discount',
-              'products.imgUrl',
+              'productsOrder.quantity',
+              'product.description',
+              'product.imgUrl',
+              'subproduct.id',
+              'subproduct.price',
+              'subproduct.discount',
+              'subproduct.amount',
+              'subproduct.unit',
+              'receipt'
           ])
           .getOne();
   
