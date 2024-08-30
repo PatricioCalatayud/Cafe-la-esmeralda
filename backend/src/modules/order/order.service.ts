@@ -33,6 +33,7 @@ export class OrderService {
                 'user',
                 'productsOrder',
                 'productsOrder.subproduct',
+                'productsOrder.subproduct.product',
                 'orderDetail',
                 'orderDetail.transactions',
             ],
@@ -41,27 +42,48 @@ export class OrderService {
         return { data, total };
     }
     
-
     async getOrderById(id: string) {
-        const foundOrder = await this.orderQuery.getOrderById(id);
-        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-
-        return foundOrder;
+        const order = await this.orderRepository.findOne({
+            where: { id },
+            relations: [
+                'user',
+                'productsOrder',
+                'productsOrder.subproduct',
+                'productsOrder.subproduct.product',
+                'orderDetail',
+                'orderDetail.transactions',
+            ],
+        });
+    
+        if (!order) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
+    
+        return order;
     }
 
     async getOrdersByUserId(id: string, page: number, limit: number): Promise<{ data: Order[], total: number }> {
-        const user = await this.userRepository.findOneBy({ id, isDeleted: false });   
+        const user = await this.userRepository.findOne({
+            where: { id },
+        });
+    
         if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
-
+    
         const [data, total] = await this.orderRepository.findAndCount({
+            where: { 
+                user: { id: user.id }
+                },
+            relations: [
+                'productsOrder',
+                'productsOrder.subproduct',
+                'productsOrder.subproduct.product',
+                'orderDetail',
+                'orderDetail.transactions',
+            ],
             skip: (page - 1) * limit,
             take: limit,
-            where: { user }
-        })
-      
+        });
+    
         return { data, total };
     }
-
     async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account: boolean) {
         let total = 0;
         let createdOrder;

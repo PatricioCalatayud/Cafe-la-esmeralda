@@ -13,31 +13,32 @@ export class OrderQuery {
   ) {}
 
   async getOrderById(id: string) {
+    console.log('LLEGA: ', id);
+    
     const order = await this.orderRepository
           .createQueryBuilder('orders')
           .leftJoinAndSelect('orders.user', 'user')
-          .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
-          .leftJoinAndSelect('productsOrder.product', 'products')
-          .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
-          .leftJoinAndSelect('orderDetails.transactions', 'transaction')
-          .where('orders.id = :orID', { orID: id })
-          .andWhere('orders.isDeleted = :isDeleted', { isDeleted: false })
+          // .leftJoinAndSelect('orders.productsOrder', 'productsOrder') 
+          // .leftJoinAndSelect('productsOrder.product', 'products')
+          // .leftJoinAndSelect('orders.orderDetail', 'orderDetails')
+          // .leftJoinAndSelect('orderDetails.transactions', 'transaction')
+          .where('orders.id = :id', { id: id })
           .select([
               'user.id',
               'user.name',
               'user.email',
-              'orders.id',
-              'orders.date',
-              'orderDetails.totalPrice',
-              'orderDetails.deliveryDate',
-              'transaction.status',
-              'transaction.timestamp',
-              'productsOrder.quantity',  
-              'products.id',
-              'products.description',
-              'products.price',
-              'products.discount',
-              'products.imgUrl',
+              // 'orders.id',
+              // 'orders.date',
+              // 'orderDetails.totalPrice',
+              // 'orderDetails.deliveryDate',
+              // 'transaction.status',
+              // 'transaction.timestamp',
+              // 'productsOrder.quantity',  
+              // 'products.id',
+              // 'products.description',
+              // 'products.price',
+              // 'products.discount',
+              // 'products.imgUrl',
           ])
           .getOne();
   

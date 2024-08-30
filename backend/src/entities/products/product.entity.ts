@@ -18,6 +18,18 @@ export class Product {
     @Column({default: false})
     isDeleted:boolean
 
+    @Column({type:'enum',
+        enum:Presentacion,
+        nullable: true,
+    })
+    Presentacion: Presentacion;
+
+    @Column({type:'enum',
+        enum:TipoGrano,
+        nullable: true,
+    })
+    tipoGrano:TipoGrano;
+
     @Column({type: 'text', default: 'https://example.com/default-image.png'})
     imgUrl?: string;
 
