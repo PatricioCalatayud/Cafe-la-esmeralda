@@ -8,15 +8,13 @@
                 "price": 13000,
                 "stock": 10,
                 "amount": 250,
-                "unit": "Gramos",
-                "discount":10
+                "unit": "Gramos"
             },
             {
                 "price": 23000,
                 "stock": 10,
                 "amount": 500,
-                "unit": "Gramos",
-                "discount": 10
+                "unit": "Gramos"
             },
             {
                 "price": 33000,
@@ -33,7 +31,6 @@
         "category": "Coffee",
         "subproducts": [
             {
-                "discount":10,
                 "price": 80000,
                 "stock": 23,
                 "amount": 1,
@@ -69,7 +66,7 @@
         ]
     },
     {
-        "description": "Chocolate MAPSA ",
+        "description": "Chocolate MAPSA",
         "imgUrl": "https://imgur.com/zmremPu.png",
         "category": "Chocolate",
         "subproducts": [
@@ -79,19 +76,18 @@
                 "amount": 50,
                 "unit": "Unidades"
             }
-                    ]
-
+        ]
     },
     {
         "description": "Portasobres",
         "imgUrl": "https://imgur.com/qFVuRNx.png",
         "category": "Accesory",
+        "discount": 20,
         "subproducts": [
             {
                 "price": 2825,
                 "stock": 92,
                 "amount": 1,
-                "discount": 20,
                 "unit": "Unidades"
             }
         ]
@@ -100,10 +96,10 @@
         "description": "Capsulas Esmeralda",
         "imgUrl": "https://imgur.com/LIVIrsc.png",
         "category": "Sweetener",
+        "discount": 10,
         "subproducts": [
             {
                 "price": 14475,
-                "discount": 10,
                 "stock": 113,
                 "amount": 30,
                 "unit": "Unidades"
