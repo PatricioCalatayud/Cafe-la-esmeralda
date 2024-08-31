@@ -16,9 +16,6 @@ export class OrderDetail {
     @Column({ type: 'decimal', scale: 2 })
     totalPrice: number;
 
-    @Column({ type: 'int', default: 0 })
-    cupoDescuento: number;
-
     @OneToOne(() => Order, (order) => order.orderDetail)
     @JoinColumn({ name: 'orderId' })
     order: Order;

@@ -10,7 +10,7 @@ import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { OrderQuery } from './orders.query';
 import { MailerService } from '../mailer/mailer.service';
-
+import { Receipt } from 'src/entities/receipt.entity';
 
 @Injectable()
 export class OrderService {
@@ -19,7 +19,7 @@ export class OrderService {
         @InjectRepository(OrderDetail) private readonly orderDetailRepository: Repository<OrderDetail>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(Transaccion) private readonly transactionRepository: Repository<Transaccion>,
-        @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
+        @InjectRepository(Receipt) private readonly receiptRepository: Repository<Receipt>,
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
         private readonly dataSource: DataSource,
         private readonly orderQuery: OrderQuery,
@@ -38,7 +38,10 @@ export class OrderService {
                 'orderDetail.transactions',
             ],
         });
-    
+        
+        data.map(order => {
+            delete order.user.password
+        })
         return { data, total };
     }
     
@@ -50,16 +53,20 @@ export class OrderService {
         return foundOrder;
     }
 
-    async getOrdersByUserId(id: string, page: number = 1, limit: number = 10): Promise<{ data: Order[], total: number }> {
+    async getOrdersByUserId(id: string, page: number, limit: number): Promise<{ data: Order[], total: number }> {
         const user = await this.userRepository.findOneBy({ id, isDeleted: false });   
         if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
-        
-        const { data, total } = await this.orderQuery.getOrdersByUserId(id, page, limit);
 
+        const [data, total] = await this.orderRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit,
+            where: { user }
+        })
+      
         return { data, total };
     }
 
-    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account: boolean) {
+    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string) {
         let total = 0;
         let createdOrder;
     
@@ -97,10 +104,16 @@ export class OrderService {
             await transactionalEntityManager.save(OrderDetail, orderDetail);
     
             await transactionalEntityManager.save(Transaccion, {
-                status: account ? 'En preparación' : 'Pendiente de pago',
+                status: account === 'Cuenta corriente' ? 'En preparación' : 'Pendiente de pago',
                 timestamp: new Date(),
                 orderdetail: orderDetail
             });
+
+            if(account === 'Transferencia') {
+                await transactionalEntityManager.save(Receipt, {
+                    order: newOrder.id
+                })
+            }
         });
   
         delete createdOrder.user.password;
@@ -110,36 +123,26 @@ export class OrderService {
     async updateOrder(id: string, data: UpdateOrderDto) {
         const order = await this.orderRepository.findOne({
             where: { id },
-            relations: ['productsOrder', 'productsOrder.product', 'orderDetail', 'orderDetail.transactions']
+            relations: ['productsOrder', 'productsOrder.subproduct', 'orderDetail', 'orderDetail.transactions', 'receipt']
         });
         if (!order) throw new NotFoundException('Orden no encontrada');
-
+        
         if(data.orderStatus) {
             await this.orderRepository.update(
                 { id: order.id },
                 { orderStatus: true }
             )
-
+            
             await this.mailerService.sendEmailOrderPaid(order);
         }
+        
+        if(data.deliveryDate) await this.orderDetailRepository.update({ id: order.orderDetail.id }, { deliveryDate: data.deliveryDate });
+        
+        if(data.status) await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status, timestamp: new Date() });
 
-        await this.orderDetailRepository.update(
-            { id: order.orderDetail.id },
-            { deliveryDate: data.deliveryDate }
-        );
-
-        await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status });
+        if(data.transferStatus) await this.receiptRepository.update({ id: order.receipt.id }, { status: data.transferStatus });
 
         return { HttpCode: 200 };
-    }
-
-    async deleteOrder(id: string) {
-        const foundOrder = await this.getOrderById(id);
-        if (!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-
-        await this.orderRepository.update(id, { isDeleted: true });
-
-        return foundOrder;
     }
 
     async updateStock(subproductId: string, quantity: number) {
@@ -147,5 +150,11 @@ export class OrderService {
         if (!subproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${subproductId}`);
         
         await this.subproductRepository.update({ id: subproductId }, { stock: subproduct.stock - quantity });
+
+    async deleteOrder(id: string): Promise<{ message: string }> {
+        const result = await this.orderRepository.delete(id);
+        if (result.affected === 0) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
+    
+        return { message: `La orden con id ${id} fue eliminada permanentemente.` };
     }
 }
