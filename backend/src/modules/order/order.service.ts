@@ -150,6 +150,7 @@ export class OrderService {
         if (!subproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${subproductId}`);
         
         await this.subproductRepository.update({ id: subproductId }, { stock: subproduct.stock - quantity });
+    }
 
     async deleteOrder(id: string): Promise<{ message: string }> {
         const result = await this.orderRepository.delete(id);
