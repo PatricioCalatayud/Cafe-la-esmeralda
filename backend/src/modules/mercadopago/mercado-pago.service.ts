@@ -28,7 +28,8 @@ export class MercadoPagoService {
           success: `https://cafe-la-esmeralda.vercel.app/PaymentSuccess/?orderId=${data.orderId}`,
           failure: `https://cafe-la-esmeralda.vercel.app/PaymentFailure/?orderId=${data.orderId}`
           },
-          notification_url: 'https://valentino-tunnel.flamefactory.io/mercadopago/webhook',
+          notification_url: 'https://cafeteriaesmeralda.onrender.com/mercadopago/webhook',
+          auto_return: 'all',
           payer: { name: data.orderId }
         }
         
@@ -53,9 +54,5 @@ export class MercadoPagoService {
         return { HttpCode: 200 }
       }
     }
-  }
-
-  async checkTransfer() {
-    
   }
 }

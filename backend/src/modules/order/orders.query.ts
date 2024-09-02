@@ -87,6 +87,7 @@ export class OrderQuery {
       .select([
         'user.id',
         'user.name',
+        'user.role',
         'orders.id',
         'orders.date',
         'orderDetails.totalPrice',

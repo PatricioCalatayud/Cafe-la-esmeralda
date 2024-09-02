@@ -9,6 +9,7 @@ import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { MailerService } from '../mailer/mailer.service';
+import { Receipt } from 'src/entities/receipt.entity';
 
 @Injectable()
 export class OrderService {
@@ -17,7 +18,7 @@ export class OrderService {
         @InjectRepository(OrderDetail) private readonly orderDetailRepository: Repository<OrderDetail>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(Transaccion) private readonly transactionRepository: Repository<Transaccion>,
-        @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
+        @InjectRepository(Receipt) private readonly receiptRepository: Repository<Receipt>,
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
         private readonly dataSource: DataSource,
         private readonly mailerService: MailerService
@@ -82,7 +83,7 @@ export class OrderService {
     
         return { data, total };
     }
-    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account: string) {
+    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string) {
         let total = 0;
         let createdOrder;
     
@@ -120,10 +121,13 @@ export class OrderService {
             await transactionalEntityManager.save(OrderDetail, orderDetail);
     
             await transactionalEntityManager.save(Transaccion, {
-                status: account ? 'En preparación' : 'Pendiente de pago',
+                status: account === 'Cuenta corriente' ? 'En preparación' : 'Pendiente de pago',
                 timestamp: new Date(),
                 orderdetail: orderDetail
             });
+
+            if(account === 'Transferencia') await transactionalEntityManager.save(Receipt, { order: newOrder.id });
+            if(account === 'Cuenta corriente') console.log('LÓGICA DE CUENTA CORRIENTE');
         });
   
         delete createdOrder.user.password;
@@ -150,12 +154,11 @@ export class OrderService {
             await this.mailerService.sendEmailOrderPaid(order);
         }
 
-        await this.orderDetailRepository.update(
-            { id: order.orderDetail.id },
-            { deliveryDate: data.deliveryDate }
-        );
+        if(data.deliveryDate) await this.orderDetailRepository.update({ id: order.orderDetail.id }, { deliveryDate: data.deliveryDate });
 
-        await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status });
+        if(data.status) await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status, timestamp: new Date() });
+
+        if(data.transferStatus) await this.receiptRepository.update({ id: order.receipt.id }, { status: data.transferStatus });
 
         return { HttpCode: 200 };
     }
@@ -171,6 +174,6 @@ export class OrderService {
         const result = await this.orderRepository.delete(id);
         if (result.affected === 0) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
     
-        return { message: `La orden con id ${id} fue eliminada permanentemente` };
+        return { message: `La orden con id ${id} fue eliminada permanentemente.` };
     }
 }
