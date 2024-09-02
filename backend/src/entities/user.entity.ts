@@ -31,9 +31,6 @@ export class User extends BaseEntity {
   @Column({ default: true })
   isAvailable: boolean;
 
-  @Column({ default: false })
-  isDeleted: boolean;
-
   @OneToMany(() => Order, (order) => order.user)
   @JoinColumn({ name: 'orderId' })
   orders: Order[];

@@ -86,7 +86,7 @@ export class OrderService {
         let total = 0;
         let createdOrder;
     
-        const user = await this.userRepository.findOneBy({ id: userId, isDeleted: false });
+        const user = await this.userRepository.findOneBy({ id: userId});
     
         await this.dataSource.transaction(async (transactionalEntityManager) => {
             const order = transactionalEntityManager.create(Order, { user, date: new Date() });

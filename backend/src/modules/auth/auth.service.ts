@@ -52,7 +52,6 @@ export class AuthService {
                 sub: user.id,
                 roles: userRoles,
                 isAvailable: user.isAvailable,
-                isDeleted: user.isDeleted  
             };
     
             const accessToken = this.jwtService.sign(payload);
@@ -70,7 +69,6 @@ export class AuthService {
             sub: user.id, 
             roles: userRoles,
             isAvailable: user.isAvailable,
-            isDeleted: user.isDeleted
         }
         
         const accessToken = this.jwtService.sign(payload);
