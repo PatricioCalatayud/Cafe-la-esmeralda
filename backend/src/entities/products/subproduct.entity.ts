@@ -29,7 +29,9 @@ export class Subproduct {
     @Column({default: true})
     isAvailable:boolean
 
-    @ManyToOne(() => Product, (product) => product.subproducts)
+    @ManyToOne(() => Product, (product) => product.subproducts,{
+        onDelete: 'CASCADE'
+    })
     product: Product;
 
     @OneToMany(() => ProductsOrder, (productsOrder) => productsOrder.subproduct)  

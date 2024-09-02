@@ -36,6 +36,8 @@ export class Product {
     @ManyToOne(() => Category, (category) => category.products)
     category: Category;
 
-    @OneToMany(() => Subproduct, (subproduct) => subproduct.product)
+    @OneToMany(() => Subproduct, (subproduct) => subproduct.product,{
+        cascade:true,
+    })
     subproducts: Subproduct[];
 }
