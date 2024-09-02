@@ -8,7 +8,6 @@ import { User } from 'src/entities/user.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
-import { OrderQuery } from './orders.query';
 import { MailerService } from '../mailer/mailer.service';
 import { Receipt } from 'src/entities/receipt.entity';
 
@@ -22,7 +21,6 @@ export class OrderService {
         @InjectRepository(Receipt) private readonly receiptRepository: Repository<Receipt>,
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
         private readonly dataSource: DataSource,
-        private readonly orderQuery: OrderQuery,
         private readonly mailerService: MailerService
     ) {}
 
@@ -34,43 +32,62 @@ export class OrderService {
                 'user',
                 'productsOrder',
                 'productsOrder.subproduct',
+                'productsOrder.subproduct.product',
                 'orderDetail',
                 'orderDetail.transactions',
             ],
         });
-        
-        data.map(order => {
-            delete order.user.password
-        })
+    
         return { data, total };
     }
     
-
     async getOrderById(id: string) {
-        const foundOrder = await this.orderQuery.getOrderById(id);
-        if(!foundOrder) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
-
-        return foundOrder;
+        const order = await this.orderRepository.findOne({
+            where: { id },
+            relations: [
+                'user',
+                'productsOrder',
+                'productsOrder.subproduct',
+                'productsOrder.subproduct.product',
+                'orderDetail',
+                'orderDetail.transactions',
+            ],
+        });
+    
+        if (!order) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
+    
+        return order;
     }
 
     async getOrdersByUserId(id: string, page: number, limit: number): Promise<{ data: Order[], total: number }> {
-        const user = await this.userRepository.findOneBy({ id, isDeleted: false });   
+        const user = await this.userRepository.findOne({
+            where: { id },
+        });
+    
         if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
-
+    
         const [data, total] = await this.orderRepository.findAndCount({
+            where: { 
+                user: { id: user.id }
+                },
+            relations: [
+                'productsOrder',
+                'productsOrder.subproduct',
+                'productsOrder.subproduct.product',
+                'orderDetail',
+                'orderDetail.transactions',
+            ],
             skip: (page - 1) * limit,
             take: limit,
-            where: { user }
-        })
-      
+        });
+    
         return { data, total };
     }
-
     async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string) {
         let total = 0;
         let createdOrder;
     
-        const user = await this.userRepository.findOneBy({ id: userId, isDeleted: false });
+        const user = await this.userRepository.findOneBy({ id: userId});
     
         await this.dataSource.transaction(async (transactionalEntityManager) => {
             const order = transactionalEntityManager.create(Order, { user, date: new Date() });
@@ -109,11 +126,8 @@ export class OrderService {
                 orderdetail: orderDetail
             });
 
-            if(account === 'Transferencia') {
-                await transactionalEntityManager.save(Receipt, {
-                    order: newOrder.id
-                })
-            }
+            if(account === 'Transferencia') await transactionalEntityManager.save(Receipt, { order: newOrder.id });
+            if(account === 'Cuenta corriente') console.log('LÓGICA DE CUENTA CORRIENTE');
         });
   
         delete createdOrder.user.password;
@@ -123,21 +137,25 @@ export class OrderService {
     async updateOrder(id: string, data: UpdateOrderDto) {
         const order = await this.orderRepository.findOne({
             where: { id },
-            relations: ['productsOrder', 'productsOrder.subproduct', 'orderDetail', 'orderDetail.transactions', 'receipt']
+            relations: [
+                'productsOrder',
+                'productsOrder.subproduct',
+                'orderDetail',
+                'orderDetail.transactions']
         });
         if (!order) throw new NotFoundException('Orden no encontrada');
-        
+
         if(data.orderStatus) {
             await this.orderRepository.update(
                 { id: order.id },
                 { orderStatus: true }
             )
-            
+
             await this.mailerService.sendEmailOrderPaid(order);
         }
-        
+
         if(data.deliveryDate) await this.orderDetailRepository.update({ id: order.orderDetail.id }, { deliveryDate: data.deliveryDate });
-        
+
         if(data.status) await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status, timestamp: new Date() });
 
         if(data.transferStatus) await this.receiptRepository.update({ id: order.receipt.id }, { status: data.transferStatus });

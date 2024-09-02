@@ -12,9 +12,6 @@ export class Order {
     @Column({ type: 'timestamp' })
     date: Date;
     
-    @Column({ default: false })
-    isDeleted: boolean;
-
     @Column({ type: 'boolean', default: false })
     orderStatus: boolean;
 
