@@ -22,7 +22,7 @@ export class Product {
         enum:Presentacion,
         nullable: true,
     })
-    Presentacion: Presentacion;
+    presentacion: Presentacion;
 
     @Column({type:'enum',
         enum:TipoGrano,

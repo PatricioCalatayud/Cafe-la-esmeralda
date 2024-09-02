@@ -1,9 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsEnum, IsInt,  IsNotEmpty, IsNumber,  IsOptional,  IsPositive } from "class-validator";
+import { IsEnum, IsInt,  IsNotEmpty, IsNumber,  IsOptional,  IsPositive, IsString } from "class-validator";
 import { Medida } from "src/enum/medidas.enum";
 
 export class SubproductDto {
+    @IsOptional()
+    @IsString()
+    id?:string;
+
     @ApiProperty({ description: 'Precio.' })
     @IsNotEmpty()
     @Type(() => Number)
