@@ -53,7 +53,7 @@ export class AddOrderDto {
 
     @ApiProperty({ description: 'Propiedad para cuentas corrientes, en caso de ser true la orden se pone "En preparación".' })
     @IsEnum(['Cuenta corriente', 'Transferencia'])
-    @IsOptional()
+    @IsOptional() 
     account?: 'Cuenta corriente' | 'Transferencia' | null;
 }
 

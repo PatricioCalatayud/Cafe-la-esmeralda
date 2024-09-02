@@ -137,7 +137,7 @@ export class PreloadService implements OnModuleInit {
             await this.orderService.createOrder(users[0].id, [
                 { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
                 { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id }
-            ], "Calle Wallaby 42 Sidney");
+            ], "Calle Wallaby 42 Sidney","Pendiente de pago");
     
             console.log("Precarga de pedido exitosa.");
         } catch (error) {
