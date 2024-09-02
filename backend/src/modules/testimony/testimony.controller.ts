@@ -20,7 +20,7 @@ export class TestimonyController {
 
     @Post()
     @ApiOperation({ 
-        summary: 'Crea calificación.',
+        summary: 'Crea la calificación.',
         description: 
             'Este endpoint permite crear una calificación.'
     })
