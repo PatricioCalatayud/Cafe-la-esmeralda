@@ -147,8 +147,9 @@ export class ProductsService {
             }
         }
     
-        await this.productRepository.update(id, updateData);
-    
+        if (Object.keys(updateData).length > 0){
+            await this.productRepository.update(id, updateData);
+        }
         return await this.productRepository.findOne({ 
             where: { id }, 
             relations: { category: true, subproducts: true }
