@@ -25,7 +25,7 @@ export class OrderController {
         return await this.orderService.getOrderById(id)
     }
 
-    @ApiOperation({ summary: 'Obtiene ordenes de un usuario por su ID', description: 'Este endpoint retorna todas las ordenes de un usuario por su ID' })
+    @ApiOperation({ summary: 'Obtiene ordenes de un usuario por su ID', description: 'Este endpoint retorna todas las ordenes de un usuario por su ID.' })
     @Get('user/:id')
     async getOrdersByUserId (
       @Param('id', ParseUUIDPipe) id: string,

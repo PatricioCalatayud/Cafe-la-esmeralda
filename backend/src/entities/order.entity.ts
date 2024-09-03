@@ -27,6 +27,7 @@ export class Order {
     orderDetail: OrderDetail;
 
     @OneToOne(() => Receipt, (receipt) => receipt.order)
+    @JoinColumn({ name: 'receipt' })
     receipt: Receipt;
 
     @ManyToOne(() => Account, account => account.orders)

@@ -10,6 +10,7 @@ import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { MailerService } from '../mailer/mailer.service';
 import { Receipt } from 'src/entities/receipt.entity';
+import { AccountService } from '../account/account.service';
 
 @Injectable()
 export class OrderService {
@@ -21,7 +22,8 @@ export class OrderService {
         @InjectRepository(Receipt) private readonly receiptRepository: Repository<Receipt>,
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
         private readonly dataSource: DataSource,
-        private readonly mailerService: MailerService
+        private readonly mailerService: MailerService,
+        private readonly accountService: AccountService
     ) {}
 
     async getOrders(page: number, limit: number): Promise<{ data: Order[], total: number }> {
@@ -126,8 +128,13 @@ export class OrderService {
                 orderdetail: orderDetail
             });
 
-            if(account === 'Transferencia') await transactionalEntityManager.save(Receipt, { order: newOrder.id });
-            if(account === 'Cuenta corriente') console.log('LÓGICA DE CUENTA CORRIENTE');
+            if(account === 'Transferencia') {
+                const receipt = await transactionalEntityManager.save(Receipt, { order: newOrder.id });
+                newOrder.receipt = receipt;
+                await transactionalEntityManager.save(newOrder);
+            }
+            
+            if(account === 'Cuenta corriente') await this.accountService.registerPurchase(userId, orderDetail.totalPrice);
         });
   
         delete createdOrder.user.password;

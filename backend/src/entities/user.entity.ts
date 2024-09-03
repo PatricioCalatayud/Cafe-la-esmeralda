@@ -40,7 +40,7 @@ export class User extends BaseEntity {
   @OneToMany(() => Testimony, testimony => testimony.user)
   testimonies: Testimony[];
 
-  @OneToOne(() => Account, account => account.client)
+  @OneToOne(() => Account, account => account.user)
   account: Account;
   
   @OneToMany(()=>Rating, rating=>rating.user)
