@@ -1,7 +1,7 @@
 import {Controller, Body, Get, Param, Put, Delete, UseGuards, Query, DefaultValuePipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from 'src/entities/user.entity';
-import { UserDTO } from 'src/modules/users/users.dto';
+import { UpdateUserDTO, UserDTO } from 'src/modules/users/users.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/guards/auth.guard';
 
@@ -38,7 +38,7 @@ export class UsersController {
     @UseGuards(AuthGuard)
     async updateUser(
         @Param('id') id: string,
-        @Body() userDTO: Partial<UserDTO>,
+        @Body() userDTO: Partial<UpdateUserDTO>,
     ): Promise<Omit<User, "password"> | undefined> {
         return await this.usersService.updateUser(id, userDTO);
     }

@@ -131,9 +131,7 @@ export class ProductsService {
                         where: { id: subproductData.id, product: { id } }
                     });
                     if (existingSubproduct) {
-                        await this.subproductRepository.update(existingSubproduct.id, {
-                            ...subproductData,
-                        isAvailable: subproductData.isAvailable !== undefined ? subproductData.isAvailable : existingSubproduct.isAvailable});
+                        await this.subproductRepository.update(existingSubproduct.id, subproductData);
                     } else {
                         throw new NotFoundException(`No se encontró el subproducto con ID: ${subproductData.id}`);
                     }
