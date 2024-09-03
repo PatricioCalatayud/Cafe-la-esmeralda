@@ -5,7 +5,6 @@ import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { In, Repository } from 'typeorm';
 import { CreateProductDto } from './dtos/products.dto';
-import { UpdateCoffeeDto } from './dtos/coffee.dto';
 import { ImageService } from '../images/image.service';
 import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 
