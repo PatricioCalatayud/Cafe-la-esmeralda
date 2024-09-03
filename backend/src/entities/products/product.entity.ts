@@ -15,9 +15,6 @@ export class Product {
     @Column({ type: 'int', default: 0})
     averageRating:number;
 
-    @Column({default: false})
-    isDeleted:boolean
-
     @Column({type:'enum',
         enum:Presentacion,
         nullable: true,
