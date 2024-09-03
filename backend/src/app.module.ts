@@ -21,6 +21,7 @@ import { ImageModule } from './modules/images/image.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailerModule } from './modules/mailer/mailer.module';
 import { ProductRatingModule } from './modules/product-rating/product-rating.module';
+import { AccountModule } from './modules/account/account.module';
 
 @Module({
   imports: [
@@ -49,7 +50,8 @@ import { ProductRatingModule } from './modules/product-rating/product-rating.mod
       secret: process.env.JWT_SECRET,
     }),
     CategoryModule,
-    MailerModule
+    MailerModule,
+    AccountModule
   ],
   controllers: [AppController],
   providers: [AppService, PreloadService],

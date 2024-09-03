@@ -29,13 +29,11 @@ export class UsersController {
     }
 
     @Put(':id')
-    @ApiBearerAuth()
     @ApiOperation({
       summary: 'Actualiza un usuario por ID',
       description:
         'Esta ruta actualiza un usuario, por un id enviado por parametro y datos nuevos, de tipo UserDto enviados por body',
     })
-    @UseGuards(AuthGuard)
     async updateUser(
         @Param('id') id: string,
         @Body() userDTO: Partial<UpdateUserDTO>,
