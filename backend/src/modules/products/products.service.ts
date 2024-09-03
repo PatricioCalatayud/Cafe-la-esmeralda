@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateProductDto } from './dtos/products.dto';
 import { UpdateCoffeeDto } from './dtos/coffee.dto';
 import { ImageService } from '../images/image.service';
@@ -22,7 +22,6 @@ export class ProductsService {
         const [data, total] = await this.productRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
-            where: { isDeleted: false },
             relations: { category: true, subproducts: true }
         })
       
@@ -36,7 +35,7 @@ export class ProductsService {
         const [data, total] = await this.productRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
-            where: { isDeleted: false, category: { id: categoryFound.id } },
+            where: {  category: { id: categoryFound.id } },
             relations: { category: true, subproducts: true }
         })
 
@@ -44,7 +43,8 @@ export class ProductsService {
     }
 
     async getAvailable(): Promise<Product[]> {
-        return await this.productRepository.find({ where: { isDeleted: false }});
+        const productsAvailable = await this.subproductRepository.find({ where:{isAvailable:true}});
+        return await this.productRepository.find({ where: { id: In(productsAvailable.map(subproduct => subproduct.product.id)) } });
     }
 
     async getAvailableByCategory(category: string) {
@@ -54,13 +54,12 @@ export class ProductsService {
         return await this.productRepository.createQueryBuilder('products')
             .innerJoinAndSelect('products.category', 'categories')
             .where('categories.id = :categoryId', { categoryId: categoryFound.id })
-            .andWhere('products.isDeleted = :isDeleted', { isDeleted: false })
             .getMany();
     }
 
     async getById(id: string): Promise<Product> {
         const product = await this.productRepository.findOne({ 
-            where: { id, isDeleted: false,}, 
+            where: { id, }, 
             relations: { category: true, subproducts: true, }
         });
         if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
@@ -133,7 +132,9 @@ export class ProductsService {
                         where: { id: subproductData.id, product: { id } }
                     });
                     if (existingSubproduct) {
-                        await this.subproductRepository.update(existingSubproduct.id, subproductData);
+                        await this.subproductRepository.update(existingSubproduct.id, {
+                            ...subproductData,
+                        isAvailable: subproductData.isAvailable !== undefined ? subproductData.isAvailable : existingSubproduct.isAvailable});
                     } else {
                         throw new NotFoundException(`No se encontró el subproducto con ID: ${subproductData.id}`);
                     }
