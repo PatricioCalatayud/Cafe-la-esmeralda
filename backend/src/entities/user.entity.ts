@@ -3,6 +3,7 @@ import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColu
 import { Testimony } from "./testimony.entity";
 import { Order } from "./order.entity";
 import { IsEmail, IsNotEmpty, IsOptional } from "class-validator";
+import { Rating } from "./ratings.entity";
 
 @Entity({ name: 'users'})
 export class User extends BaseEntity {
@@ -37,4 +38,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Testimony, testimony => testimony.user)
   testimonies: Testimony[];
+
+  @OneToMany(()=>Rating, rating=>rating.user)
+  ratings: Rating[]
 }

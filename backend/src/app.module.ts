@@ -20,6 +20,7 @@ import { CategoryModule } from './modules/categories/category.module';
 import { ImageModule } from './modules/images/image.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailerModule } from './modules/mailer/mailer.module';
+import { ProductRatingModule } from './modules/product-rating/product-rating.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { MailerModule } from './modules/mailer/mailer.module';
     ProductsModule,
     OrderModule,
     MercadoPagoModule,
+    ProductRatingModule,
     TestimonyModule,
     JwtModule.register({
       global: true,
