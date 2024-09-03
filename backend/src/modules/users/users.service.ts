@@ -2,11 +2,16 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserDTO } from './users.dto';
+import { UpdateUserDTO, UserDTO } from './users.dto';
+import { Account } from 'src/entities/account.entity';
+import { Role } from 'src/enum/roles.enum';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
+    constructor(
+        @InjectRepository(User) private userRepository: Repository<User>,
+        @InjectRepository(Account) private accountRepository: Repository<Account>
+    ) {}
 
     async getUsers(page: number, limit: number): Promise<{ data: Omit<User, "password">[], total: number }> {
         const [data, total] = await this.userRepository.findAndCount({
@@ -30,12 +35,14 @@ export class UsersService {
         return user;
     }
 
-    async updateUser(id: string, userDTO: Partial<UserDTO>): Promise<Omit<User, "password">> {
+    async updateUser(id: string, userDTO: Partial<UpdateUserDTO>): Promise<Omit<User, "password">> {
         await this.userRepository.update(id, userDTO);
 
-        const updatedUser = await this.userRepository.findOne({ where: { id } });
+        const updatedUser = await this.userRepository.findOne({ where: { id }});
         if (!updatedUser) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
         
+        if(userDTO.role === Role.CLIENT && !updatedUser.account) await this.accountRepository.save({ user: updatedUser, creditLimit: userDTO.accountLimit });
+
         delete updatedUser.password;
         return updatedUser;
     }
