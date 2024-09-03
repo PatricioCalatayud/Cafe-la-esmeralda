@@ -1,5 +1,6 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
+import { Product } from "./products/product.entity";
 
 @Entity('ratings')
 export class Rating{
@@ -12,8 +13,10 @@ export class Rating{
     @CreateDateColumn()
     created_at:Date
 
-    // @ManyToOne(()=>User, user => user.ratings)
-    // user:User
+    @ManyToOne(()=>User, user => user.ratings)
+    user:User
 
-    // @Many
+    @ManyToOne(()=>Product, product => product.ratings)
+    product:Product
+
 }

@@ -4,6 +4,7 @@ import { Testimony } from "./testimony.entity";
 import { Order } from "./order.entity";
 import { IsEmail, IsNotEmpty, IsOptional } from "class-validator";
 import { Account } from "./account.entity";
+import { Rating } from "./ratings.entity";
 
 @Entity({ name: 'users'})
 export class User extends BaseEntity {
@@ -41,4 +42,7 @@ export class User extends BaseEntity {
 
   @OneToOne(() => Account, account => account.client)
   account: Account;
+  
+  @OneToMany(()=>Rating, rating=>rating.user)
+  ratings: Rating[]
 }
