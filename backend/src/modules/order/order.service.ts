@@ -61,7 +61,7 @@ export class OrderService {
         if (!order) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
         
         if (order.user) {
-            delete order.user.password; // Elimina el campo password del usuario
+            delete order.user.password;
         }
     
         return order;
