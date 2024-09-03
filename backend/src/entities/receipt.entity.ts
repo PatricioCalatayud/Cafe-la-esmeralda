@@ -12,7 +12,7 @@ export class Receipt {
     @Column({ type: 'varchar', default: 'Pendiente de subir comprobante' })
     status: string;
 
-    @OneToOne(() => Order, (order) => order.id)
+    @OneToOne(() => Order, (order) => order.id, { cascade: true })
     @JoinColumn()
     order: Order['id'];
 }
