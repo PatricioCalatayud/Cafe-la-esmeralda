@@ -37,6 +37,7 @@ export class OrderService {
                 'productsOrder.subproduct.product',
                 'orderDetail',
                 'orderDetail.transactions',
+                'receipt'
             ],
         });
     
@@ -53,6 +54,7 @@ export class OrderService {
                 'productsOrder.subproduct.product',
                 'orderDetail',
                 'orderDetail.transactions',
+                'receipt'
             ],
         });
     
@@ -78,6 +80,7 @@ export class OrderService {
                 'productsOrder.subproduct.product',
                 'orderDetail',
                 'orderDetail.transactions',
+                'receipt'
             ],
             skip: (page - 1) * limit,
             take: limit,
