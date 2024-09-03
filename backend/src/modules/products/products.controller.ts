@@ -10,6 +10,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enum/roles.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Product } from 'src/entities/products/product.entity';
+import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 
 @ApiTags('Productos')
 @Controller('products')
@@ -66,7 +67,7 @@ export class ProductsController {
     @UseInterceptors(FileInterceptor('file'))
     async updateProduct(
         @Param('id', ParseUUIDPipe) id: string,
-        @Body() productInfo: UpdateCoffeeDto,
+        @Body() productInfo: UpdatedProductDto,
         @UploadedFile() file?: Express.Multer.File) {
         return this.productService.updateProduct(id, productInfo, file);
     }
