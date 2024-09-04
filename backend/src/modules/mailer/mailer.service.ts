@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import transporter, { email } from "src/config/mailer.config";
-import { sendEmailOrderExpired, sendEmailOrderPaid, sendEmailPassword, sendEmailOrderPay } from "src/helpers/mailMessages.helper";
+import { sendEmailOrderExpired, sendEmailOrderPaid, sendEmailPassword, sendEmailOrderCreated } from "src/helpers/mailMessages.helper";
 import { Order } from "src/entities/order.entity";
 
 @Injectable()
@@ -20,9 +20,10 @@ export class MailerService {
     }
 
     async sendEmailOrderCreated(order: Order) {
-        const html = sendEmailOrderPay(order);
-
+        const html = sendEmailOrderCreated(order);
+console.log(order)
         const mail = { from: email, to: order.user.email, subject: 'Datos de tu pedido', html };
+        
 
         const info = await transporter.sendMail(mail);
 
