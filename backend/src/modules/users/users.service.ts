@@ -36,12 +36,14 @@ export class UsersService {
     }
 
     async updateUser(id: string, userDTO: Partial<UpdateUserDTO>): Promise<Omit<User, "password">> {
+        const { accountLimit } = userDTO;
+        delete userDTO.accountLimit;
         await this.userRepository.update(id, userDTO);
 
         const updatedUser = await this.userRepository.findOne({ where: { id }});
         if (!updatedUser) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
         
-        if(userDTO.role === Role.CLIENT && !updatedUser.account) await this.accountRepository.save({ user: updatedUser, creditLimit: userDTO.accountLimit });
+        if(userDTO.role === Role.CLIENT && !updatedUser.account) await this.accountRepository.save({ user: updatedUser, creditLimit: accountLimit });
 
         delete updatedUser.password;
         return updatedUser;
