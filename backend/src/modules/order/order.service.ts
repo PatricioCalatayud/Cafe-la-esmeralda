@@ -59,6 +59,10 @@ export class OrderService {
         });
     
         if (!order) throw new NotFoundException(`Orden no encontrada. ID: ${id}`);
+        
+        if (order.user) {
+            delete order.user.password;
+        }
     
         return order;
     }
@@ -151,7 +155,9 @@ export class OrderService {
                 'productsOrder',
                 'productsOrder.subproduct',
                 'orderDetail',
-                'orderDetail.transactions']
+                'orderDetail.transactions',
+                'receipt'
+                ]
         });
         if (!order) throw new NotFoundException('Orden no encontrada');
 
