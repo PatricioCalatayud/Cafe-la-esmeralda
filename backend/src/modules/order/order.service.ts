@@ -151,7 +151,9 @@ export class OrderService {
                 'productsOrder',
                 'productsOrder.subproduct',
                 'orderDetail',
-                'orderDetail.transactions']
+                'orderDetail.transactions',
+                'receipt'
+                ]
         });
         if (!order) throw new NotFoundException('Orden no encontrada');
 
