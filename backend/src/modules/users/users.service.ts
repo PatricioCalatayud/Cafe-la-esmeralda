@@ -16,7 +16,8 @@ export class UsersService {
     async getUsers(page: number, limit: number): Promise<{ data: Omit<User, "password">[], total: number }> {
         const [data, total] = await this.userRepository.findAndCount({
             skip: (page - 1) * limit,
-            take: limit
+            take: limit,
+            relations: ['account']
         });
         
         data.map((user) => {
@@ -28,7 +29,7 @@ export class UsersService {
     }
 
     async getUserById(id: string): Promise<Omit<User, "password">> {
-        const user = await this.userRepository.findOne({ where: { id } });
+        const user = await this.userRepository.findOne({ where: { id }, relations: ['account'] });
         if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
         
         delete user.password;
@@ -40,7 +41,7 @@ export class UsersService {
         delete userDTO.accountLimit;
         await this.userRepository.update(id, userDTO);
 
-        const updatedUser = await this.userRepository.findOne({ where: { id }});
+        const updatedUser = await this.userRepository.findOne({ where: { id }, relations: ['account']});
         if (!updatedUser) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
         
         if(userDTO.role === Role.CLIENT && !updatedUser.account) await this.accountRepository.save({ user: updatedUser, creditLimit: accountLimit });
