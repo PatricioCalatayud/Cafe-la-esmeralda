@@ -22,6 +22,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MailerModule } from './modules/mailer/mailer.module';
 import { ProductRatingModule } from './modules/product-rating/product-rating.module';
 import { AccountModule } from './modules/account/account.module';
+import { TasksModule } from './modules/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -51,7 +52,8 @@ import { AccountModule } from './modules/account/account.module';
     }),
     CategoryModule,
     MailerModule,
-    AccountModule
+    AccountModule,
+    TasksModule
   ],
   controllers: [AppController],
   providers: [AppService, PreloadService],
