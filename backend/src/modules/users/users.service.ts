@@ -41,10 +41,12 @@ export class UsersService {
         delete userDTO.accountLimit;
         await this.userRepository.update(id, userDTO);
 
-        const updatedUser = await this.userRepository.findOne({ where: { id }, relations: ['account']});
+        let updatedUser = await this.userRepository.findOne({ where: { id }, relations: ['account']});
         if (!updatedUser) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
         
         if(userDTO.role === Role.CLIENT && !updatedUser.account) await this.accountRepository.save({ user: updatedUser, creditLimit: accountLimit });
+        if(userDTO.role === Role.CLIENT && updatedUser.account) await this.accountRepository.update(updatedUser.account.id, { creditLimit: accountLimit});
+        updatedUser = await this.userRepository.findOne({ where: { id }, relations: ['account']});
 
         delete updatedUser.password;
         return updatedUser;

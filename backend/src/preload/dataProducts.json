@@ -48,7 +48,7 @@
                 "price": 3390,
                 "stock": 54,
                 "amount": 50,
-                "unit": "Sobre"
+                "unit": "Sobres"
             }
         ]
     },
@@ -61,7 +61,7 @@
                 "price": 3000,
                 "stock": 84,
                 "amount": 100,
-                "unit": "Sobre"
+                "unit": "Sobres"
             }
         ]
     },
