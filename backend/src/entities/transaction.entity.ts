@@ -12,7 +12,7 @@ export class Transaccion {
     @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     timestamp: Date;
 
-    @ManyToOne(() => OrderDetail, (orderdetail) => orderdetail.transactions)
+    @ManyToOne(() => OrderDetail, (orderdetail) => orderdetail.transactions, { onDelete: 'CASCADE' })
     @JoinColumn({name: 'orderdetailsId'})
     orderdetail: OrderDetail;
 }

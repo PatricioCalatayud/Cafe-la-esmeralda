@@ -14,6 +14,6 @@ export class ProductsOrder {
     @ManyToOne(() => Subproduct, (subproduct) => subproduct.productsOrder, { eager: true })
     subproduct: Subproduct;
 
-    @ManyToOne(() => Order, (order) => order.productsOrder)
+    @ManyToOne(() => Order, (order) => order.productsOrder, { onDelete: 'CASCADE' })
     order: Order;
 }

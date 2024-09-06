@@ -23,13 +23,13 @@ export class Order {
     @OneToMany(() => ProductsOrder, (productsOrder) => productsOrder.order, { cascade: true })
     productsOrder: ProductsOrder[];
 
-    @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.order)
+    @OneToOne(() => OrderDetail, (orderDetail) => orderDetail.order, { cascade: true })
     orderDetail: OrderDetail;
 
-    @OneToOne(() => Receipt, (receipt) => receipt.order)
+    @OneToOne(() => Receipt, (receipt) => receipt.order, { cascade: true })
     @JoinColumn({ name: 'receipt' })
     receipt: Receipt;
 
-    @ManyToOne(() => Account, account => account.orders)
+    @ManyToOne(() => Account, account => account.orders, { cascade: true })
     account: Account;
 }
