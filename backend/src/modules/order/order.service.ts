@@ -143,6 +143,8 @@ export class OrderService {
             
             if(account === 'Cuenta corriente') await this.accountService.registerPurchase(userId, orderDetail.totalPrice);
         });
+
+        await this.mailerService.sendEmailOrderCreated(createdOrder);
   
         delete createdOrder.user.password;
         return createdOrder;
