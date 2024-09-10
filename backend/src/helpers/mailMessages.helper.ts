@@ -2083,5 +2083,10 @@ export const sendEmailOrderPaid = (order: Order) => {
 </table><!-- End -->
 </body>
 </html> `
-    }
-   
+}
+
+export const orderReminder = () => {
+  return `
+    ACÁ VA EL TEXTO DE RECORDATORIO
+  `
+}
