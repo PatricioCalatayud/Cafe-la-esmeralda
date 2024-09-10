@@ -22,13 +22,13 @@ export class AuthService {
         const { email, password } = userDTO;
 
         const existingUser = await this.userRepository.findOne({ where: { email } });
-        if (existingUser) throw new ConflictException('El usuario ya existe');
+        if (existingUser) throw new ConflictException('El usuario ya existe.');
 
         let newUser: User;
 
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);
-            if (!hashedPassword) throw new BadRequestException('Error hashing password');
+            if (!hashedPassword) throw new BadRequestException('Error encriptando contraseña.');
             newUser = await this.userRepository.create({...userDTO, password: hashedPassword});
         } else {
             newUser = await this.userRepository.create(userDTO);
@@ -41,26 +41,25 @@ export class AuthService {
     
     async signIn(email: string, password: string) {
         const user = await this.userRepository.findOneBy({ email });
-        if (!user) throw new NotFoundException('Invalid credentials');
+        if (!user) throw new NotFoundException('Credenciales invalidas.');
         let userRoles: Role[] = [user.role];
     
-        if (!user.password) {
+        if (!password) {
             const payload = {
                 name: user.name, 
                 email: user.email,
                 phone: user.phone, 
                 sub: user.id,
-                roles: userRoles,
-                isAvailable: user.isAvailable,
+                roles: userRoles
             };
     
             const accessToken = this.jwtService.sign(payload);
     
-            return { success: 'External user logged in successfully', accessToken };
+            return { success: 'Login exitoso.', accessToken };
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) throw new BadRequestException('Invalid credentials');
+        if (!isPasswordValid) throw new BadRequestException('Credenciales invalidas.');
     
         const payload = { 
             name: user.name,
@@ -73,7 +72,7 @@ export class AuthService {
         
         const accessToken = this.jwtService.sign(payload);
     
-        return { success : 'User logged in successfully', accessToken };
+        return { success : 'Login exitoso.', accessToken };
     }
     
     async resetPassword(email: string) {
@@ -84,7 +83,7 @@ export class AuthService {
 
         const link = `${process.env.BASE}/resetPassword?token=${token}`;
 
-        return await this.mailerService.sendEmailPassword(email, 'Recuperación de Contraseña', link);
+        return await this.mailerService.sendEmailPassword(email, link);
     }
 
     async updatePassword(token, password: string) {
@@ -95,6 +94,6 @@ export class AuthService {
         user.password = await bcrypt.hash(password, 10);
         await this.userRepository.save(user);
 
-        return { HttpCode: 201, message: 'Contraseña actualizada correctamente.' }
+        return { HttpCode: 200, message: 'Contraseña actualizada correctamente.' }
     }
 }

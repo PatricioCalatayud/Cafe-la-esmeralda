@@ -11,7 +11,7 @@ export class TasksService {
         private readonly mailerService: MailerService
     ) {}
 
-    @Cron('*/1 * * * *') // 0 16 */2 * *
+    @Cron('*/1 * * * *') // este después se cambia a 0 16 */2 * * para que revise cada 2 días a las 16hs
     async handleExpiredOrders() {
         const ordersUnpaid = await this.orderRepository.getUnpaidOrders();
         if(ordersUnpaid.length === 0) {

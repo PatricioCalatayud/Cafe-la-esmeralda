@@ -143,6 +143,8 @@ export class OrderService {
             
             if(account === 'Cuenta corriente') await this.accountService.registerPurchase(userId, orderDetail.totalPrice);
         });
+
+        await this.mailerService.sendEmailOrderCreated(createdOrder);
   
         delete createdOrder.user.password;
         return createdOrder;
@@ -174,7 +176,10 @@ export class OrderService {
 
         if(data.status) await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status, timestamp: new Date() });
 
-        if(data.transferStatus) await this.receiptRepository.update({ id: order.receipt.id }, { status: data.transferStatus });
+        if(data.transferStatus) {
+            await this.receiptRepository.update({ id: order.receipt.id }, { status: data.transferStatus });
+            await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: 'En preparación', timestamp: new Date() });
+        }
 
         return { HttpCode: 200 };
     }
