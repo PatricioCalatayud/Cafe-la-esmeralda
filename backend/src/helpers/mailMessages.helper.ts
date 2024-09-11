@@ -2086,7 +2086,326 @@ export const sendEmailOrderPaid = (order: Order) => {
 }
 
 export const orderReminder = () => {
-  return `
-    ACÁ VA EL TEXTO DE RECORDATORIO
+  return `<!DOCTYPE html>
+<html lang="es" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<title>Recordatorio de Pedido Semanal</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+<link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet" type="text/css"/>
+<style>
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: #efd3b6;
+		-webkit-text-size-adjust: none;
+		text-size-adjust: none;
+		color: #ffffff !important; /* Todas las letras son blancas */
+	}
+
+	a[x-apple-data-detectors] {
+		color: inherit !important;
+		text-decoration: inherit !important;
+	}
+
+	#MessageViewBody a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	p {
+		line-height: inherit;
+		color: #ffffff !important; /* Letras blancas en todos los párrafos */
+	}
+
+	.desktop_hide,
+	.desktop_hide table {
+		mso-hide: all;
+		display: none;
+		max-height: 0px;
+		overflow: hidden;
+	}
+
+	.image_block img+div {
+		display: none;
+	}
+
+	sup,
+	sub {
+		line-height: 0;
+		font-size: 75%;
+	}
+
+	/* Color blanco para todo el texto */
+	h1, h2, h3, h4, h5, h6, p, span, div {
+		color: #ffffff !important;
+	}
+
+	/* Color blanco para el texto de los botones */
+	.button a {
+		color: #ffffff !important;
+	}
+
+	@media (max-width:700px) {
+		.desktop_hide table.icons-inner,
+		.social_block.desktop_hide .social-table {
+			display: inline-block !important;
+		}
+
+		.icons-inner {
+			text-align: center;
+		}
+
+		.icons-inner td {
+			margin: 0 auto;
+		}
+
+		.image_block div.fullWidth {
+			max-width: 100% !important;
+		}
+
+		.mobile_hide {
+			display: none;
+		}
+
+		.row-content {
+			width: 100% !important;
+		}
+
+		.stack .column {
+			width: 100%;
+			display: block;
+		}
+
+		.mobile_hide {
+			min-height: 0;
+			max-height: 0;
+			max-width: 0;
+			overflow: hidden;
+			font-size: 0px;
+		}
+
+		.desktop_hide,
+		.desktop_hide table {
+			display: table !important;
+			max-height: none !important;
+		}
+
+		.reverse {
+			display: table;
+			width: 100%;
+		}
+
+		.reverse .column.first {
+			display: table-footer-group !important;
+		}
+
+		.reverse .column.last {
+			display: table-header-group !important;
+		}
+
+		.row-11 td.column.first .border,
+		.row-11 td.column.last .border,
+		.row-3 td.column.first .border,
+		.row-3 td.column.last .border,
+		.row-6 td.column.first .border,
+		.row-6 td.column.last .border {
+			padding: 5px 0;
+			border-top: 0;
+			border-right: 0px;
+			border-bottom: 0;
+			border-left: 0;
+		}
+	}
+</style>
+</head>
+<body class="body">
+<table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="background-color: #efd3b6;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="background-image: url('https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/7ade0731-2ef0-477f-bf04-0bf2b8336b23-bg_section_coffee.jpg'); background-position: center top; background-repeat: no-repeat;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="color: #ffffff; width: 680px; margin: 0 auto;" width="680">
+<tbody>
+<tr>
+<td class="column column-1" style="padding-bottom: 5px; padding-top: 5px; vertical-align: top;" width="16.666666666666668%">
+<div class="spacer_block block-1" style="height:0px;line-height:0px;font-size:1px;"> </div>
+</td>
+<td class="column column-2" style="padding-bottom: 5px; padding-top: 5px; vertical-align: top;" width="66.66666666666667%">
+<div class="spacer_block block-1" style="height:55px;line-height:55px;font-size:1px;"> </div>
+<div class="spacer_block block-2" style="height:20px;line-height:20px;font-size:1px;"> </div>
+<table border="0" cellpadding="0" cellspacing="0" class="heading_block block-3" role="presentation" width="100%">
+<tr>
+<td class="pad" style="text-align:center;width:100%;">
+<h1 style="margin: 0; font-family: 'Courier New', Courier, monospace; font-size: 42px; font-weight: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;">Hace tu Pedido Semanal</h1>
+</td>
+</tr>
+</table>
+<div class="spacer_block block-4" style="height:10px;line-height:10px;font-size:1px;"> </div>
+<table border="0" cellpadding="10" cellspacing="0" class="paragraph_block block-5" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div style="font-family:Cabin, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;line-height:150%;text-align:center;">
+<p style="margin: 0;"><strong>¡Querido cliente!</strong></p>
+<p style="margin: 0;">Te recordamos que esta semana puedes hacer tu pedido semanal en Café La Esmeralda. Seguí estos pasos:</p>
+<p style="margin: 0;"> </p>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="10" cellspacing="0" class="paragraph_block block-6" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div style="font-family:Cabin, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;line-height:150%;text-align:left;">
+<p style="margin: 0;"><strong>1. Identifícate:</strong> Hace clic en el botón para iniciar sesión en tu cuenta.</p>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="10" cellspacing="0" class="paragraph_block block-8" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div style="font-family:Cabin, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;line-height:150%;text-align:left;">
+<p style="margin: 0;"><strong>2. Hace tu pedido:</strong> Elige tu café favorito en nuestra tienda online.</p>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="10" cellspacing="0" class="paragraph_block block-10" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div style="font-family:Cabin, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;line-height:150%;text-align:left;">
+<p style="margin: 0;"><strong>3. Realiza tu pago:</strong> Puedes pagar mediante transferencia bancaria, Mercado Pago o utilizando tu saldo en cuenta corriente.</p>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="10" cellspacing="0" class="paragraph_block block-11" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div style="font-family:Cabin, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;line-height:150%;text-align:left;">
+<p style="margin: 0;"><strong>4. Seguí el estado de tu pedido:</strong> Revisa tu cuenta para estar al tanto del estado de tu pedido.</p>
+</div>
+</td>
+</tr>
+</table>
+
+<!-- Botón debajo del paso 4 -->
+<table border="0" cellpadding="10" cellspacing="0" class="button_block block-7" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div align="center" class="alignment">
+<div style="background-color:#1a1423;border:1px solid #1A1423;border-radius:4px;display:inline-block;font-family:Cabin, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;padding-bottom:5px;padding-top:5px;text-align:center;width:auto;">
+  <a href="${API_URL}/login" style="color:#ffffff;text-decoration:none;">
+    <span style="padding-left: 20px; padding-right: 20px; font-size: 16px; display: inline-block; line-height: 32px;">Iniciar Sesión</span>
+  </a>
+</div>
+</div>
+</td>
+</tr>
+</table>
+
+<div class="spacer_block block-12" style="height:35px;line-height:35px;font-size:1px;"> </div>
+<table border="0" cellpadding="0" cellspacing="0" class="image_block block-13" role="presentation" width="100%">
+<tr>
+<td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
+<div align="center" class="alignment" style="line-height:10px">
+<div class="fullWidth" style="max-width: 385.333px;"><img alt="Coffee Mug" height="auto" src="https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/18c6e180-77ff-4c38-b3a6-02b98de3f7d9-coco_coffee.png" style="display: block; height: auto; border: 0; width: 100%;" title="Coffee Mug" width="385.333"/></div>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="image_block block-14" role="presentation" width="100%">
+<tr>
+<td class="pad" style="width:100%;">
+<div align="center" class="alignment" style="line-height:10px">
+<div style="max-width: 453.3333333333333px;"><img height="auto" src="https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/5a07410e-e306-4be7-922f-44ba0d0ba20a-logoblanco.png" style="display: block; height: auto; border: 0; width: 100%;" width="453.3333333333333"/></div>
+</div>
+</td>
+</tr>
+</table>
+
+<div class="spacer_block block-15" style="height:60px;line-height:60px;font-size:1px;"> </div>
+
+<!-- Pie de email -->
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-13" role="presentation" style="background-color: #000000;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="width: 680px; margin: 0 auto;" width="680">
+<tbody>
+<tr>
+<td class="column column-1" style="padding-bottom: 5px; padding-top: 5px; vertical-align: top;" width="50%">
+<table border="0" cellpadding="0" cellspacing="0" class="heading_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-left:20px;text-align:center;width:100%;">
+<h1 style="margin: 0; font-family: Cabin, Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 18px; font-weight: normal; line-height: 200%; text-align: left; margin-top: 0; margin-bottom: 0;">Sobre Nosotros</h1>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:10px;">
+<div style="font-family:Cabin, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;line-height:200%;text-align:left;">
+<p style="margin: 0;">Café La Esmeralda, con más de 40 años en Argentina, es un referente en la tostación de café. Con una mezcla de tradición e innovación, transforma granos seleccionados en una experiencia única. Cada taza refleja su compromiso con la calidad y pasión por ofrecer un café excepcional.</p>
+</div>
+</td>
+</tr>
+</table>
+</td>
+<td class="column column-2" style="padding-bottom: 5px; padding-top: 5px; vertical-align: top;" width="50%">
+<table border="0" cellpadding="0" cellspacing="0" class="heading_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-left:20px;text-align:center;width:100%;">
+<h1 style="margin: 0; font-family: Cabin, Arial, Helvetica Neue, Helvetica, sans-serif; font-size: 18px; font-weight: normal; line-height: 200%; text-align: left; margin-top: 0; margin-bottom: 0;"><strong>Contacto</strong></h1>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:20px;padding-top:10px;">
+<div style="font-family:Cabin, Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;line-height:120%;text-align:left;">
+<p style="margin: 0;">info@cafelaesmeralda.com.ar</p>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="social_block block-3" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:10px;padding-top:10px;text-align:left;">
+<div align="left" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" class="social-table" role="presentation" width="72px">
+<tr>
+<td style="padding:0 4px 0 0;"><a href="https://www.facebook.com/cafelaesmeralda10" target="_blank"><img alt="Facebook" height="auto" src="https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/70b1ac3d-9ffa-4dc4-9366-d85552849045-facebook2x.png" style="display: block; height: auto; border: 0;" title="facebook" width="32"/></a></td>
+<td style="padding:0 4px 0 0;"><a href="https://www.instagram.com/cafelaesmeralda/" target="_blank"><img alt="Instagram" height="auto" src="https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/35b916f5-9c67-4074-be98-031f323d7dfb-instagram2x.png" style="display: block; height: auto; border: 0;" title="instagram" width="32"/></a></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
   `
 }
