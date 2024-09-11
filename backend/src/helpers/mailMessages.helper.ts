@@ -2257,8 +2257,8 @@ export const orderReminder = () => {
 <p style="margin: 0;"><strong>¡Querido cliente!</strong></p>
 <p style="margin: 0;">Te recordamos que esta semana puedes hacer tu pedido semanal en Café La Esmeralda. Seguí estos pasos:</p>
 <p style="margin: 0;"> </p>
-</div>
-</td>
+</div> 
+</td> 
 </tr>
 </table>
 <table border="0" cellpadding="10" cellspacing="0" class="paragraph_block block-6" role="presentation" width="100%">
