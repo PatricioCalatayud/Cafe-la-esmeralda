@@ -7,6 +7,6 @@ export class TasksController {
 
     @Put()
     handleExpiredOrders() {
-        return this.tasksService.handleExpiredOrders();
+        return this.tasksService.handleOrderReminder();
     }
 }
