@@ -14,8 +14,9 @@ export class ProductRatingService {
 
     async updateAverageRating(productId:string):Promise<string>{
         const rated = await this.productRatingRepository.updateAverageRating(productId)
+
         if (!rated) throw new NotFoundException(`No se calificó correctamente el producto. ID: ${productId}`)
+
         return `Se calificó correctamente el proyecto. ID: ${productId}`
     }
-
 }
