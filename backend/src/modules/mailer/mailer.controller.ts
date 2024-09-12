@@ -22,4 +22,14 @@ export class MailerController {
     async sendEmailOrderExpired(@Body() data: { to: string, orderId: string }) {
         return await this.mailerService.sendEmailOrderExpired(data.to, data.orderId);
     }
+
+    @Post('reminder')
+    async orderReminder(@Body() data: { to: string }) {
+        return await this.mailerService.orderReminder(data.to);
+    }
+
+    @Post('bill')
+    async sendPaymentBill(@Body() data: { to: string }) {
+        return await this.mailerService.orderReminder(data.to);
+    }
 }

@@ -16,14 +16,11 @@ export class OrderDetail {
     @Column({ type: 'decimal', scale: 2 })
     totalPrice: number;
 
-    @Column({ type: 'int', default: 0 })
-    cupoDescuento: number;
-
-    @OneToOne(() => Order, (order) => order.orderDetail)
+    @OneToOne(() => Order, (order) => order.orderDetail, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'orderId' })
     order: Order;
 
-    @OneToOne(() => Transaccion, (transaccion) => transaccion.orderdetail)
+    @OneToOne(() => Transaccion, (transaccion) => transaccion.orderdetail, { cascade: true })
     transactions: Transaccion;
 
     @BeforeInsert()

@@ -6,6 +6,7 @@ import {
     IsArray, 
     IsBoolean, 
     IsDate, 
+    IsEnum, 
     IsInt, 
     IsNotEmpty, 
     IsOptional, 
@@ -51,9 +52,9 @@ export class AddOrderDto {
     products: ProductInfo[];
 
     @ApiProperty({ description: 'Propiedad para cuentas corrientes, en caso de ser true la orden se pone "En preparación".' })
-    @IsBoolean()
-    @IsOptional()
-    account?: boolean;
+    @IsEnum(['Cuenta corriente', 'Transferencia'])
+    @IsOptional() 
+    account?: 'Cuenta corriente' | 'Transferencia' | null;
 }
 
 export class UpdateOrderDto {
@@ -65,10 +66,16 @@ export class UpdateOrderDto {
 
     @ApiProperty({ description: 'Estado del tracking.' })
     @IsString()
-    status: string;
+    @IsOptional()
+    status?: string;
 
     @ApiProperty({ description: 'Estado de la orden.' })
     @IsBoolean()
     @IsOptional()
     orderStatus?: boolean;
+
+    @ApiProperty({ description: 'Estado de la transferencia.' })
+    @IsString()
+    @IsOptional()
+    transferStatus?: string;
 }

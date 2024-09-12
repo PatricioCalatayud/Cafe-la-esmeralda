@@ -20,6 +20,9 @@ import { CategoryModule } from './modules/categories/category.module';
 import { ImageModule } from './modules/images/image.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { MailerModule } from './modules/mailer/mailer.module';
+import { ProductRatingModule } from './modules/product-rating/product-rating.module';
+import { AccountModule } from './modules/account/account.module';
+import { TasksModule } from './modules/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -40,6 +43,7 @@ import { MailerModule } from './modules/mailer/mailer.module';
     ProductsModule,
     OrderModule,
     MercadoPagoModule,
+    ProductRatingModule,
     TestimonyModule,
     JwtModule.register({
       global: true,
@@ -47,7 +51,9 @@ import { MailerModule } from './modules/mailer/mailer.module';
       secret: process.env.JWT_SECRET,
     }),
     CategoryModule,
-    MailerModule
+    MailerModule,
+    AccountModule,
+    TasksModule
   ],
   controllers: [AppController],
   providers: [AppService, PreloadService],

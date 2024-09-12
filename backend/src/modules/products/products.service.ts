@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/entities/category.entity';
 import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateProductDto } from './dtos/products.dto';
-import { UpdateCoffeeDto } from './dtos/coffee.dto';
 import { ImageService } from '../images/image.service';
+import { UpdatedProductDto } from './dtos/updatedproduct.dto';
 
 @Injectable()
 export class ProductsService {
@@ -21,7 +21,6 @@ export class ProductsService {
         const [data, total] = await this.productRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
-            where: { isDeleted: false },
             relations: { category: true, subproducts: true }
         })
       
@@ -35,7 +34,7 @@ export class ProductsService {
         const [data, total] = await this.productRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
-            where: { isDeleted: false, category: { id: categoryFound.id } },
+            where: {  category: { id: categoryFound.id } },
             relations: { category: true, subproducts: true }
         })
 
@@ -43,7 +42,8 @@ export class ProductsService {
     }
 
     async getAvailable(): Promise<Product[]> {
-        return await this.productRepository.find({ where: { isDeleted: false }});
+        const productsAvailable = await this.subproductRepository.find({ where:{isAvailable:true}});
+        return await this.productRepository.find({ where: { id: In(productsAvailable.map(subproduct => subproduct.product.id)) } });
     }
 
     async getAvailableByCategory(category: string) {
@@ -53,13 +53,12 @@ export class ProductsService {
         return await this.productRepository.createQueryBuilder('products')
             .innerJoinAndSelect('products.category', 'categories')
             .where('categories.id = :categoryId', { categoryId: categoryFound.id })
-            .andWhere('products.isDeleted = :isDeleted', { isDeleted: false })
             .getMany();
     }
 
     async getById(id: string): Promise<Product> {
         const product = await this.productRepository.findOne({ 
-            where: { id, isDeleted: false,}, 
+            where: { id, }, 
             relations: { category: true, subproducts: true, }
         });
         if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
@@ -100,33 +99,71 @@ export class ProductsService {
         return savedProduct;
     }
     
-    async updateProduct(id: string, infoProduct: Partial<UpdateCoffeeDto>, file?: Express.Multer.File): Promise<Product> {
-        const product = await this.productRepository.findOne({ where: { id }, relations: { category: true }});
+    async updateProduct(
+        id: string, 
+        infoProduct: Partial<UpdatedProductDto>, 
+        file?: Express.Multer.File
+    ): Promise<Product> {
+        const product = await this.productRepository.findOne({ 
+            where: { id }, 
+            relations: { category: true, subproducts: true }
+        });
         if (!product) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
         
-        const { categoryID, ...updateData } = infoProduct;
+        const { categoryID, subproducts, ...updateData } = infoProduct;
     
         if (file) {
             const imgURL = await this.imageService.uploadFile(file);
             if (!imgURL) throw new UnprocessableEntityException(`Error al cargar la imagen`);
             updateData["imgUrl"] = imgURL;
         }
-
+    
         if (categoryID) {
             const foundCategory = await this.categoryRepository.findOneBy({ id: categoryID });
             if (!foundCategory) throw new NotFoundException(`Categoria "${categoryID}" no existe.`);
             updateData["category"] = foundCategory;
         }
+    
+        if (subproducts && subproducts.length > 0) {
+            for (const subproductData of subproducts) {
+                if (subproductData.id) {
+                    const existingSubproduct = await this.subproductRepository.findOne({
+                        where: { id: subproductData.id, product: { id } }
+                    });
+                    if (existingSubproduct) {
+                        const isAvailable = String(subproductData.isAvailable) === 'true';
 
-        await this.productRepository.update(id, updateData);
-
-        return product;
+                        await this.subproductRepository.update(existingSubproduct.id, {
+                            ...subproductData,
+                        isAvailable: isAvailable
+                        });
+                    } else {
+                        throw new NotFoundException(`No se encontró el subproducto con ID: ${subproductData.id}`);
+                    }
+                } else {
+                    const newSubproduct = this.subproductRepository.create({
+                        ...subproductData,
+                        product: product 
+                    });
+                    await this.subproductRepository.save(newSubproduct);
+                }
+            }
+        }
+    
+        if (Object.keys(updateData).length > 0){
+            await this.productRepository.update(id, updateData);
+        }
+        return await this.productRepository.findOne({ 
+            where: { id }, 
+            relations: { category: true, subproducts: true }
+        });
     }
+    
 
     async deleteProduct(id: string): Promise<{ message: string }> {
         const result = await this.productRepository.delete(id);
         if (result.affected === 0) throw new NotFoundException(`No se encontró el producto. ID: ${id}`);
     
-        return { message: `El producto con id ${id} fue eliminado permanentemente` };
+        return { message: `El producto con id ${id} fue eliminado permanentemente.` };
     }
 }

@@ -1,8 +1,10 @@
 import { Role } from "src/enum/roles.enum";
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Testimony } from "./testimony.entity";
 import { Order } from "./order.entity";
 import { IsEmail, IsNotEmpty, IsOptional } from "class-validator";
+import { Account } from "./account.entity";
+import { Rating } from "./ratings.entity";
 
 @Entity({ name: 'users'})
 export class User extends BaseEntity {
@@ -31,13 +33,16 @@ export class User extends BaseEntity {
   @Column({ default: true })
   isAvailable: boolean;
 
-  @Column({ default: false })
-  isDeleted: boolean;
-
   @OneToMany(() => Order, (order) => order.user)
   @JoinColumn({ name: 'orderId' })
   orders: Order[];
 
   @OneToMany(() => Testimony, testimony => testimony.user)
   testimonies: Testimony[];
+
+  @OneToOne(() => Account, account => account.user)
+  account: Account;
+  
+  @OneToMany(()=>Rating, rating=>rating.user)
+  ratings: Rating[]
 }

@@ -1,7 +1,7 @@
 
 import { Type } from "class-transformer";
 import { IsBoolean, IsInt, IsNumber, IsOptional, IsPositive, IsString, IsUUID, ValidateNested, IsArray } from "class-validator";
-import { SubproductDto } from "./subproduct.dto"; 
+import { SubproductDto, UpdatedSubproductDto } from "./subproduct.dto"; 
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdatedProductDto {
@@ -43,7 +43,7 @@ export class UpdatedProductDto {
     @ApiProperty({ description: 'Array de subproductos.' })
     @IsOptional()
     @ValidateNested({ each: true })
-    @Type(() => SubproductDto)
+    @Type(() => UpdatedProductDto)
     @IsArray()
-    subproducts?: SubproductDto[];
+    subproducts?: UpdatedSubproductDto[];
 }
