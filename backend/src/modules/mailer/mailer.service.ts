@@ -66,4 +66,16 @@ export class MailerService {
             return { HttpCode: 200, info: info.response };
         } else throw new Error('Error al enviar el correo.');
     }
+
+    async sendPaymentBill(to: string) {
+        const html = orderReminder();
+
+        const mail = { from: email, to, subject: 'Comprobante de factura', html };
+
+        const info = await transporter.sendMail(mail);
+
+        if (info.messageId) {
+            return { HttpCode: 200, info: info.response };
+        } else throw new Error('Error al enviar el correo.');
+    }
 }

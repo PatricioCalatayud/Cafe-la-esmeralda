@@ -27,4 +27,9 @@ export class MailerController {
     async orderReminder(@Body() data: { to: string }) {
         return await this.mailerService.orderReminder(data.to);
     }
+
+    @Post('bill')
+    async sendPaymentBill(@Body() data: { to: string }) {
+        return await this.mailerService.orderReminder(data.to);
+    }
 }

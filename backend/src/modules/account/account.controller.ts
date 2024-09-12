@@ -1,7 +1,7 @@
 import { Body, Controller, DefaultValuePipe, Get, Param, ParseUUIDPipe, Put, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AccountService } from "./account.service";
-import { PaymentDto } from "./account.dto";
+import { AccountPaymentDto } from "./account.dto";
 import { Account } from "src/entities/account.entity";
 
 @ApiTags('Cuentas corrientes')
@@ -30,7 +30,7 @@ export class AccountController {
 
     @ApiOperation({ summary: 'Pagos de cuentas corrientes', description: 'Este endpoint recibe pagos de cuentas corrientes y crea transacciones en la base de datos.' })
     @Put('payment')
-    async deposit(@Body() payment: PaymentDto) {
+    async deposit(@Body() payment: AccountPaymentDto) {
         return await this.accountService.registerDeposit(payment.accountId, payment.amount);
     }
 }
