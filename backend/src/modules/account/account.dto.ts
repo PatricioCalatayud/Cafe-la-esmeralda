@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, IsNotEmpty, IsUUID } from "class-validator";
 
-export class PaymentDto {
+export class AccountPaymentDto {
     @ApiProperty({ description: 'ID de la cuenta del pago.'})
     @IsUUID()
     @IsNotEmpty()
