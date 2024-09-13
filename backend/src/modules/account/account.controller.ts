@@ -7,7 +7,9 @@ import { Account } from "src/entities/account.entity";
 @ApiTags('Cuentas corrientes')
 @Controller('account')
 export class AccountController {
-    constructor(private readonly accountService: AccountService) {}
+    constructor(
+      private readonly accountService: AccountService
+    ) {}
 
     @ApiOperation({ summary: 'Obtiene todas las cuentas corrientes', description: 'Este endpoint retorna todas las ordenes.' })
     @Get()
