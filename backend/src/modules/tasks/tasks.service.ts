@@ -13,7 +13,7 @@ export class TasksService {
         private readonly usersService: UsersService
     ) {}
 
-    @Cron('*/1 * * * *') // este después se cambia a 0 16 */2 * * para que revise cada 2 días a las 16hs
+    @Cron(CronExpression.EVERY_DAY_AT_4PM)
     async handleExpiredOrders() {
         const ordersUnpaid = await this.orderRepository.getUnpaidOrders();
         if(ordersUnpaid.length === 0) {
@@ -21,7 +21,6 @@ export class TasksService {
             return 'No hay ordenes sin pagar.';
         }
 
-        
         for(const order of ordersUnpaid) {
             try {
                 await this.mailerService.sendEmailOrderExpired(order.user.email, order.id);
@@ -35,7 +34,7 @@ export class TasksService {
         return `Se chequearon las ordenes sin pagar. ${ordersUnpaid.length} ordenes borradas de la base de datos.`;
     }
 
-    @Cron('*/1 * * * *') // CronExpression.EVERY_DAY_AT_5PM
+    @Cron(CronExpression.EVERY_DAY_AT_7PM)
     async handleOrderReminder() {
         const today = new Date();
         const dayOfWeek = today.getDay(); // busco el día de la semana, por ejemplo lunes = 1 o jueves = 4
