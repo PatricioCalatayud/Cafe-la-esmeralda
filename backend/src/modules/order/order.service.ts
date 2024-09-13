@@ -111,7 +111,7 @@ export class OrderService {
                 if (foundSubproduct.stock <= 0) throw new BadRequestException(`Subproducto sin stock. ID: ${foundSubproduct.id}`);
     
                 total += (foundSubproduct.price * product.quantity * (1 - (foundSubproduct.discount/100)));
-    
+                if (foundSubproduct.stock < product.quantity) throw new BadRequestException(`Subproducto sin stock suficiente. ID: ${foundSubproduct.id}`);
                 const productsOrder = transactionalEntityManager.create(ProductsOrder, {
                     subproduct: foundSubproduct,
                     order: newOrder,
