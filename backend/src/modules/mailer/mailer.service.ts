@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, ParseFilePipeBuilder, UploadedFile } from "@nestjs/common";
 import transporter, { email } from "src/config/mailer.config";
-import { sendEmailOrderExpired, sendEmailOrderPaid, sendEmailPassword, sendEmailOrderCreated, orderReminder } from "src/helpers/mailMessages.helper";
+import { sendEmailOrderExpired, sendEmailOrderPaid, sendEmailPassword, sendEmailOrderCreated, orderReminder, sendPaymentBill } from "src/helpers/mailMessages.helper";
 import { Order } from "src/entities/order.entity";
 
 @Injectable()
@@ -67,8 +67,8 @@ export class MailerService {
         } else throw new Error('Error al enviar el correo.');
     }
 
-    async sendPaymentBill(to: string) {
-        const html = orderReminder();
+    async sendPaymentBill(to: string, imgUrl: string) {
+        const html = sendPaymentBill(imgUrl);
 
         const mail = { from: email, to, subject: 'Comprobante de factura', html };
 

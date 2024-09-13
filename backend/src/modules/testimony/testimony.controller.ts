@@ -15,8 +15,7 @@ export class TestimonyController {
             'Este endpoint permite obtener todas las calificaciones. No es necesario el registro'
     })
     async getTestimonials(){
-            return await this.testimonyService.getTestimonials()
-    }
+        return this.testimonyService.getTestimoniesService()}
 
     @Post()
     @ApiOperation({ 
@@ -28,6 +27,6 @@ export class TestimonyController {
     @UseGuards(AuthGuard)
     async createTestimony(@Body() testimony: CreateTestimonyDto){
         const { userId, ...testimonyEntity } = testimony
-        return this.testimonyService.createTestimony(userId, testimonyEntity)
+        return this.testimonyService.createTestimonyService(userId, testimonyEntity)
     }
 }

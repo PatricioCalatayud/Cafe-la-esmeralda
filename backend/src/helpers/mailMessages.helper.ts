@@ -2409,3 +2409,9 @@ export const orderReminder = () => {
 </html>
   `
 }
+
+export const sendPaymentBill = (imgUrl: string) => {
+  return `
+    ACÁ VA TEXTO
+  `
+}
