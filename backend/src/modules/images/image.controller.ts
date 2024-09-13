@@ -51,4 +51,23 @@ export class ImageController {
     ) file: Express.Multer.File, @Body('id') id: string){
         return await this.uploadService.uploadImageTransfer(file, id);
     }
+
+    @ApiOperation({ 
+        summary: 'Sube imagen del comprobante de factura.',
+        description: 'Esta ruta permite subir imagenes de los comprobantes de factura.'
+    })
+    @Put('bill')
+    @UseInterceptors(FileInterceptor('image'))
+    async uploadBill(@Body() data: { to: string }, @UploadedFile(
+        new ParseFilePipeBuilder()
+        .addMaxSizeValidator({
+            maxSize: 10000000,
+            message: 'El archivo es muy grande, el tamaño maximo es de 10MB',
+        })
+        .build({
+            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        })
+    ) file?: Express.Multer.File) {
+        return await this.uploadService.uploadImageBill(data.to, file);
+    }
 }
