@@ -13,7 +13,7 @@ export class UsersService {
         @InjectRepository(Account) private accountRepository: Repository<Account>
     ) {}
 
-    async getUsers(page: number, limit: number): Promise<{ data: Omit<User, "password">[], total: number }> {
+    async getUsers(page: number, limit: number): Promise<{ data: Omit<User[], "password">, total: number }> {
         const [data, total] = await this.userRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
@@ -34,6 +34,14 @@ export class UsersService {
         
         delete user.password;
         return user;
+    }
+
+    async getClients(): Promise<Omit<User[], "password">> {
+        const clients = await this.userRepository.find({ where: { role: Role.CLIENT }, relations: { orders: true } })
+
+        clients.map(client => delete client.password);
+
+        return clients;
     }
 
     async updateUser(id: string, userDTO: Partial<UpdateUserDTO>): Promise<Omit<User, "password">> {
