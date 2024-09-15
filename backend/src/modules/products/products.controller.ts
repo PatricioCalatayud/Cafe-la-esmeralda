@@ -23,7 +23,7 @@ export class ProductsController {
         : Promise<{ data: Product[], total: number }>
     {
         if(category) return this.productService.getAllByCategory(category, page, limit);
-        else return this.productService.getAll(page, limit);
+        else return this.productService.getAllService(page, limit);
     }
 
     @Get("available")
