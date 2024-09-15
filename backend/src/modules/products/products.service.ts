@@ -12,8 +12,6 @@ constructor(
 
 ) {}  
     async getAllService (page: number, limit: number): Promise<{ data: Product[], total: number }> {
-        console.log("lllega", page, limit);
-        
         if (!page || !limit)  throw new Error('page y limit son obligatorios');
         return await this.productRepository.getAllRepository(page, limit);
     }

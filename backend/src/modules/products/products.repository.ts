@@ -17,7 +17,6 @@ export class ProductsRepository {
     ){}
 
     async getAllRepository(page: number, limit: number): Promise<{ data: Product[], total: number }> {
-        console.log("lega", page, limit)
         const [data, total] = await this.productRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
