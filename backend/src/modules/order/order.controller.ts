@@ -22,7 +22,7 @@ export class OrderController {
     @ApiOperation({ summary: 'Obtiene una orden por ID', description: 'Este endpoint retorna una orden por su ID.' })
     @Get(':id')
     async getOrderById(@Param('id', ParseUUIDPipe) id: string) {
-        return await this.orderService.getOrderById(id)
+        return await this.orderService.getOrderById(id);
     }
 
     @ApiOperation({ summary: 'Obtiene ordenes de un usuario por su ID', description: 'Este endpoint retorna todas las ordenes de un usuario por su ID.' })
@@ -39,8 +39,8 @@ export class OrderController {
     @ApiOperation({ summary: 'Crea una orden de compra', description: 'Este endpoint crea una orden de compra usando AddOrderDto.' })
     @Post()
     async createOrder(@Body() orderInfo: AddOrderDto) {
-        const { userId, products, address, account } = orderInfo;
-        return await this.orderService.createOrder(userId, products, address, account);
+        const { userId, products, address, account, invoiceType } = orderInfo;
+        return await this.orderService.createOrder(userId, products, address, account, invoiceType);
     }
 
     @ApiOperation({ summary: 'Actualiza una orden de compra', description: 'Este endpoint actualiza una orden de compra, recibe el ID de la orden por param y updateOrderDto por body.'})
