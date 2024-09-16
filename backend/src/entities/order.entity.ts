@@ -4,6 +4,7 @@ import { OrderDetail } from "./orderdetail.entity";
 import { User } from "./user.entity";
 import { Receipt } from "./receipt.entity";
 import { Account } from "./account.entity";
+import { Bill } from "./bill.entity";
 
 @Entity({ name:'orders' })
 export class Order {
@@ -32,4 +33,8 @@ export class Order {
 
     @ManyToOne(() => Account, account => account.orders, { cascade: true })
     account: Account;
+
+    @OneToOne(() => Bill, bill => bill.order, { cascade: true })
+    @JoinColumn({ name: 'bill' })
+    bill: Bill;
 }
