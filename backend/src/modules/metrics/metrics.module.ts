@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MetricsController } from './metrics.controller';
-//import { MetricsService } from './metrics.service';
+import { OrdersMetricsService } from './metrics.service';
 import { TerminusModule } from '@nestjs/terminus';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
@@ -10,7 +10,6 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
     PrometheusModule.register(),
   ],
   controllers: [MetricsController],
-  //providers: [MetricsService]
+  providers: [OrdersMetricsService]
 })
 export class MetricsModule {}
- 
