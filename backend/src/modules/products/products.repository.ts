@@ -16,7 +16,7 @@ export class ProductsRepository {
         private readonly imageService: ImageService,
     ){}
 
-    async getAll(page: number, limit: number): Promise<{ data: Product[], total: number }> {
+    async getAllRepository(page: number, limit: number): Promise<{ data: Product[], total: number }> {
         const [data, total] = await this.productRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
@@ -24,7 +24,7 @@ export class ProductsRepository {
         })
       
         return { data, total };
-    }
+    } 
 
     async getAllByCategory(category: string, page: number = 1, limit: number = 10): Promise<{ data: Product[], total: number }> {
         const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});

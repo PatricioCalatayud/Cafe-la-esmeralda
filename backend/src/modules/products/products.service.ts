@@ -2,16 +2,18 @@ import { Product } from "src/entities/products/product.entity";
 import { ImageService } from "../images/image.service";
 import { ProductsRepository } from "./products.repository";
 import { CreateProductDto, UpdatedProductDto } from "./dtos/products.dto";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class ProductsService {
 constructor(
     private readonly productRepository: ProductsRepository,
     private readonly imageService: ImageService,
 
 ) {}  
-    async getAll (page: number, limit: number): Promise<{ data: Product[], total: number }> {
+    async getAllService (page: number, limit: number): Promise<{ data: Product[], total: number }> {
         if (!page || !limit)  throw new Error('page y limit son obligatorios');
-        return this.productRepository.getAll(page, limit);
+        return await this.productRepository.getAllRepository(page, limit);
     }
 
     async getAllByCategory(category: string, page: number = 1, limit: number = 10): Promise<{ data: Product[], total: number }> {
