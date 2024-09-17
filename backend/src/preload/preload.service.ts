@@ -134,7 +134,7 @@ export class PreloadService implements OnModuleInit {
                 throw new Error("Productos o subproductos no encontrados en la base de datos");
             }
     
-            await this.orderService.createOrder(users[0].id, [
+            await this.orderService.createOrder(users[3].id, [
                 { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
                 { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id }
             ], "Calle Wallaby 42 Sidney");

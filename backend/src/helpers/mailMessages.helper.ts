@@ -2411,7 +2411,321 @@ export const orderReminder = () => {
 }
 
 export const sendPaymentBill = (imgUrl: string) => {
-  return `
-    ACÁ VA TEXTO
-  `
+  return ` <!DOCTYPE html>
+
+<html lang="es" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<title></title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900" rel="stylesheet" type="text/css"/>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: inherit !important;
+    }
+
+    #MessageViewBody a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    p {
+        line-height: inherit;
+    }
+
+    .desktop_hide,
+    .desktop_hide table {
+        mso-hide: all;
+        display: none;
+        max-height: 0px;
+        overflow: hidden;
+    }
+
+    .image_block img+div {
+        display: none;
+    }
+
+    sup,
+    sub {
+        line-height: 0;
+        font-size: 75%;
+    }
+
+    @media (max-width:660px) {
+
+        .desktop_hide table.icons-inner,
+        .social_block.desktop_hide .social-table {
+            display: inline-block !important;
+        }
+
+        .icons-inner {
+            text-align: center;
+        }
+
+        .icons-inner td {
+            margin: 0 auto;
+        }
+
+        .image_block div.fullWidth {
+            max-width: 100% !important;
+        }
+
+        .mobile_hide {
+            display: none;
+        }
+
+        .row-content {
+            width: 100% !important;
+        }
+
+        .stack .column {
+            width: 100%;
+            display: block;
+        }
+
+        .mobile_hide {
+            min-height: 0;
+            max-height: 0;
+            max-width: 0;
+            overflow: hidden;
+            font-size: 0px;
+        }
+
+        .desktop_hide,
+        .desktop_hide table {
+            display: table !important;
+            max-height: none !important;
+        }
+    }
+</style>
+</head>
+<body class="body" style="background-color: #f8f8f9; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+<table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="background-color: #f8f8f9;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="background-color: #1aa19c;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #1aa19c; width: 640px; margin: 0 auto;" width="640">
+<tbody>
+<tr>
+<td class="column column-1" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 4px solid #1AA19C;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #f8f8f9; color: #000000; width: 640px; margin: 0 auto;" width="640">
+<tbody>
+<tr>
+<td class="column column-1" width="100%">
+<table border="0" cellpadding="20" cellspacing="0" class="divider_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; width: 640px; margin: 0 auto;" width="640">
+<tbody>
+<tr>
+<td class="column column-1" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:12px;padding-top:60px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="image_block block-2" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-left:40px;padding-right:40px;width:100%;">
+<div align="center" class="alignment" style="line-height:10px">
+<div class="fullWidth" style="max-width: 352px;"><img alt="I'm an image" height="auto" src="https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/2f00ff3e-a7a3-4e88-b879-c9ee64663d4a-Img5_2x.jpg" style="display: block; height: auto; border: 0; width: 100%;" title="I'm an image" width="352"/></div>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-3" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-top:50px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-4" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
+<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:30px;line-height:120%;text-align:center;">
+<p style="margin: 0; word-break: break-word;"><span style="color: #2b303a;"><strong>Gracias por su pago</strong></span></p>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-5" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
+<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:center;">
+<p style="margin: 0;">Gracias por su compra. Adjunto encontrará su factura detallada. Si tiene alguna consulta o necesita asistencia, no dude en contactarnos. Apreciamos su confianza en nuestros productos y servicios.</p>
+</div>
+</td>
+</tr>
+</table>
+
+<!-- Aquí va la imagen de la factura -->
+<table border="0" cellpadding="0" cellspacing="0" class="image_block block-6" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-top:30px;">
+<div align="center" class="alignment">
+<a href="${imgUrl}" alt="Factura adjunta" style="display: block; width: 100%; max-width: 600px; height: auto; border: 0;" title="Factura">Factura de compra</a>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-6" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-top:50px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #2b303a; width: 640px; margin: 0 auto;" width="640">
+<tbody>
+<tr>
+<td class="column column-1" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-5" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:15px;">
+<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;">
+<p>Con más de 40 años de dedicación al arte de la tostación, Café La Esmeralda es el proveedor de confianza para los bares más reconocidos de Buenos Aires. Nuestra pasión por el café se refleja en cada grano, seleccionado de las mejores fincas de Colombia y Brasil, y tostado con precisión para ofrecer una experiencia única. Apostamos por la calidad y la tradición, convirtiendo cada taza en un viaje al corazón del café de especialidad.</p>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-6" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:25px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #555961;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-7" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:30px;padding-left:40px;padding-right:40px;padding-top:20px;">
+<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:120%;text-align:left;">
+<p>La Esmeralda Café © 2024</p>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>`
 }
