@@ -10,23 +10,24 @@ export class BillController {
 
     @ApiOperation({ summary: 'Obtiene todas las facturas', description: 'Este endpoint retorna todas las facturas.' })
     @Get()
-    async getOrders(
+    async getBill(
       @Query('page', new DefaultValuePipe(1)) page: number,
-      @Query('limit', new DefaultValuePipe(10)) limit: number)
+      @Query('limit', new DefaultValuePipe(10)) limit: number,
+      @Query('filter', new DefaultValuePipe(null)) filter: boolean)
       : Promise<{ data: Bill[], total: number }>
     {
-      return await this.billService.getBills(page, limit);
+      return await this.billService.getBills(page, limit, filter);
     }
 
     @ApiOperation({ summary: 'Obtiene una factura por ID', description: 'Este endpoint retorna una factura por su ID.' })
     @Get(':id')
-    async getOrderById(@Param('id', ParseUUIDPipe) id: string) {
+    async getBillById(@Param('id', ParseUUIDPipe) id: string) {
         return await this.billService.getBillById(id);
     }
 
     @ApiOperation({ summary: 'Elimina una factura de la base de datos por su ID', description: 'Este endpoint elimina una factura de la base de datos por su ID.' })
     @Delete(':id')
-    async deleteOrder(@Param('id', ParseUUIDPipe) id: string) {
+    async deleteBill(@Param('id', ParseUUIDPipe) id: string) {
         return await this.billService.deleteBill(id);
     }
 }

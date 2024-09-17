@@ -149,8 +149,13 @@ export class OrderService {
             
             if(account === 'Cuenta corriente') await this.accountService.registerPurchase(userId, orderDetail.totalPrice);
         });
-        
-        if(invoiceType) await this.billService.createBill(createdOrder.id, invoiceType);
+
+        if(invoiceType) {
+            const bill = await this.billService.createBill(createdOrder.id, invoiceType);
+            createdOrder.bill = bill;
+            await this.orderRepository.update(createdOrder.id, { bill });
+        }
+
         await this.mailerService.sendEmailOrderCreated(createdOrder);
   
         delete createdOrder.user.password;
