@@ -58,7 +58,7 @@ export class ImageController {
     })
     @Put('bill')
     @UseInterceptors(FileInterceptor('image'))
-    async uploadBill(@Body() data: { to: string }, @UploadedFile(
+    async uploadBill(@Body() data: { id: string, to: string }, @UploadedFile(
         new ParseFilePipeBuilder()
         .addMaxSizeValidator({
             maxSize: 10000000,
@@ -68,6 +68,6 @@ export class ImageController {
             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
         })
     ) file?: Express.Multer.File) {
-        return await this.uploadService.uploadImageBill(data.to, file);
+        return await this.uploadService.uploadImageBill(data.id, data.to, file);
     }
 }

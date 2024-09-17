@@ -14,9 +14,10 @@ import { ImageModule } from '../images/image.module';
 import { Receipt } from 'src/entities/receipt.entity';
 import { AccountModule } from '../account/account.module';
 import { orderRepository } from './order.repository';
+import { BillModule } from '../bill/bill.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product,Order,User,OrderDetail,ProductsOrder,Transaccion, Subproduct, Receipt]), MailerModule, ImageModule, AccountModule],
+  imports: [TypeOrmModule.forFeature([Product,Order,User,OrderDetail,ProductsOrder,Transaccion, Subproduct, Receipt]), MailerModule, ImageModule, AccountModule, BillModule],
   providers: [OrderService, orderRepository],
   controllers: [OrderController],
   exports: [OrderService, orderRepository]
