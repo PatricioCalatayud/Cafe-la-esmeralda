@@ -24,6 +24,7 @@ import { ProductRatingModule } from './modules/product-rating/product-rating.mod
 import { AccountModule } from './modules/account/account.module';
 import { TasksModule } from './modules/tasks/tasks.module';
 import { BillModule } from './modules/bill/bill.module';
+import { Account } from './entities/account.entity';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { BillModule } from './modules/bill/bill.module';
       useFactory: (ConfigService: ConfigService) =>
         ConfigService.get('typeorm'),
     }),
-    TypeOrmModule.forFeature([Testimony,Product,Subproduct,Category,User, Account]),
+    TypeOrmModule.forFeature([Testimony, Product, Subproduct, Category, User, Account]),
     AuthModule,
     ImageModule,
     UsersModule,
