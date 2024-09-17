@@ -13,6 +13,8 @@ import { OrderService } from 'src/modules/order/order.service';
 import { Testimony } from 'src/entities/testimony.entity';
 import * as bcrypt from 'bcrypt';
 import { Medida } from 'src/enum/medidas.enum';
+import { AccountRepository } from 'src/modules/account/account.repository';
+import { Account } from 'src/entities/account.entity';
 
 @Injectable()
 export class PreloadService implements OnModuleInit {
@@ -22,8 +24,9 @@ export class PreloadService implements OnModuleInit {
         @InjectRepository(Subproduct) private subproductRepository: Repository<Subproduct>,
         @InjectRepository(User) private userRepository: Repository<User>,
         @InjectRepository(Testimony) private testimonyRepository: Repository<Testimony>,
+        @InjectRepository(Account) private accountRepository: Repository<Account>,
         private readonly orderService: OrderService,
-    ) {}
+) {}
 
     async addDefaultCategories() {
         await Promise.all(dataCategory.map(async (category) => {
@@ -163,11 +166,35 @@ export class PreloadService implements OnModuleInit {
         }));
         console.log(`Precarga de testimonios exitosa.`);
     }
+    async addDefaultAccounts() {
+        const users = await this.userRepository.find();
+        
+        await Promise.all(users.map(async (user) => {
+            try {
+                const existingAccount = await this.accountRepository.findOne({ where: { user: { id: user.id } } });
+                
+                if (!existingAccount) {
+                    const account = this.accountRepository.create({
+                        user: user,
+                        creditLimit: 1000000, // Puedes ajustar estos valores si es necesario
+                        balance: 0,
+                    });
+                    
+                    await this.accountRepository.save(account);
+                }
+            } catch (error) {
+                console.error(`Error al crear la cuenta para el usuario ${user.id}: ${error.message}`);
+            }
+        }));
+    
+        console.log("Precarga de cuentas exitosa.");
+    }
 
     async onModuleInit() {
         await this.addDefaultCategories();
         await this.addDefaultProducts();
         await this.addDefaultUser(dataUser);
+        await this.addDefaultAccounts();
         await this.addDefaultOrder();
         await this.addDefaultTestimonies();
     }
