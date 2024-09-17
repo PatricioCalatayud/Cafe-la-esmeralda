@@ -6,8 +6,8 @@ import { Bill } from "src/entities/bill.entity";
 export class BillService {
     constructor(private readonly billRepository: BillRepository) {}
 
-    async getBills(page: number, limit: number): Promise<{ data: Bill[], total: number}> {
-        return await this.billRepository.getBills(page, limit);
+    async getBills(page: number, limit: number, filter: boolean): Promise<{ data: Bill[], total: number}> {
+        return await this.billRepository.getBills(page, limit, filter);
     }
 
     async getBillById(id: string) {
