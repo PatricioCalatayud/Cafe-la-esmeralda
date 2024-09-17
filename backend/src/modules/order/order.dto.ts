@@ -14,6 +14,7 @@ import {
     IsUUID, 
     ValidateNested 
 } from "class-validator";
+import { Bill } from "src/enum/bill.enum";
 
 export class ProductInfo {
     @ApiProperty({ description: 'ID del producto.' })
@@ -51,10 +52,15 @@ export class AddOrderDto {
     @Type(() => ProductInfo)
     products: ProductInfo[];
 
-    @ApiProperty({ description: 'Propiedad para cuentas corrientes, en caso de ser true la orden se pone "En preparación".' })
+    @ApiProperty({ description: 'Propiedad para clientes, decide si paga por transferencia o utiliza el saldo de su cuenta corriente.' })
     @IsEnum(['Cuenta corriente', 'Transferencia'])
     @IsOptional() 
     account?: 'Cuenta corriente' | 'Transferencia' | null;
+
+    @ApiProperty({ description: 'Propiedad para facturación, solo admite "A", "B", o "C".' })
+    @IsEnum(Bill)
+    @IsOptional()
+    invoiceType?: Bill | null; 
 }
 
 export class UpdateOrderDto {
