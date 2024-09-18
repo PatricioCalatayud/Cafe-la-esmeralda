@@ -1,0 +1,32 @@
+[
+    {
+        "ratingValue": 4,
+        "user": "f0e09b24-1a5c-4a67-9a3f-07d23a897b0d",
+        "product": "Cafe Mezcla"  
+    },
+    {
+        "ratingValue": 5,
+        "user": "05b394d9-969a-4bbd-b73f-346c26b8c424",
+        "product": "Cafe Mezcla"
+    },
+    {
+        "ratingValue": 3,
+        "user": "c28409dd-7034-4e22-b5c4-de939166843c",
+        "product": "Cafe Mezcla"
+    },
+    {
+        "ratingValue": 2,
+        "user": "f0e09b24-1a5c-4a67-9a3f-07d23a897b05",
+        "product": "Mate Natura"
+    },
+    {
+        "ratingValue": 4,
+        "user": "05b394d9-969a-4bbd-b73f-346c26b8c424",
+        "product": "Mate Natura"
+    },
+    {
+        "ratingValue": 5,
+        "user": "f0e09b24-1a5c-4a67-9a3f-07d23a897b0d",
+        "product": "Mate Natura"
+    }
+]
