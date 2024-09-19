@@ -7,19 +7,19 @@ export class OrdersMetricsService {
     private readonly ordersMetricsRepository: OrdersMetricsRepository,
   ) {}
 
-  incrementOrdersTotal() {
-    return this.ordersMetricsRepository.incrementOrdersTotal();
-  }
 
-  setOrdersValue(value: number) {
-    if (!value) throw new Error('Value es obligatorio');
-    return this.ordersMetricsRepository.setOrdersValue(value);
+async getMostSoldProductsService(limit: number) {
+  if(!limit) limit = 10
+  return await this.ordersMetricsRepository.getMostSoldProductsRepository(limit);
 }
-
-  observeOrderCompletionTime(time: number) {
-    if (!time) throw new Error('Time es obligatorio');
-    return this.ordersMetricsRepository.observeOrderCompletionTime(time);
+async getLessSoldProductsService(limit: number) {
+  if(!limit) limit = 10
+  return await this.ordersMetricsRepository.getLessSoldProductsRepository(limit);
 }
-
-
+async getBestProductsService(limit:number) {
+  return await this.ordersMetricsRepository.getBestProductsRepository(limit);
+}
+async getWorstProductsService(limit:number) {
+  return await this.ordersMetricsRepository.getWorstProductsRepository(limit);
+}
 }
