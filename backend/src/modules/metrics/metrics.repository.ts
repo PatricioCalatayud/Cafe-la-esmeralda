@@ -1,24 +1,70 @@
 import { Injectable } from '@nestjs/common';
-import { InjectMetric } from '@willsoto/nestjs-prometheus';
-import { Counter, Gauge, Histogram } from 'prom-client';
+import { InjectRepository } from '@nestjs/typeorm';
+import { OrderDetail } from 'src/entities/orderdetail.entity';
+import { ProductsOrder } from 'src/entities/product-order.entity';
+import { Product } from 'src/entities/products/product.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrdersMetricsRepository {
   constructor(
-    @InjectMetric('orders_total') public ordersTotalMetric: Counter<string>,
-    @InjectMetric('orders_value') public ordersValueMetric: Gauge<string>,
-    @InjectMetric('order_completion_time') public orderCompletionTimeMetric: Histogram<string>,
+    @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
+    @InjectRepository(Product) private readonly productRepository: Repository<Product>,
   ) {}
 
-  async incrementOrdersTotal() {
-    return await this.ordersTotalMetric.inc();
+  async getMostSoldProductsRepository(limit: number) {
+    const products = await this.productsOrderRepository
+      .createQueryBuilder('productsOrder')
+      .select('"subproductId"', 'subproductId')
+      .addSelect('SUM(quantity)', 'quantity')
+      .addSelect('product.id', 'productId')  
+      .innerJoin('productsOrder.subproduct', 'subproduct')  
+      .innerJoin('subproduct.product', 'product')  
+      .groupBy('"subproductId"')
+      .addGroupBy('product.id') 
+      .orderBy('quantity', 'DESC')
+      .limit(limit)
+      .getRawMany();
+  
+    return products;
   }
-
-  async setOrdersValue(value: number) {
-    return await this.ordersValueMetric.set(value);
+  async getLessSoldProductsRepository(limit: number) {
+    const products = await this.productsOrderRepository
+      .createQueryBuilder('productsOrder')
+      .select('"subproductId"', 'subproductId')
+      .addSelect('SUM(quantity)', 'quantity')
+      .addSelect('product.id', 'productId')  
+      .innerJoin('productsOrder.subproduct', 'subproduct')  
+      .innerJoin('subproduct.product', 'product')  
+      .groupBy('"subproductId"')
+      .addGroupBy('product.id') 
+      .orderBy('quantity', 'ASC')
+      .limit(limit)
+      .getRawMany();
+  
+    return products;
   }
-
-  async observeOrderCompletionTime(time: number) {
-    return await this.orderCompletionTimeMetric.observe(time);
+  
+  async getBestProductsRepository(limit:number) {
+    const products = await this.productRepository
+      .createQueryBuilder('productRating')
+      .select('id', 'id')
+      .addSelect('description', 'description')
+      .addSelect('"averageRating"', 'averageRating')
+      .orderBy('"averageRating"', 'DESC')
+      .limit(limit)
+      .getRawMany();
+    return products;
+  }
+  async getWorstProductsRepository(limit:number) {
+    const products = await this.productRepository
+      .createQueryBuilder('productRating')
+      .select('id', 'id')
+      .addSelect('description', 'description')
+      .addSelect('"averageRating"', 'averageRating')
+      .orderBy('"averageRating"', 'ASC')
+      .limit(limit)
+      .getRawMany();
+    return products;
   }
 }

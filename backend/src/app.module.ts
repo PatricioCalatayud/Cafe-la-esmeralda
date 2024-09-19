@@ -28,6 +28,8 @@ import { Account } from './entities/account.entity';
 import { AccountTransaction } from './entities/accountTransaction.entity';
 import { Order } from './entities/order.entity';
 import { Rating } from './entities/ratings.entity';
+import { MetricsModule } from './modules/metrics/metrics.module';
+import { OrderDetail } from './entities/orderdetail.entity';
 
 @Module({
   imports: [
@@ -41,7 +43,7 @@ import { Rating } from './entities/ratings.entity';
       useFactory: (ConfigService: ConfigService) =>
         ConfigService.get('typeorm'),
     }),
-    TypeOrmModule.forFeature([Testimony, Product, Subproduct, Category, User, Account, AccountTransaction, Order, Rating]),
+    TypeOrmModule.forFeature([Testimony, Product, Subproduct, Category, User, Account, AccountTransaction, Order,OrderDetail, Rating]),
     AuthModule,
     ImageModule,
     UsersModule,
@@ -59,7 +61,8 @@ import { Rating } from './entities/ratings.entity';
     MailerModule,
     AccountModule,
     TasksModule,
-    BillModule
+    BillModule,
+    MetricsModule
   ],
   controllers: [AppController],
   providers: [AppService, PreloadService],
