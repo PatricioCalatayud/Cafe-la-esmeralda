@@ -251,10 +251,6 @@ export class PreloadService implements OnModuleInit {
     for (const rateProductDto of rateProductDtoArray) {
         const { user, product, ratingValue } = rateProductDto;
 
-        console.log('User:', user);
-        console.log('Product:', product); 
-        console.log('Rating Value:', ratingValue);
-
         if (ratingValue === undefined || ratingValue === null) {
             throw new BadRequestException('El valor de la calificación no puede ser nulo o indefinido.');
         }
