@@ -22,4 +22,7 @@ async getBestProductsService(limit:number) {
 async getWorstProductsService(limit:number) {
   return await this.ordersMetricsRepository.getWorstProductsRepository(limit);
 }
+async getLargestDebtorsService(limit:number) {
+  return await this.ordersMetricsRepository.getLargestDebtorsRepository(limit);
+}
 }
