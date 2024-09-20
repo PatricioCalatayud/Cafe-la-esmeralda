@@ -30,4 +30,10 @@ export class MetricsController {
         return await this.ordersMetricsService.getWorstProductsService(limit);
     }
 
+    @Get('deudores')
+    async getLargestDebtors(
+        @Body('limit') limit: number
+    ) {
+        return await this.ordersMetricsService.getLargestDebtorsService(limit);
+    }
 }

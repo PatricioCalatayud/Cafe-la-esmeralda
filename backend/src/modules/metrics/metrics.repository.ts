@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Account } from 'src/entities/account.entity';
 import { OrderDetail } from 'src/entities/orderdetail.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Product } from 'src/entities/products/product.entity';
@@ -10,6 +11,7 @@ export class OrdersMetricsRepository {
   constructor(
     @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
     @InjectRepository(Product) private readonly productRepository: Repository<Product>,
+    @InjectRepository(Account) private readonly accountRepository: Repository<Account>,
   ) {}
 
   async getMostSoldProductsRepository(limit: number) {
@@ -67,4 +69,21 @@ export class OrdersMetricsRepository {
       .getRawMany();
     return products;
   }
+  async getLargestDebtorsRepository(limit: number) {
+    const debtors = await this.accountRepository
+      .createQueryBuilder('account')
+      .select('user.id', 'userId')
+      .addSelect('user.name', 'userName')
+      .addSelect('SUM(account.balance)', 'balance')
+      .innerJoin('account.user', 'user')
+      .where('user.role = :role', { role: 'Cliente' }) 
+      .groupBy('user.id, user.name')
+      .orderBy('balance', 'DESC')
+      .limit(limit)
+      .getRawMany();
+  
+    return debtors;
+  }
+  
+
 }
