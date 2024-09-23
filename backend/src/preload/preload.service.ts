@@ -178,6 +178,8 @@ export class PreloadService implements OnModuleInit {
       ], 'Calle Wallaby 42 Sidney');
 
       order.account = account;
+      console.log(order.account);
+      
       await this.orderRepository.save(order);
 
       const accountTransaction = this.accountTransactionRepository.create({
@@ -233,33 +235,6 @@ export class PreloadService implements OnModuleInit {
               creditLimit: 1000000,
               balance: 0,
             });
-<<<<<<< HEAD
-    
-            if (!product1) {
-                console.error("Producto 'Cafe Mezcla' no encontrado");
-            } else if (!product1.subproducts.length) {
-                console.error("Producto 'Cafe Mezcla' encontrado pero no tiene subproductos");
-            }
-    
-            if (!product2) {
-                console.error("Producto 'Portasobres' no encontrado");
-            } else if (!product2.subproducts.length) {
-                console.error("Producto 'Portasobres' encontrado pero no tiene subproductos");
-            }
-    
-            if (!product1 || !product2 || !product1.subproducts.length || !product2.subproducts.length) {
-                throw new Error("Productos o subproductos no encontrados en la base de datos");
-            }
-    
-            await this.orderService.createOrder(users[3].id, [
-                { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
-                { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id }
-            ], "Calle Wallaby 42 Sidney");
-    
-            console.log("Precarga de pedido exitosa.");
-        } catch (error) {
-            console.error(`Error al crear el pedido: ${error.message}`);
-=======
 
             await this.accountRepository.save(account);
           }
@@ -280,7 +255,6 @@ export class PreloadService implements OnModuleInit {
 
         if (ratingValue === undefined || ratingValue === null) {
             throw new BadRequestException('El valor de la calificación no puede ser nulo o indefinido.');
->>>>>>> 4e0ea180773eb5c6f6e2870b7d222649a91cb011
         }
 
         const productEntity = await this.productRepository.findOne({ where: { description: product } });
