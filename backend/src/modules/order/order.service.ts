@@ -158,7 +158,7 @@ export class OrderService {
 
         const mailerRelations = await this.getOrderById(createdOrder.id)
         
-        console.log("mailer: ", mailerRelations);
+        // console.log("mailer: ", mailerRelations);
         
         await this.mailerService.sendEmailOrderCreated(mailerRelations);
 
