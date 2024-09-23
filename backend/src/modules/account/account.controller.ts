@@ -20,7 +20,7 @@ export class AccountController {
       return await this.accountService.getAccounts(page, limit);
     }
 
-    @ApiOperation({ summary: 'Obtiene la cuenta corriente de un cliente por su ID', description: 'Este endpoint retorna la cuenta corriente con todas las operaciones de un cliente por su ID.' })
+    @ApiOperation({ summary: 'Obtiene la cuenta corriente de un cliente por ID', description: 'Este endpoint retorna la cuenta corriente con todas las operaciones de un cliente por su ID.' })
     @Get('user/:id')
     async getAccountTransactionsByUserId (
       @Param('id', ParseUUIDPipe) id: string,
