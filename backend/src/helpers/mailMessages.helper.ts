@@ -858,115 +858,46 @@ export const sendEmailOrderCreated = (order: Order) => {
 </table>
 
 <!-- Detalle de la Reserva -->
-
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tbody>
-<tr>
-<td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
-<tbody>
-<tr>
-<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad" style="padding-top:35px;">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;mso-line-height-alt:18px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #aaacb0;"><strong><span style="word-break: break-word;">DETALLE DE LA RESERVA</span></strong></span></p>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad" style="padding-bottom:35px;">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:left;mso-line-height-alt:30px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>ID Reserva: 2798756a-588d-47bc-a113-861e66836473</strong></span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Nombre: Patricio</strong></span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Email: patocalatayud@hotmail.com</strong></span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Teléfono: 987567123</strong></span></p>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="pad">
-<div align="center" class="alignment">
-<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #F0F0F0;"><span style="word-break: break-word;"> </span></td>
-</tr>
-</table>
-</div>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-
-<!-- Detalle del Pedido -->
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-7" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
   <tbody>
     <tr>
       <td>
         <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
           <tbody>
-            <!-- Tarjeta para Café Mezcla -->
             <tr>
-              <td class="column" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: center; padding: 10px; vertical-align: top; border: 0px;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" style="width: 100%; text-align: center;">
+              <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top;" width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" width="100%">
                   <tr>
-                    <td style="width: 25%;">
-                      <img alt="Café Mezcla" height="auto" src="https://imgur.com/tubPom4.png" style="display: block; height: auto; border: 0; width: 100%;" title="Café Mezcla" width="260"/>
-                    </td>
-                    <td style="width: 75%; padding-left: 10px;">
-                      <div style="color:#2b303a;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:16px;line-height:150%;">
-                        <strong>Café Mezcla</strong><br/>
-                        <span style="font-size:14px;">Cantidad: 2</span><br/>
-                        <span style="font-size:14px;">Descuento: 0%</span><br/>
-                        <span style="font-size:16px;"><strong>$80,000</strong></span>
+                    <td class="pad" style="padding-top:35px;">
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;"><strong>DETALLE DE LA RESERVA</strong></p>
                       </div>
                     </td>
                   </tr>
                 </table>
-              </td>
-            </tr>
 
-            <!-- Tarjeta para Portasobres -->
-            <tr>
-              <td class="column" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: center; padding: 10px; vertical-align: top; border: 0px;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" style="width: 100%; text-align: center;">
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" width="100%">
                   <tr>
-                    <td style="width: 25%;">
-                      <img alt="Portasobres" height="auto" src="https://imgur.com/qFVuRNx.png" style="display: block; height: auto; border: 0; width: 100%;" title="Portasobres" width="260"/>
-                    </td>
-                    <td style="width: 75%; padding-left: 10px;">
-                      <div style="color:#2b303a;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:16px;line-height:150%;">
-                        <strong>Portasobres</strong><br/>
-                        <span style="font-size:14px;">Cantidad: 3</span><br/>
-                        <span style="font-size:14px;">Descuento: 0%</span><br/>
-                        <span style="font-size:16px;"><strong>$2,825</strong></span>
+                    <td class="pad" style="padding-bottom:35px;">
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:left;">
+                        <p style="margin: 0;"><strong>ID Reserva:</strong> ${order.id}</p>
+                        <p style="margin: 0;"><strong>Nombre:</strong> ${order.user.name}</p>
+                        <p style="margin: 0;"><strong>Email:</strong> ${order.user.email}</p>
+                        <p style="margin: 0;"><strong>Teléfono:</strong> ${order.user.phone}</p>
                       </div>
                     </td>
                   </tr>
                 </table>
-              </td>
-            </tr>
 
-            <!-- Total a Pagar -->
-            <tr>
-              <td class="column" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: center; padding: 10px; vertical-align: top; border: 0px;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" style="width: 100%; text-align: center;">
+                <table border="0" cellpadding="0" cellspacing="0" class="divider_block block-3" role="presentation" width="100%">
                   <tr>
-                    <td style="width: 100%; padding-left: 10px;">
-                      <div style="color:#2b303a;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:20px;line-height:150%;">
-                        <strong>Total a pagar: $168,475</strong>
+                    <td class="pad">
+                      <div align="center" class="alignment">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                          <tr>
+                            <td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #F0F0F0;"> </td>
+                          </tr>
+                        </table>
                       </div>
                     </td>
                   </tr>
@@ -979,56 +910,130 @@ export const sendEmailOrderCreated = (order: Order) => {
     </tr>
   </tbody>
 </table>
-<!-- Detalle del Envío -->
 
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-12" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tbody>
-<tr>
-<td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
-<tbody>
-<tr>
-<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="pad" style="padding-top:35px;">
-<div align="center" class="alignment">
-<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #F0F0F0;"><span style="word-break: break-word;"> </span></td>
-</tr>
+<!-- Detalle del Pedido -->
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-7" role="presentation" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
+          <tbody>
+
+            <!-- Tarjeta para Café Mezcla -->
+            <tr>
+              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
+                  <tr>
+                    <td style="width: 25%;">
+                      <img alt="${order.productsOrder[0].subproduct.product.description}" height="auto" src="${order.productsOrder[0].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[0].subproduct.product.description}" width="260"/>
+                    </td>
+                    <td style="width: 75%; padding-left: 10px;">
+                      <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
+                        <strong>${order.productsOrder[0].subproduct.product.description}</strong><br/>
+                        <span style="font-size:14px;">Cantidad: ${order.productsOrder[0].quantity}</span><br/>
+                        <span style="font-size:14px;">Descuento: ${order.productsOrder[0].subproduct.discount}%</span><br/>
+                        <span style="font-size:16px;"><strong>$${order.productsOrder[0].subproduct.price}</strong></span>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Tarjeta para Portasobres -->
+            <tr>
+              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
+                  <tr>
+                    <td style="width: 25%;">
+                      <img alt="${order.productsOrder[1].subproduct.product.description}" height="auto" src="${order.productsOrder[1].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[1].subproduct.product.description}" width="260"/>
+                    </td>
+                    <td style="width: 75%; padding-left: 10px;">
+                      <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
+                        <strong>${order.productsOrder[1].subproduct.product.description}</strong><br/>
+                        <span style="font-size:14px;">Cantidad: ${order.productsOrder[1].quantity}</span><br/>
+                        <span style="font-size:14px;">Descuento: ${order.productsOrder[1].subproduct.discount}%</span><br/>
+                        <span style="font-size:16px;"><strong>$${order.productsOrder[1].subproduct.price}</strong></span>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Total a Pagar -->
+            <tr>
+              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
+                  <tr>
+                    <td style="width: 100%; padding-left: 10px;">
+                      <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:20px;line-height:150%;">
+                        <strong>Total a pagar: $${order.orderDetail.totalPrice}</strong>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
 </table>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad" style="padding-bottom:15px;padding-top:35px;">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;mso-line-height-alt:18px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #aaacb0;"><strong><span style="word-break: break-word;">DETALLE DEL ENVÍO</span></strong></span></p>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:13px;line-height:180%;text-align:left;mso-line-height-alt:23.400000000000002px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;">Dirección de envío: Calle Wallaby 42, Sidney</span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;">Fecha de entrega: 2024-09-08</span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;">Estado: Pendiente de pago</span></p>
-</div>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
+
+<!-- Detalle del Envío -->
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-12" role="presentation" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
+          <tbody>
+            <tr>
+              <td class="column column-1" style="text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top;" width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="divider_block block-1" role="presentation" width="100%">
+                  <tr>
+                    <td class="pad" style="padding-top:35px;">
+                      <div align="center" class="alignment">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                          <tr>
+                            <td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #F0F0F0;"> </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" width="100%">
+                  <tr>
+                    <td class="pad" style="padding-bottom:15px;padding-top:35px;">
+                      <div style="color:#555555;font-family:Montserrat, sans-serif;font-size:12px;line-height:150%;text-align:left;">
+                        <p style="margin: 0;"><strong>DETALLE DEL ENVÍO</strong></p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-3" role="presentation" width="100%">
+                  <tr>
+                    <td class="pad">
+                      <div style="color:#555555;font-family:Montserrat, sans-serif;font-size:13px;line-height:180%;text-align:left;">
+                        <p style="margin: 0;">Dirección de envío: ${order.orderDetail.addressDelivery}</p>
+                        <p style="margin: 0;">Fecha de entrega: ${new Date(order.orderDetail.deliveryDate).toLocaleDateString()}</p>
+                        <p style="margin: 0;">Estado: ${order.orderDetail.transactions.status}</p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- Pie de página -->
@@ -1329,56 +1334,57 @@ return `<!DOCTYPE html>
 </table>
 
 <!-- Detalle de la Reserva -->
-
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tbody>
-<tr>
-<td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
-<tbody>
-<tr>
-<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad" style="padding-top:35px;">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;mso-line-height-alt:18px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #aaacb0;"><strong><span style="word-break: break-word;">DETALLE DE LA RESERVA</span></strong></span></p>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad" style="padding-bottom:35px;">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:left;mso-line-height-alt:30px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>ID Reserva: 1733c128-9370-44b7-8540-29633ff2f24b</strong></span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Nombre: Patricio</strong></span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Email: patocalatayud@hotmail.com</strong></span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Teléfono: 987567123</strong></span></p>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="pad">
-<div align="center" class="alignment">
-<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #F0F0F0;"><span style="word-break: break-word;"> </span></td>
-</tr>
-</table>
-</div>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
+  <tbody>
+    <tr>
+      <td>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
+          <tbody>
+            <tr>
+              <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top;" width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                  <tr>
+                    <td class="pad" style="padding-top:35px;">
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #aaacb0;"><strong><span style="word-break: break-word;">DETALLE DE LA RESERVA</span></strong></span></p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+                  <tr>
+                    <td class="pad" style="padding-bottom:35px;">
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>ID Reserva: ${order.id}</strong></span></p>
+                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Nombre: ${order.user.name}</strong></span></p>
+                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Email: ${order.user.email}</strong></span></p>
+                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Teléfono: ${order.user.phone}</strong></span></p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <table border="0" cellpadding="0" cellspacing="0" class="divider_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                  <tr>
+                    <td class="pad">
+                      <div align="center" class="alignment">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+                          <tr>
+                            <td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #F0F0F0;"> </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- Detalle del Pedido -->
@@ -1386,22 +1392,22 @@ return `<!DOCTYPE html>
   <tbody>
     <tr>
       <td>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
           <tbody>
             <!-- Tarjeta para Café Mezcla -->
             <tr>
-              <td class="column" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: center; padding: 10px; vertical-align: top; border: 0px;" width="100%">
+              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
                 <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" style="width: 100%; text-align: center;">
                   <tr>
                     <td style="width: 25%;">
-                      <img alt="Café Mezcla" height="auto" src="https://imgur.com/tubPom4.png" style="display: block; height: auto; border: 0; width: 100%;" title="Café Mezcla" width="260"/>
+                      <img alt="${order.productsOrder[0].subproduct.product.description}" height="auto" src="${order.productsOrder[0].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[0].subproduct.product.description}" width="260"/>
                     </td>
                     <td style="width: 75%; padding-left: 10px;">
                       <div style="color:#2b303a;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:16px;line-height:150%;">
-                        <strong>Café Mezcla</strong><br/>
-                        <span style="font-size:14px;">Cantidad: 2</span><br/>
-                        <span style="font-size:14px;">Descuento: 0%</span><br/>
-                        <span style="font-size:16px;"><strong>$80,000</strong></span>
+                        <strong>${order.productsOrder[0].subproduct.product.description}</strong><br/>
+                        <span style="font-size:14px;">Cantidad: ${order.productsOrder[0].quantity}</span><br/>
+                        <span style="font-size:14px;">Descuento: ${order.productsOrder[0].subproduct.discount}%</span><br/>
+                        <span style="font-size:16px;"><strong>$${order.productsOrder[0].subproduct.price}</strong></span>
                       </div>
                     </td>
                   </tr>
@@ -1411,18 +1417,18 @@ return `<!DOCTYPE html>
 
             <!-- Tarjeta para Portasobres -->
             <tr>
-              <td class="column" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: center; padding: 10px; vertical-align: top; border: 0px;" width="100%">
+              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
                 <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" style="width: 100%; text-align: center;">
                   <tr>
                     <td style="width: 25%;">
-                      <img alt="Portasobres" height="auto" src="https://imgur.com/qFVuRNx.png" style="display: block; height: auto; border: 0; width: 100%;" title="Portasobres" width="260"/>
+                      <img alt="${order.productsOrder[1].subproduct.product.description}" height="auto" src="${order.productsOrder[1].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[1].subproduct.product.description}" width="260"/>
                     </td>
                     <td style="width: 75%; padding-left: 10px;">
                       <div style="color:#2b303a;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:16px;line-height:150%;">
-                        <strong>Portasobres</strong><br/>
-                        <span style="font-size:14px;">Cantidad: 3</span><br/>
-                        <span style="font-size:14px;">Descuento: 0%</span><br/>
-                        <span style="font-size:16px;"><strong>$2,825</strong></span>
+                        <strong>${order.productsOrder[1].subproduct.product.description}</strong><br/>
+                        <span style="font-size:14px;">Cantidad: ${order.productsOrder[1].quantity}</span><br/>
+                        <span style="font-size:14px;">Descuento: ${order.productsOrder[1].subproduct.discount}%</span><br/>
+                        <span style="font-size:16px;"><strong>$${order.productsOrder[1].subproduct.price}</strong></span>
                       </div>
                     </td>
                   </tr>
@@ -1432,12 +1438,12 @@ return `<!DOCTYPE html>
 
             <!-- Total a Pagar -->
             <tr>
-              <td class="column" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: center; padding: 10px; vertical-align: top; border: 0px;" width="100%">
+              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
                 <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" style="width: 100%; text-align: center;">
                   <tr>
                     <td style="width: 100%; padding-left: 10px;">
                       <div style="color:#2b303a;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:20px;line-height:150%;">
-                        <strong>Total a pagar: $168,475</strong>
+                        <strong>Total a pagar: $${order.orderDetail.totalPrice}</strong>
                       </div>
                     </td>
                   </tr>
@@ -1452,73 +1458,75 @@ return `<!DOCTYPE html>
 </table>
 
 <!-- Detalle de pago por transferencia -->
-
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-8" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
   <tbody>
     <tr>
       <td>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
           <tbody>
             <tr>
-              <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+              <td class="column column-1" style="font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top;" width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-1" role="presentation" width="100%">
                   <tr>
                     <td class="pad" style="padding-top:35px;">
-                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;mso-line-height-alt:18px;">
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #aaacb0;"><strong><span style="word-break: break-word;">DETALLE DE PAGO POR TRANSFERENCIA</span></strong></span></p>
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;"><strong>DETALLE DE PAGO POR TRANSFERENCIA</strong></p>
                       </div>
                     </td>
                   </tr>
                 </table>
-                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" width="100%">
                   <tr>
                     <td class="pad" style="padding-bottom:35px;">
-                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:left;mso-line-height-alt:30px;">
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Número de cuenta: 0011776-4 006-9</strong></span></p>
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>CUIT: 30-69917035-2</strong></span></p>
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Razón Social: INTERCAFE SA</strong></span></p>
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>CBU: 0070006120000011776499</strong></span></p>
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Alias: CAFELAESMERALDA</strong></span></p>
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;"><strong>Número de cuenta: 0011776-4 006-9</strong></p>
+                        <p style="margin: 0; word-break: break-word;"><strong>CUIT: 30-69917035-2</strong></p>
+                        <p style="margin: 0; word-break: break-word;"><strong>Razón Social: INTERCAFE SA</strong></p>
+                        <p style="margin: 0; word-break: break-word;"><strong>CBU: 0070006120000011776499</strong></p>
+                        <p style="margin: 0; word-break: break-word;"><strong>Alias: CAFELAESMERALDA</strong></p>
                       </div>
                     </td>
                   </tr>
                 </table>
-                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-3" role="presentation" width="100%">
                   <tr>
                     <td class="pad" style="padding-top:15px;">
-                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;mso-line-height-alt:18px;">
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #aaacb0;"><strong><span style="word-break: break-word;">Pago con Mercado Pago</span></strong></span></p>
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;"><strong>Pago con Mercado Pago</strong></p>
                       </div>
                     </td>
                   </tr>
                 </table>
-                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-4" role="presentation" width="100%">
                   <tr>
                     <td class="pad" style="padding-bottom:35px;">
-                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:left;mso-line-height-alt:30px;">
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>INTERCAFE S A</strong></span></p>
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>CVU: 0000003100037751602197</strong></span></p>
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Alias: cafelaesmeralda.mp</strong></span></p>
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>CUIT/CUIL: 30699170352</strong></span></p>
-                        <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Mercado Pago</strong></span></p>
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;"><strong>INTERCAFE S A</strong></p>
+                        <p style="margin: 0; word-break: break-word;"><strong>CVU: 0000003100037751602197</strong></p>
+                        <p style="margin: 0; word-break: break-word;"><strong>Alias: cafelaesmeralda.mp</strong></p>
+                        <p style="margin: 0; word-break: break-word;"><strong>CUIT/CUIL: 30699170352</strong></p>
                       </div>
                     </td>
                   </tr>
                 </table>
+
                 <!-- Botón de Cargar Comprobante -->
-               <table border="0" cellpadding="0" cellspacing="0" class="button_block block-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-  <tr>
-    <td class="pad" style="text-align:left;">
-      <div align="center" class="alignment">
-        <a href="${API_URL}/transfer/${order.id}" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#38B2AC;border-radius:4px;width:auto;border-top:1px solid #38B2AC;border-right:1px solid #38B2AC;border-bottom:1px solid #38B2AC;border-left:1px solid #38B2AC;padding-top:10px;padding-bottom:10px;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;text-align:center;mso-border-alt:none;word-break:break-word;" target="_blank">
-          <span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;">
-            <span style="word-break: break-word;line-height: 32px;"><strong>Cargar Comprobante</strong></span>
-          </span>
-        </a>
-      </div>
-    </td>
-  </tr>
-</table>
+                <table border="0" cellpadding="0" cellspacing="0" class="button_block block-5" role="presentation" width="100%">
+                  <tr>
+                    <td class="pad" style="text-align:left;">
+                      <div align="center" class="alignment">
+                        <a href="${API_URL}/transfer/${order.id}" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#38B2AC;border-radius:4px;width:auto;border-top:1px solid #38B2AC;border-right:1px solid #38B2AC;border-bottom:1px solid #38B2AC;border-left:1px solid #38B2AC;padding-top:10px;padding-bottom:10px;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;text-align:center;mso-border-alt:none;word-break:break-word;" target="_blank">
+                          <span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;">
+                            <span style="word-break: break-word;line-height: 32px;"><strong>Cargar Comprobante</strong></span>
+                          </span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </tbody>
@@ -1529,57 +1537,57 @@ return `<!DOCTYPE html>
 </table>
 
 <!-- Detalle del Envío -->
-
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-12" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tbody>
-<tr>
-<td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
-<tbody>
-<tr>
-<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="pad" style="padding-top:35px;">
-<div align="center" class="alignment">
-<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #F0F0F0;"><span style="word-break: break-word;"> </span></td>
-</tr>
-</table>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad" style="padding-bottom:15px;padding-top:35px;">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;mso-line-height-alt:18px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #aaacb0;"><strong><span style="word-break: break-word;">DETALLE DEL ENVÍO</span></strong></span></p>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:13px;line-height:180%;text-align:left;mso-line-height-alt:23.400000000000002px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;">Dirección de envío: Calle Wallaby 42, Sidney</span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;">Fecha de entrega: 2024-09-08</span></p>
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;">Estado: Pendiente de pago</span></p>
-</div>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
+  <tbody>
+    <tr>
+      <td>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
+          <tbody>
+            <tr>
+              <td class="column column-1" style="font-weight: 400; text-align: left; padding-left: 30px; padding-right: 30px; vertical-align: top;" width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="divider_block block-1" role="presentation" width="100%">
+                  <tr>
+                    <td class="pad" style="padding-top:35px;">
+                      <div align="center" class="alignment">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                          <tr>
+                            <td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #F0F0F0;"> </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
 
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-2" role="presentation" width="100%">
+                  <tr>
+                    <td class="pad" style="padding-bottom:15px;padding-top:35px;">
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;"><strong>DETALLE DEL ENVÍO</strong></p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-3" role="presentation" width="100%">
+                  <tr>
+                    <td class="pad">
+                      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:13px;line-height:180%;text-align:left;">
+                        <p style="margin: 0; word-break: break-word;">Dirección de envío: ${order.orderDetail.addressDelivery}</p>
+                        <p style="margin: 0; word-break: break-word;">Fecha de entrega: ${new Date(order.orderDetail.deliveryDate).toLocaleDateString()}</p>
+                        <p style="margin: 0; word-break: break-word;">Estado: ${order.orderDetail.transactions.status}</p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
 <!-- Pie de página -->
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-15" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; margin-top: 50px;">
   <tbody>
@@ -2411,7 +2419,322 @@ export const orderReminder = () => {
 }
 
 export const sendPaymentBill = (imgUrl: string) => {
-  return `
-    ACÁ VA TEXTO
-  `
+  return `<!DOCTYPE html>
+<html lang="es" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<title></title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900" rel="stylesheet" type="text/css"/>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: inherit !important;
+    }
+
+    #MessageViewBody a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    p {
+        line-height: inherit;
+    }
+
+    .desktop_hide,
+    .desktop_hide table {
+        mso-hide: all;
+        display: none;
+        max-height: 0px;
+        overflow: hidden;
+    }
+
+    .image_block img+div {
+        display: none;
+    }
+
+    sup,
+    sub {
+        line-height: 0;
+        font-size: 75%;
+    }
+
+    @media (max-width:660px) {
+
+        .desktop_hide table.icons-inner,
+        .social_block.desktop_hide .social-table {
+            display: inline-block !important;
+        }
+
+        .icons-inner {
+            text-align: center;
+        }
+
+        .icons-inner td {
+            margin: 0 auto;
+        }
+
+        .image_block div.fullWidth {
+            max-width: 100% !important;
+        }
+
+        .mobile_hide {
+            display: none;
+        }
+
+        .row-content {
+            width: 100% !important;
+        }
+
+        .stack .column {
+            width: 100%;
+            display: block;
+        }
+
+        .mobile_hide {
+            min-height: 0;
+            max-height: 0;
+            max-width: 0;
+            overflow: hidden;
+            font-size: 0px;
+        }
+
+        .desktop_hide,
+        .desktop_hide table {
+            display: table !important;
+            max-height: none !important;
+        }
+    }
+</style>
+</head>
+<body class="body" style="background-color: #f8f8f9; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+<table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="background-color: #f8f8f9;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="background-color: #1aa19c;" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #1aa19c; width: 640px; margin: 0 auto;" width="640">
+<tbody>
+<tr>
+<td class="column column-1" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 4px solid #1AA19C;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #f8f8f9; color: #000000; width: 640px; margin: 0 auto;" width="640">
+<tbody>
+<tr>
+<td class="column column-1" width="100%">
+<table border="0" cellpadding="20" cellspacing="0" class="divider_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-3" role="presentation" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; width: 640px; margin: 0 auto;" width="640">
+<tbody>
+<tr>
+<td class="column column-1" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:12px;padding-top:60px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="image_block block-2" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-left:40px;padding-right:40px;width:100%;">
+<div align="center" class="alignment" style="line-height:10px">
+<div class="fullWidth" style="max-width: 352px;"><img alt="I'm an image" height="auto" src="https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/2f00ff3e-a7a3-4e88-b879-c9ee64663d4a-Img5_2x.jpg" style="display: block; height: auto; border: 0; width: 100%;" title="I'm an image" width="352"/></div>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-3" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-top:50px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-4" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
+<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:30px;line-height:120%;text-align:center;">
+<p style="margin: 0; word-break: break-word;"><span style="color: #2b303a;"><strong>Gracias por su pago</strong></span></p>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-5" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
+<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:center;">
+<p style="margin: 0;">Gracias por su compra. Adjunto encontrará su factura detallada. Si tiene alguna consulta o necesita asistencia, no dude en contactarnos. Apreciamos su confianza en nuestros productos y servicios.</p>
+</div>
+</td>
+</tr>
+</table>
+
+<!-- Aquí va el botón reemplazado con el estilo del archivo -->
+<table border="0" cellpadding="0" cellspacing="0" class="button_block block-1" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-left:10px;padding-right:10px;padding-top:40px;text-align:center;">
+<div align="center" class="alignment">
+<div style="background-color:#1aa19c;border-bottom:0px solid transparent;border-left:0px solid transparent;border-radius:60px;border-right:0px solid transparent;border-top:0px solid transparent;color:#ffffff;display:inline-block;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:16px;padding-bottom:15px;padding-top:15px;text-align:center;text-decoration:none;width:auto;word-break:keep-all;">
+<a href="${imgUrl}" style="color:#ffffff;text-decoration:none;padding-left:30px;padding-right:30px;" title="Descargar Factura"><strong>Descargar Factura</strong></a>
+</div>
+</div>
+</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-6" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-top:50px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-5" role="presentation" width="100%">
+<tbody>
+<tr>
+<td>
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #2b303a; width: 640px; margin: 0 auto;" width="640">
+<tbody>
+<tr>
+<td class="column column-1" width="100%">
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-5" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:15px;">
+<div style="color:#ffffff;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:150%;text-align:left;">
+<p>Con más de 40 años de dedicación al arte de la tostación, Café La Esmeralda es el proveedor de confianza para los bares más reconocidos de Buenos Aires. Nuestra pasión por el café se refleja en cada grano, seleccionado de las mejores fincas de Colombia y Brasil, y tostado con precisión para ofrecer una experiencia única. Apostamos por la calidad y la tradición, convirtiendo cada taza en un viaje al corazón del café de especialidad.</p>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-6" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:25px;">
+<div align="center" class="alignment">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 1px solid #555961;"></td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-7" role="presentation" width="100%">
+<tr>
+<td class="pad" style="padding-bottom:30px;padding-left:40px;padding-right:40px;padding-top:20px;">
+<div style="color:#ffffff;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:12px;line-height:120%;text-align:left;">
+<p>La Esmeralda Café © 2024</p>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html> `
 }
