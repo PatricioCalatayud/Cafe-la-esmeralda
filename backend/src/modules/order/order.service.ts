@@ -156,8 +156,14 @@ export class OrderService {
             await this.orderRepository.update(createdOrder.id, { bill });
         }
 
-        await this.mailerService.sendEmailOrderCreated(createdOrder);
-  
+        const mailerRelations = await this.getOrderById(createdOrder.id)
+        
+        console.log("mailer: ", mailerRelations);
+        
+        await this.mailerService.sendEmailOrderCreated(mailerRelations);
+
+        
+
         delete createdOrder.user.password;
         return createdOrder;
     }
