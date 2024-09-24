@@ -25,4 +25,8 @@ async getWorstProductsService(limit:number) {
 async getLargestDebtorsService(limit:number) {
   return await this.ordersMetricsRepository.getLargestDebtorsRepository(limit);
 }
+
+async getOrdersByUserIdAndDateService(id: string, dateSelected: Date) {
+  return await this.ordersMetricsRepository.getOrdersByUserIdAndDateRepository(id, dateSelected);
+}
 }
