@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get } from '@nestjs/common';
 import { OrdersMetricsService } from './metrics.service';
 
 @Controller('metrics')
@@ -36,4 +36,19 @@ export class MetricsController {
     ) {
         return await this.ordersMetricsService.getLargestDebtorsService(limit);
     }
+
+    @Get('pedidos-usuario-mes')
+    async getOrdersByUserIdAndDate(
+        @Body('id') id: string,
+        @Body('date') date: string
+    ) {
+        const dateSelected = new Date(date);
+        
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+    
+        return await this.ordersMetricsService.getOrdersByUserIdAndDateService(id, dateSelected);
+    }
+    
 }

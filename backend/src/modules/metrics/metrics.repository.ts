@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from 'src/entities/account.entity';
+import { Order } from 'src/entities/order.entity';
 import { OrderDetail } from 'src/entities/orderdetail.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Product } from 'src/entities/products/product.entity';
-import { Repository } from 'typeorm';
+import { User } from 'src/entities/user.entity';
+import { Between, Repository } from 'typeorm';
 
 @Injectable()
 export class OrdersMetricsRepository {
@@ -12,6 +14,8 @@ export class OrdersMetricsRepository {
     @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
     @InjectRepository(Product) private readonly productRepository: Repository<Product>,
     @InjectRepository(Account) private readonly accountRepository: Repository<Account>,
+    @InjectRepository(Order) private readonly orderRepository: Repository<Order>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
   async getMostSoldProductsRepository(limit: number) {
@@ -84,6 +88,34 @@ export class OrdersMetricsRepository {
   
     return debtors;
   }
-  
+
+  async getOrdersByUserIdAndDateRepository(id: string, date: Date): Promise<{ data: Order[], total: number }> {
+    const user = await this.userRepository.findOne({
+        where: { id },
+    });
+
+    if (!user) throw new NotFoundException(`Usuario no encontrado. ID: ${id}`);
+
+    const year = date.getFullYear();
+    const month = date.getMonth()+2; 
+    
+
+    const queryBuilder = this.orderRepository.createQueryBuilder('order')
+        .leftJoinAndSelect('order.productsOrder', 'productsOrder')
+        .leftJoinAndSelect('productsOrder.subproduct', 'subproduct')
+        .leftJoinAndSelect('subproduct.product', 'product')
+        .leftJoinAndSelect('order.orderDetail', 'orderDetail')
+        .leftJoinAndSelect('orderDetail.transactions', 'transactions')
+        .leftJoinAndSelect('order.receipt', 'receipt')
+        .leftJoinAndSelect('order.bill', 'bill')
+        .where('order.userId = :userId', { userId: user.id })
+        .andWhere('EXTRACT(YEAR FROM order.date) = :year', { year })
+        .andWhere('EXTRACT(MONTH FROM order.date) = :month', { month });
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return { data, total };
+}
+
 
 }
