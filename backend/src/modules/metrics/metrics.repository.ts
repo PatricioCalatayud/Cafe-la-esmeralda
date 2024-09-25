@@ -143,4 +143,25 @@ export class OrdersMetricsRepository {
   }
   
 
+  async geAllTimeProductsRepository( productId, limit) {  
+
+    const queryBuilder = this.productsOrderRepository
+      .createQueryBuilder('productsOrder')
+      .leftJoinAndSelect('productsOrder.subproduct', 'subproduct')
+      .leftJoinAndSelect('subproduct.product', 'product')
+      .leftJoinAndSelect('productsOrder.order', 'order')
+      .leftJoinAndSelect('order.user', 'user')
+      .where('product.id = :productId', { productId })
+      .orderBy('productsOrder.quantity', 'DESC')
+      .limit(limit);
+  
+    try {
+      const results = await queryBuilder.getMany();
+      return results;
+    } catch (error) {
+      console.error('Error executing query: ', error);
+      throw new Error('Error al obtener productos por mes.');
+    }
+  }
+
 }

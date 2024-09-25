@@ -66,4 +66,11 @@ export class MetricsController {
         return await this.ordersMetricsService.getProductsByMonthService(dateSelected, productId, limit);
     }
     
+    @Get('productos-vendidos')
+    async geAllTimeProducts(
+        @Body('productId') productId: string,
+        @Body('limit') limit: number
+    ) {
+        return await this.ordersMetricsService.geAllTimeProductsService(productId, limit);
+    }
 }
