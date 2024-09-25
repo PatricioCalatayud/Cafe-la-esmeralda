@@ -50,5 +50,27 @@ export class MetricsController {
     
         return await this.ordersMetricsService.getOrdersByUserIdAndDateService(id, dateSelected);
     }
+
+    @Get('productos-por-mes')
+    async getProductsByMonth(
+        @Body('date') date: string,
+        @Body('productId') productId: string,
+        @Body('limit') limit: number
+    ) {
+        const dateSelected = new Date(date);
+        
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
     
+        return await this.ordersMetricsService.getProductsByMonthService(dateSelected, productId, limit);
+    }
+    
+    @Get('productos-vendidos')
+    async geAllTimeProducts(
+        @Body('productId') productId: string,
+        @Body('limit') limit: number
+    ) {
+        return await this.ordersMetricsService.geAllTimeProductsService(productId, limit);
+    }
 }
