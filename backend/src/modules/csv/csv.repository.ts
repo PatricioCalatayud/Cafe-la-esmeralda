@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { createWriteStream } from 'fs';
-import { format } from 'fast-csv';
+import { format, parse } from 'fast-csv';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
+import * as fs from 'fs';
 
 @Injectable()
 export class CsvRepository {
@@ -19,7 +19,7 @@ export class CsvRepository {
     });
 
     const csvFilePath = './cafeteria_products.csv';
-    const writeStream = createWriteStream(csvFilePath);
+    const writeStream = fs.createWriteStream(csvFilePath);
     const csvStream = format({ headers: true });
 
     csvStream.pipe(writeStream);
@@ -44,4 +44,30 @@ export class CsvRepository {
 
     return csvFilePath;
   }
+
+
+  async processCsvRepository(filePath: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const results = [];
+      console.log(results)
+
+      fs.createReadStream(filePath)
+        .pipe(parse({ headers: true }))
+        .on('data', (row) => {
+          results.push(row);
+        })
+        .on('end', () => {
+          resolve(results);
+        })
+        .on('error', (error) => {
+          reject(error);
+        });
+    });
+  }
 }
+
+
+
+
+
+
