@@ -660,204 +660,175 @@ export const sendEmailOrderExpired = (orderId: string) => {
 }
 
 export const sendEmailOrderCreated = (order: Order) => {
-      if (order.user.role === 'Usuario') {
-        return `
-   <!DOCTYPE html>
-<html lang="es" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
-<head>
-<title>Confirmación de Pedido</title>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900" rel="stylesheet" type="text/css"/>
-<style>
-		* {
-			box-sizing: border-box;
-		}
+  if (order.user.role === 'Usuario') {
+    return (
+      `<!DOCTYPE html>
+      <html lang="es" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+      <head>
+      <title>Confirmación de Pedido</title>
+      <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+      <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900" rel="stylesheet" type="text/css"/>
+      <style>
+        * {
+          box-sizing: border-box;
+        }
 
-		body {
-			margin: 0;
-			padding: 0;
-		}
+        body {
+          margin: 0;
+          padding: 0;
+        }
 
-		a[x-apple-data-detectors] {
-			color: inherit !important;
-			text-decoration: inherit !important;
-		}
+        a[x-apple-data-detectors] {
+          color: inherit !important;
+          text-decoration: inherit !important;
+        }
 
-		#MessageViewBody a {
-			color: inherit;
-			text-decoration: none;
-		}
+        #MessageViewBody a {
+          color: inherit;
+          text-decoration: none;
+        }
 
-		p {
-			line-height: inherit
-		}
+        p {
+          line-height: inherit
+        }
 
-		.desktop_hide,
-		.desktop_hide table {
-			mso-hide: all;
-			display: none;
-			max-height: 0px;
-			overflow: hidden;
-		}
+        .desktop_hide,
+        .desktop_hide table {
+          mso-hide: all;
+          display: none;
+          max-height: 0px;
+          overflow: hidden;
+        }
 
-		.image_block img+div {
-			display: none;
-		}
+        .image_block img+div {
+          display: none;
+        }
 
-		sup,
-		sub {
-			line-height: 0;
-			font-size: 75%;
-		}
+        sup,
+        sub {
+          line-height: 0;
+          font-size: 75%;
+        }
 
-		@media (max-width:660px) {
+        @media (max-width:660px) {
 
-			.desktop_hide table.icons-inner,
-			.social_block.desktop_hide .social-table {
-				display: inline-block !important;
-			}
+          .desktop_hide table.icons-inner,
+          .social_block.desktop_hide .social-table {
+            display: inline-block !important;
+          }
 
-			.icons-inner {
-				text-align: center;
-			}
+          .icons-inner {
+            text-align: center;
+          }
 
-			.icons-inner td {
-				margin: 0 auto;
-			}
+          .icons-inner td {
+            margin: 0 auto;
+          }
 
-			.image_block div.fullWidth {
-				max-width: 100% !important;
-			}
+          .image_block div.fullWidth {
+            max-width: 100% !important;
+          }
 
-			.mobile_hide {
-				display: none;
-			}
+          .mobile_hide {
+            display: none;
+          }
 
-			.row-content {
-				width: 100% !important;
-			}
+          .row-content {
+            width: 100% !important;
+          }
 
-			.stack .column {
-				width: 100%;
-				display: block;
-			}
+          .stack .column {
+            width: 100%;
+            display: block;
+          }
 
-			.mobile_hide {
-				min-height: 0;
-				max-height: 0;
-				max-width: 0;
-				overflow: hidden;
-				font-size: 0px;
-			}
+          .mobile_hide {
+            min-height: 0;
+            max-height: 0;
+            max-width: 0;
+            overflow: hidden;
+            font-size: 0px;
+          }
 
-			.desktop_hide,
-			.desktop_hide table {
-				display: table !important;
-				max-height: none !important;
-			}
-		}
-	</style>
-</head>
-<body class="body" style="background-color: #f8f8f9; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
-<table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f8f8f9;" width="100%">
-<tbody>
-<tr>
-<td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #1aa19c;" width="100%">
-<tbody>
-<tr>
-<td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #1aa19c; color: #000000; width: 640px; margin: 0 auto;" width="640">
-<tbody>
-<tr>
-<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-<table border="0" cellpadding="0" cellspacing="0" class="empty_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="pad">
-<div></div>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff;" width="100%">
-<tbody>
-<tr>
-<td>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 100%; margin: 0 auto;" width="640">
-<tbody>
-<tr>
-<td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-<table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="pad" style="padding-left:40px;padding-right:40px;width:100%;">
-<div align="center" class="alignment" style="line-height:10px">
-<div class="fullWidth" style="max-width: 640px;"><img alt="La Esmeralda Café" height="auto" src="https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/213e1063-b081-4f90-a3b6-6524320ea386-esmeralda6.png" style="display: block; height: auto; border: 0; width: 100%;" title="La Esmeralda Café" width="640"/></div>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="pad" style="padding-top:50px;">
-<div align="center" class="alignment">
-<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"><span style="word-break: break-word;"> </span></td>
-</tr>
-</table>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:30px;line-height:120%;text-align:center;mso-line-height-alt:36px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Gracias por tu pedido</strong></span></p>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
-<tr>
-<td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
-<div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:center;mso-line-height-alt:22.5px;">
-<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #808389;">¡Tu pedido ha sido procesado exitosamente! Aquí tienes los detalles:</span></p>
-</div>
-</td>
-</tr>
-</table>
-<table border="0" cellpadding="0" cellspacing="0" class="divider_block block-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="pad" style="padding-top:60px;">
-<div align="center" class="alignment">
-<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-<tr>
-<td class="divider_inner" style="font-size: 1px; line-height: 1px; border-top: 0px solid #BBBBBB;"><span style="word-break: break-word;"> </span></td>
-</tr>
-</table>
-</div>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-
-<!-- Detalle de la Reserva -->
+          .desktop_hide,
+          .desktop_hide table {
+            display: table !important;
+            max-height: none !important;
+          }
+        }
+      </style>
+      </head>
+      <body class="body" style="background-color: #f8f8f9; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+      <table border="0" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f8f8f9;" width="100%">
+      <tbody>
+      <tr>
+      <td>
+      <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #1aa19c;" width="100%">
+      <tbody>
+      <tr>
+      <td>
+      <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #1aa19c; color: #000000; width: 640px; margin: 0 auto;" width="640">
+      <tbody>
+      <tr>
+      <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+      <table border="0" cellpadding="0" cellspacing="0" class="empty_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+      <tr>
+      <td class="pad">
+      <div></div>
+      </td>
+      </tr>
+      </table>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff;" width="100%">
+      <tbody>
+      <tr>
+      <td>
+      <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 100%; margin: 0 auto;" width="640">
+      <tbody>
+      <tr>
+      <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
+      <table border="0" cellpadding="0" cellspacing="0" class="image_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+      <tr>
+      <td class="pad" style="padding-left:40px;padding-right:40px;width:100%;">
+      <div align="center" class="alignment" style="line-height:10px">
+      <div class="fullWidth" style="max-width: 640px;"><img alt="La Esmeralda Café" height="auto" src="https://storage.googleapis.com/la-esmeralda-dc654.appspot.com/213e1063-b081-4f90-a3b6-6524320ea386-esmeralda6.png" style="display: block; height: auto; border: 0; width: 100%;" title="La Esmeralda Café" width="640"/></div>
+      </div>
+      </td>
+      </tr>
+      </table>
+      <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+      <tr>
+      <td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
+      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:30px;line-height:120%;text-align:center;mso-line-height-alt:36px;">
+      <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Gracias por tu pedido</strong></span></p>
+      </div>
+      </td>
+      </tr>
+      </table>
+      <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+      <tr>
+      <td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
+      <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:center;mso-line-height-alt:22.5px;">
+      <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #808389;">¡Tu pedido ha sido procesado exitosamente! Aquí tienes los detalles:</span></p>
+      </div>
+      </td>
+      </tr>
+      </table>
+      <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
+      <tbody>
+      <tr>
+      <td>
+      <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
+      <tbody>
+      <!-- Detalle de la Reserva -->
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-6" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
   <tbody>
     <tr>
@@ -911,79 +882,106 @@ export const sendEmailOrderCreated = (order: Order) => {
   </tbody>
 </table>
 
-<!-- Detalle del Pedido -->
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-7" role="presentation" width="100%">
-  <tbody>
-    <tr>
-      <td>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
-          <tbody>
-
-            <!-- Tarjeta para Café Mezcla -->
+      <!-- Producto 1 -->
+      <tr>
+        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
             <tr>
-              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
-                  <tr>
-                    <td style="width: 25%;">
-                      <img alt="${order.productsOrder[0].subproduct.product.description}" height="auto" src="${order.productsOrder[0].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[0].subproduct.product.description}" width="260"/>
-                    </td>
-                    <td style="width: 75%; padding-left: 10px;">
-                      <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
-                        <strong>${order.productsOrder[0].subproduct.product.description}</strong><br/>
-                        <span style="font-size:14px;">Cantidad: ${order.productsOrder[0].quantity}</span><br/>
-                        <span style="font-size:14px;">Descuento: ${order.productsOrder[0].subproduct.discount}%</span><br/>
-                        <span style="font-size:16px;"><strong>$${order.productsOrder[0].subproduct.price}</strong></span>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
+              <td style="width: 25%;">
+                <img alt="${order.productsOrder[0].subproduct.product.description}" height="auto" src="${order.productsOrder[0].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[0].subproduct.product.description}" width="260"/>
+              </td>
+              <td style="width: 75%; padding-left: 10px;">
+                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
+                  <strong>${order.productsOrder[0].subproduct.product.description}</strong><br/>
+                  <span style="font-size:14px;">Cantidad: ${order.productsOrder[0].quantity}</span><br/>
+                  <span style="font-size:14px;">Descuento: ${order.productsOrder[0].subproduct.discount}%</span><br/>
+                  <span style="font-size:16px;"><strong>$${order.productsOrder[0].subproduct.price}</strong></span>
+                </div>
               </td>
             </tr>
+          </table>
+        </td>
+      </tr>
 
-            <!-- Tarjeta para Portasobres -->
+      <!-- Producto 2 -->
+      <tr>
+        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
             <tr>
-              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
-                  <tr>
-                    <td style="width: 25%;">
-                      <img alt="${order.productsOrder[1].subproduct.product.description}" height="auto" src="${order.productsOrder[1].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[1].subproduct.product.description}" width="260"/>
-                    </td>
-                    <td style="width: 75%; padding-left: 10px;">
-                      <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
-                        <strong>${order.productsOrder[1].subproduct.product.description}</strong><br/>
-                        <span style="font-size:14px;">Cantidad: ${order.productsOrder[1].quantity}</span><br/>
-                        <span style="font-size:14px;">Descuento: ${order.productsOrder[1].subproduct.discount}%</span><br/>
-                        <span style="font-size:16px;"><strong>$${order.productsOrder[1].subproduct.price}</strong></span>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
+              <td style="width: 25%;">
+                <img alt="${order.productsOrder[1].subproduct.product.description}" height="auto" src="${order.productsOrder[1].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[1].subproduct.product.description}" width="260"/>
+              </td>
+              <td style="width: 75%; padding-left: 10px;">
+                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
+                  <strong>${order.productsOrder[1].subproduct.product.description}</strong><br/>
+                  <span style="font-size:14px;">Cantidad: ${order.productsOrder[1].quantity}</span><br/>
+                  <span style="font-size:14px;">Descuento: ${order.productsOrder[1].subproduct.discount}%</span><br/>
+                  <span style="font-size:16px;"><strong>$${order.productsOrder[1].subproduct.price}</strong></span>
+                </div>
               </td>
             </tr>
+          </table>
+        </td>
+      </tr>
 
-            <!-- Total a Pagar -->
+      <!-- Producto 3 -->
+      <tr>
+        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
             <tr>
-              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
-                  <tr>
-                    <td style="width: 100%; padding-left: 10px;">
-                      <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:20px;line-height:150%;">
-                        <strong>Total a pagar: $${order.orderDetail.totalPrice}</strong>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
+              <td style="width: 25%;">
+                <img alt="${order.productsOrder[2].subproduct.product.description}" height="auto" src="${order.productsOrder[2].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[2].subproduct.product.description}" width="260"/>
+              </td>
+              <td style="width: 75%; padding-left: 10px;">
+                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
+                  <strong>${order.productsOrder[2].subproduct.product.description}</strong><br/>
+                  <span style="font-size:14px;">Cantidad: ${order.productsOrder[2].quantity}</span><br/>
+                  <span style="font-size:14px;">Descuento: ${order.productsOrder[2].subproduct.discount}%</span><br/>
+                  <span style="font-size:16px;"><strong>$${order.productsOrder[2].subproduct.price}</strong></span>
+                </div>
               </td>
             </tr>
+          </table>
+        </td>
+      </tr>
 
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      <!-- Producto 4 -->
+      <tr>
+        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
+            <tr>
+              <td style="width: 25%;">
+                <img alt="${order.productsOrder[3].subproduct.product.description}" height="auto" src="${order.productsOrder[3].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[3].subproduct.product.description}" width="260"/>
+              </td>
+              <td style="width: 75%; padding-left: 10px;">
+                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
+                  <strong>${order.productsOrder[3].subproduct.product.description}</strong><br/>
+                  <span style="font-size:14px;">Cantidad: ${order.productsOrder[3].quantity}</span><br/>
+                  <span style="font-size:14px;">Descuento: ${order.productsOrder[3].subproduct.discount}%</span><br/>
+                  <span style="font-size:16px;"><strong>$${order.productsOrder[3].subproduct.price}</strong></span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
 
-<!-- Detalle del Envío -->
+      <!-- Total a Pagar -->
+      <tr>
+        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
+            <tr>
+              <td style="width: 100%; padding-left: 10px;">
+                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:20px;line-height:150%;">
+                  <strong>Total a pagar: $${order.orderDetail.totalPrice}</strong>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- Detalle del Envío -->
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-12" role="presentation" width="100%">
   <tbody>
     <tr>
@@ -1035,7 +1033,6 @@ export const sendEmailOrderCreated = (order: Order) => {
     </tr>
   </tbody>
 </table>
-
 <!-- Pie de página -->
 <table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-15" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;">
   <tbody>
@@ -1104,39 +1101,21 @@ export const sendEmailOrderCreated = (order: Order) => {
     </tr>
   </tbody>
 </table>
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-16" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff;" width="100%">
-  <tbody>
-    <tr>
-      <td>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 640px; margin: 0 auto;" width="640">
-          <tbody>
-            <tr>
-              <td class="column column-1" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 20px; padding-top: 20px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="icons_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: center; line-height: 0;" width="100%">
-                  <tr>
-                    <td class="pad" style="vertical-align: middle; color: #1e0e4b; font-family: 'Inter', sans-serif; font-size: 15px; padding-bottom: 5px; padding-top: 5px; text-align: center;">
-                      <table cellpadding="0" cellspacing="0" class="icons-inner" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block; padding-left: 0px; padding-right: 0px;">
-                        <tr>
-                          <td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 6px;">
-                          </td>
-                          <td style="font-family: 'Inter', sans-serif; font-size: 15px; font-weight: undefined; color: #1e0e4b; vertical-align: middle; letter-spacing: undefined; text-align: center; line-height: normal;">
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+
+      </tbody>
+      </table>
       </td>
-    </tr>
-  </tbody>
-</table>
-<!-- End -->
-</body>
-</html>`
+      </tr>
+      </tbody>
+      </table>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </body>
+      </html>`
+    );
+
 } 
 return `<!DOCTYPE html>
 <html lang="es" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
