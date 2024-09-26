@@ -157,12 +157,7 @@ export class OrderService {
         }
 
         const mailerRelations = await this.getOrderById(createdOrder.id)
-        
-        // console.log("mailer: ", mailerRelations);
-        
         await this.mailerService.sendEmailOrderCreated(mailerRelations);
-
-        
 
         delete createdOrder.user.password;
         return createdOrder;
