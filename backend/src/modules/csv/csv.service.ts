@@ -11,4 +11,7 @@ export class CsvService {
     async generateSalesCsvService() {
         return this.csvRepository.generateSellsCsv();
     }
+    async processCsvService( filePath: string) {
+        return this.csvRepository.processCsvRepository(filePath);
+    }
 }

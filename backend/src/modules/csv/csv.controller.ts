@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Res, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { Response } from 'express';
 import { CsvService } from './csv.service';
 import { createReadStream } from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('csv')
 export class CsvController {
@@ -20,11 +21,27 @@ export class CsvController {
   }
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadCsv(@Res() res: Response) {
-    const csvFilePath = './cafeteria_products.csv';
-    const fileStream = createReadStream(csvFilePath);
-    fileStream.pipe(res);
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads', // Carpeta donde se guardarán los archivos
+        filename: (req, file, cb) => {
+          const fileName = `${Date.now()}-${file.originalname}`;
+          cb(null, fileName);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype === 'text/csv') {
+          cb(null, true); // Solo aceptar archivos CSV
+        } else {
+          cb(new Error('Invalid file type, only CSV files are allowed!'), false);
+        }
+      },
+    }),
+  )
+  uploadCsv(@UploadedFile() file: Express.Multer.File) {
+    // Procesar el CSV una vez subido
+    return this.csvService.processCsvService(file.path);
   }
 
 }
