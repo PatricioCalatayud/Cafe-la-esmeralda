@@ -36,6 +36,7 @@
     "class-validator": "^0.14.1",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
+    "fast-csv": "^5.0.1",
     "firebase": "^10.12.3",
     "firebase-admin": "^12.2.0",
     "mercadopago": "^2.0.11",

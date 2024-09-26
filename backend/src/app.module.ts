@@ -30,6 +30,7 @@ import { Order } from './entities/order.entity';
 import { Rating } from './entities/ratings.entity';
 import { MetricsModule } from './modules/metrics/metrics.module';
 import { OrderDetail } from './entities/orderdetail.entity';
+import { CsvModule } from './modules/csv/csv.module';
 
 @Module({
   imports: [
@@ -62,7 +63,8 @@ import { OrderDetail } from './entities/orderdetail.entity';
     AccountModule,
     TasksModule,
     BillModule,
-    MetricsModule
+    MetricsModule,
+    CsvModule
   ],
   controllers: [AppController],
   providers: [AppService, PreloadService],
