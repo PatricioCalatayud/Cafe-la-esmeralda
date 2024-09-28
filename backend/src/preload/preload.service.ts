@@ -178,7 +178,6 @@ export class PreloadService implements OnModuleInit {
       ], 'Calle Wallaby 42 Sidney');
 
       order.account = account;
-      console.log(order.account);
       
       await this.orderRepository.save(order);
 
