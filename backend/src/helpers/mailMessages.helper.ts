@@ -660,6 +660,32 @@ export const sendEmailOrderExpired = (orderId: string) => {
 }
 
 export const sendEmailOrderCreated = (order: Order) => {
+  let productsHtml = '';
+
+  order.productsOrder.forEach((product) => {
+    productsHtml += `
+      <tr>
+        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
+          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
+            <tr>
+              <td style="width: 25%;">
+                <img alt="${product.subproduct.product.description}" height="auto" src="${product.subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${product.subproduct.product.description}" width="260"/>
+              </td>
+              <td style="width: 75%; padding-left: 10px;">
+                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
+                  <strong>${product.subproduct.product.description}</strong><br/>
+                  <span style="font-size:14px;">Cantidad: ${product.quantity}</span><br/>
+                  <span style="font-size:14px;">Descuento: ${product.subproduct.discount}%</span><br/>
+                  <span style="font-size:16px;"><strong>$${product.subproduct.price}</strong></span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    `;
+  });
+
   if (order.user.role === 'Usuario') {
     return (
       `<!DOCTYPE html>
@@ -882,89 +908,8 @@ export const sendEmailOrderCreated = (order: Order) => {
   </tbody>
 </table>
 
-      <!-- Producto 1 -->
-      <tr>
-        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
-            <tr>
-              <td style="width: 25%;">
-                <img alt="${order.productsOrder[0].subproduct.product.description}" height="auto" src="${order.productsOrder[0].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[0].subproduct.product.description}" width="260"/>
-              </td>
-              <td style="width: 75%; padding-left: 10px;">
-                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
-                  <strong>${order.productsOrder[0].subproduct.product.description}</strong><br/>
-                  <span style="font-size:14px;">Cantidad: ${order.productsOrder[0].quantity}</span><br/>
-                  <span style="font-size:14px;">Descuento: ${order.productsOrder[0].subproduct.discount}%</span><br/>
-                  <span style="font-size:16px;"><strong>$${order.productsOrder[0].subproduct.price}</strong></span>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-
-      <!-- Producto 2 -->
-      <tr>
-        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
-            <tr>
-              <td style="width: 25%;">
-                <img alt="${order.productsOrder[1].subproduct.product.description}" height="auto" src="${order.productsOrder[1].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[1].subproduct.product.description}" width="260"/>
-              </td>
-              <td style="width: 75%; padding-left: 10px;">
-                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
-                  <strong>${order.productsOrder[1].subproduct.product.description}</strong><br/>
-                  <span style="font-size:14px;">Cantidad: ${order.productsOrder[1].quantity}</span><br/>
-                  <span style="font-size:14px;">Descuento: ${order.productsOrder[1].subproduct.discount}%</span><br/>
-                  <span style="font-size:16px;"><strong>$${order.productsOrder[1].subproduct.price}</strong></span>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-
-      <!-- Producto 3 -->
-      <tr>
-        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
-            <tr>
-              <td style="width: 25%;">
-                <img alt="${order.productsOrder[2].subproduct.product.description}" height="auto" src="${order.productsOrder[2].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[2].subproduct.product.description}" width="260"/>
-              </td>
-              <td style="width: 75%; padding-left: 10px;">
-                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
-                  <strong>${order.productsOrder[2].subproduct.product.description}</strong><br/>
-                  <span style="font-size:14px;">Cantidad: ${order.productsOrder[2].quantity}</span><br/>
-                  <span style="font-size:14px;">Descuento: ${order.productsOrder[2].subproduct.discount}%</span><br/>
-                  <span style="font-size:16px;"><strong>$${order.productsOrder[2].subproduct.price}</strong></span>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-
-      <!-- Producto 4 -->
-      <tr>
-        <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-          <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
-            <tr>
-              <td style="width: 25%;">
-                <img alt="${order.productsOrder[3].subproduct.product.description}" height="auto" src="${order.productsOrder[3].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[3].subproduct.product.description}" width="260"/>
-              </td>
-              <td style="width: 75%; padding-left: 10px;">
-                <div style="color:#2b303a;font-family:Montserrat, sans-serif;font-size:16px;line-height:150%;">
-                  <strong>${order.productsOrder[3].subproduct.product.description}</strong><br/>
-                  <span style="font-size:14px;">Cantidad: ${order.productsOrder[3].quantity}</span><br/>
-                  <span style="font-size:14px;">Descuento: ${order.productsOrder[3].subproduct.discount}%</span><br/>
-                  <span style="font-size:16px;"><strong>$${order.productsOrder[3].subproduct.price}</strong></span>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+      <!-- Mostrar productos -->
+      ${productsHtml}
 
       <!-- Total a Pagar -->
       <tr>
@@ -1367,53 +1312,7 @@ return `<!DOCTYPE html>
 </table>
 
 <!-- Detalle del Pedido -->
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="row row-7" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
-  <tbody>
-    <tr>
-      <td>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" class="row-content stack" role="presentation" style="background-color: #fff; color: #000000; width: 640px; margin: 0 auto;" width="640">
-          <tbody>
-            <!-- Tarjeta para Café Mezcla -->
-            <tr>
-              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" style="width: 100%; text-align: center;">
-                  <tr>
-                    <td style="width: 25%;">
-                      <img alt="${order.productsOrder[0].subproduct.product.description}" height="auto" src="${order.productsOrder[0].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[0].subproduct.product.description}" width="260"/>
-                    </td>
-                    <td style="width: 75%; padding-left: 10px;">
-                      <div style="color:#2b303a;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:16px;line-height:150%;">
-                        <strong>${order.productsOrder[0].subproduct.product.description}</strong><br/>
-                        <span style="font-size:14px;">Cantidad: ${order.productsOrder[0].quantity}</span><br/>
-                        <span style="font-size:14px;">Descuento: ${order.productsOrder[0].subproduct.discount}%</span><br/>
-                        <span style="font-size:16px;"><strong>$${order.productsOrder[0].subproduct.price}</strong></span>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-
-            <!-- Tarjeta para Portasobres -->
-            <tr>
-              <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
-                <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" style="width: 100%; text-align: center;">
-                  <tr>
-                    <td style="width: 25%;">
-                      <img alt="${order.productsOrder[1].subproduct.product.description}" height="auto" src="${order.productsOrder[1].subproduct.product.imgUrl}" style="display: block; height: auto; border: 0; width: 100%;" title="${order.productsOrder[1].subproduct.product.description}" width="260"/>
-                    </td>
-                    <td style="width: 75%; padding-left: 10px;">
-                      <div style="color:#2b303a;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:16px;line-height:150%;">
-                        <strong>${order.productsOrder[1].subproduct.product.description}</strong><br/>
-                        <span style="font-size:14px;">Cantidad: ${order.productsOrder[1].quantity}</span><br/>
-                        <span style="font-size:14px;">Descuento: ${order.productsOrder[1].subproduct.discount}%</span><br/>
-                        <span style="font-size:16px;"><strong>$${order.productsOrder[1].subproduct.price}</strong></span>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
+${productsHtml}
 
             <!-- Total a Pagar -->
             <tr>
