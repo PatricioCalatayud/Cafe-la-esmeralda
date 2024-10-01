@@ -9,10 +9,12 @@ export class OrdersMetricsService {
 
 
   async getMostSoldProductsService(limit: number) {
+    //devolver la entidad directamente productid y subproductid
     if(!limit) limit = 10
     return await this.ordersMetricsRepository.getMostSoldProductsRepository(limit);
   }
   async getLessSoldProductsService(limit: number) {
+    //devolver la entidad directamente productid y subproductid
     if(!limit) limit = 10
     return await this.ordersMetricsRepository.getLessSoldProductsRepository(limit);
   }
