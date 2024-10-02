@@ -1,11 +1,51 @@
 ProductDescription,Presentacion,TipoGrano,SubproductAmount,Unit,Stock,Price,Discount,IsAvailable
 Chocolate MAPSA,,,50,Unidades,113,22600,0,Yes
-Te Green Hills,,,100,Sobres,84,3000,0,Yes
 Mate Natura,,,50,Sobres,54,3390,0,Yes
+Cafe Santos,,,250,Gramos,10,13000,0,Yes
+Cafe Santos,,,500,Gramos,10,23000,0,Yes
+Cafe Santos,,,1,Kilo,13,33000,0,Yes
+Te Green Hills,,,100,Sobres,84,3000,0,Yes
+Cafe Mezcla,,,1,Kilo,21,80000,0,Yes
+Te Green Hills,,,100,Sobres,84,3000,0,Yes
+Chocolate MAPSA,,,50,Unidades,113,22600,0,Yes
+Portasobres,,,1,Unidades,92,2825,0,Yes
+Cafe Santos,,,250,Gramos,10,13000,0,Yes
+Cafe Santos,,,500,Gramos,10,23000,0,Yes
+Cafe Santos,,,1,Kilo,13,33000,0,Yes
+Mate Natura,,,50,Sobres,54,3390,0,Yes
+Capsulas Esmeralda,,,30,Unidades,113,14475,0,Yes
+Capsulas Esmeralda,,,50,Unidades,113,22600,0,Yes
+Portasobres,,,1,Unidades,86,2825,0,Yes
+Cafe Mezcla,,,1,Kilo,21,80000,0,Yes
+Capsulas Esmeralda,,,30,Unidades,112,14475,0,Yes
+Capsulas Esmeralda,,,50,Unidades,111,22600,0,Yes
+Mate Natura,,,50,Sobres,54,3390,0,Yes
+Chocolate MAPSA,,,50,Unidades,113,22600,0,Yes
+Te Green Hills,,,100,Sobres,84,3000,0,Yes
 Cafe Santos,,,250,Gramos,10,13000,0,Yes
 Cafe Santos,,,500,Gramos,10,23000,0,Yes
 Cafe Santos,,,1,Kilo,13,33000,0,Yes
 Capsulas Esmeralda,,,30,Unidades,113,14475,0,Yes
 Capsulas Esmeralda,,,50,Unidades,113,22600,0,Yes
-Cafe Mezcla,,,1,Kilo,21,80000,0,Yes
-Portasobres,,,1,Unidades,89,2825,0,Yes
+Mate Natura,,,50,Sobres,54,3390,0,Yes
+Chocolate MAPSA,,,50,Unidades,113,22600,0,Yes
+Cafe Santos,,,250,Gramos,10,13000,0,Yes
+Cafe Santos,,,500,Gramos,10,23000,0,Yes
+Cafe Santos,,,1,Kilo,13,33000,0,Yes
+Portasobres,,,1,Unidades,92,2825,0,Yes
+Te Green Hills,,,100,Sobres,84,3000,0,Yes
+Cafe Mezcla,,,1,Kilo,23,80000,0,Yes
+Capsulas Esmeralda,,,30,Unidades,113,14475,0,Yes
+Capsulas Esmeralda,,,50,Unidades,113,22600,0,Yes
+Mate Natura,,,50,Sobres,54,3390,0,Yes
+Portasobres,,,1,Unidades,92,2825,0,Yes
+Cafe Santos,,,250,Gramos,10,13000,0,Yes
+Cafe Santos,,,500,Gramos,10,23000,0,Yes
+Cafe Santos,,,1,Kilo,13,33000,0,Yes
+Cafe Mezcla,,,1,Kilo,23,80000,0,Yes
+Chocolate MAPSA,,,50,Unidades,113,22600,0,Yes
+Te Green Hills,,,100,Sobres,84,3000,0,Yes
+Capsulas Esmeralda,,,30,Unidades,113,14475,0,Yes
+Capsulas Esmeralda,,,50,Unidades,113,22600,0,Yes
+Cafe Mezcla,,,1,Kilo,17,80000,0,Yes
+Portasobres,,,1,Unidades,83,2825,0,Yes
