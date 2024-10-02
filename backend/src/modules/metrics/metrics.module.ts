@@ -8,10 +8,11 @@ import { Product } from 'src/entities/products/product.entity';
 import { Account } from 'src/entities/account.entity';
 import { User } from 'src/entities/user.entity';
 import { Order } from 'src/entities/order.entity';
+import { Subproduct } from 'src/entities/products/subproduct.entity';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductsOrder, Product, Account, User, Order])],
+  imports: [TypeOrmModule.forFeature([ProductsOrder, Product, Account, User, Order, Subproduct])],
   controllers: [MetricsController],
   providers: [OrdersMetricsService, OrdersMetricsRepository ]
 })

@@ -64,6 +64,65 @@ export class CsvRepository {
         });
     });
   }
+
+  async updateProductsFromCsvRepository(filePath: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const fileStream = fs.createReadStream(filePath);
+
+      fileStream
+        .pipe(parse({ headers: true }))
+        .on('data', async (row) => {
+          // Manejo manual de líneas vacías
+          if (Object.values(row).every(value => value === '')) {
+            return; // Ignora filas vacías
+          }
+
+          const {
+            description,
+            imgUrl,
+            category,
+            presentacion,
+            tipoGrano,
+            subproduct_price,
+            subproduct_stock,
+            subproduct_amount,
+            subproduct_unit,
+          } = row;
+
+          // Busca el producto en la base de datos
+          let product = await this.productRepository.findOne({ where: { description } });
+
+          if (!product) {
+            // Si no existe, crearlo
+            product = this.productRepository.create({
+              description,
+              imgUrl,
+              category,
+              presentacion: presentacion || null,
+              tipoGrano: tipoGrano || null,
+            });
+            await this.productRepository.save(product);
+          }
+
+          // Crear o actualizar subproducto
+          const subproduct = this.subproductRepository.create({
+            price: subproduct_price,
+            stock: subproduct_stock,
+            amount: subproduct_amount,
+            unit: subproduct_unit,
+            product: product,
+          });
+
+          await this.subproductRepository.save(subproduct);
+        })
+        .on('end', () => {
+          resolve();
+        })
+        .on('error', (error) => {
+          reject(error);
+        });
+    });
+  }
 }
 
 

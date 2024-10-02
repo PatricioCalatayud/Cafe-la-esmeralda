@@ -44,4 +44,27 @@ export class CsvController {
     return this.csvService.processCsvService(file.path);
   }
 
+  
+  @Post('updateproductsfromcsv')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const fileName = `${Date.now()}-${file.originalname}`;
+          cb(null, fileName);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype === 'text/csv') {
+          cb(null, true); // Solo aceptar archivos CSV
+        } else {
+          cb(new Error('Invalid file type, only CSV files are allowed!'), false);
+        }
+      },
+    }),
+  )
+  async updateProductsFromCsv(@UploadedFile() file: Express.Multer.File) {
+    return this.csvService.updateProductsFromCsvService(file.path);
+  }
 }

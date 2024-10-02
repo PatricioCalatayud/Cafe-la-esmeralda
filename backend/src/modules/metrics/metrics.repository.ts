@@ -6,7 +6,9 @@ import { OrderDetail } from 'src/entities/orderdetail.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Product } from 'src/entities/products/product.entity';
 import { User } from 'src/entities/user.entity';
-import { Between, Repository } from 'typeorm';
+import { Between, In, Repository } from 'typeorm';
+import { ProductRatingService } from '../product-rating/product-rating.service';
+import { Subproduct } from 'src/entities/products/subproduct.entity';
 
 @Injectable()
 export class OrdersMetricsRepository {
@@ -16,40 +18,143 @@ export class OrdersMetricsRepository {
     @InjectRepository(Account) private readonly accountRepository: Repository<Account>,
     @InjectRepository(Order) private readonly orderRepository: Repository<Order>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>
   ) {}
 
-    async getMostSoldProductsRepository(limit: number) {
-      const products = await this.productsOrderRepository
-        .createQueryBuilder('productsOrder')
-        .select('"subproductId"', 'subproductId')
-        .addSelect('SUM(quantity)', 'quantity')
-        .addSelect('product.id', 'productId')  
-        .innerJoin('productsOrder.subproduct', 'subproduct')  
-        .innerJoin('subproduct.product', 'product')  
-        .groupBy('"subproductId"')
-        .addGroupBy('product.id') 
-        .orderBy('quantity', 'DESC')
-        .limit(limit)
-        .getRawMany();
-    
-      return products;
+  async getMostSoldProductIds(limit: number): Promise<{ productId: string, quantity: number }[]> {
+    const mostSoldProducts = await this.productsOrderRepository
+      .createQueryBuilder('productsOrder')
+      .innerJoin('productsOrder.subproduct', 'subproduct')
+      .innerJoin('subproduct.product', 'product')
+      .select('product.id', 'productId')
+      .addSelect('SUM(productsOrder.quantity)', 'quantity')
+      .groupBy('product.id')
+      .orderBy('quantity', 'DESC')
+      .limit(limit)
+      .getRawMany();
+  
+    return mostSoldProducts.map(result => ({
+      productId: result.productId,
+      quantity: parseFloat(result.quantity),
+    }));
+  }
+  
+  async getMostSoldProductsRepository(limit: number): Promise<any[]> {
+    const mostSoldProductData = await this.getMostSoldProductIds(limit);
+  
+    if (mostSoldProductData.length === 0) {
+      return [];
     }
-    async getLessSoldProductsRepository(limit: number) {
-      const products = await this.productsOrderRepository
-        .createQueryBuilder('productsOrder')
-        .select('"subproductId"', 'subproductId')
-        .addSelect('SUM(quantity)', 'quantity')
-        .addSelect('product.id', 'productId')  
-        .innerJoin('productsOrder.subproduct', 'subproduct')  
-        .innerJoin('subproduct.product', 'product')  
-        .groupBy('"subproductId"')
-        .addGroupBy('product.id') 
-        .orderBy('quantity', 'ASC')
-        .limit(limit)
-        .getRawMany();
-    
-      return products;
-    }
+  
+    const mostSoldProductIds = mostSoldProductData.map(item => item.productId);
+  
+    const products = await this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.subproducts', 'subproduct')
+      .leftJoinAndSelect('product.category', 'category') 
+      .addSelect('product.averageRating')  
+      .where('product.id IN (:...ids)', { ids: mostSoldProductIds })
+      .getMany();
+  
+    const formattedProducts = products.map(product => {
+      const salesData = mostSoldProductData.find(item => item.productId === product.id);
+      return {
+        product: {
+          id: product.id,
+          description: product.description,
+          presentacion: product.presentacion,
+          tipoGrano: product.tipoGrano,
+          imgUrl: product.imgUrl,
+          averageRating: product.averageRating,  
+          category: product.category ? {
+            id: product.category.id,
+            name: product.category.name,  
+          } : null,
+        },
+        subproducts: product.subproducts.map(subproduct => ({
+          id: subproduct.id,
+          price: subproduct.price,
+          stock: subproduct.stock,
+          amount: subproduct.amount,
+          unit: subproduct.unit,
+          discount: subproduct.discount,
+          isAvailable: subproduct.isAvailable,
+        })),
+        totalQuantity: salesData ? salesData.quantity : 0, 
+      };
+    });
+  
+    return formattedProducts;
+  }
+  
+  
+
+      async getLessSoldProductIds(limit: number): Promise<{ productId: string, quantity: number }[]> {
+        const lessSoldProducts = await this.productsOrderRepository
+          .createQueryBuilder('productsOrder')
+          .innerJoin('productsOrder.subproduct', 'subproduct')
+          .innerJoin('subproduct.product', 'product')
+          .select('product.id', 'productId')
+          .addSelect('SUM(productsOrder.quantity)', 'quantity')
+          .groupBy('product.id')
+          .orderBy('quantity', 'ASC')  
+          .limit(limit)
+          .getRawMany();
+      
+        return lessSoldProducts.map(result => ({
+          productId: result.productId,
+          quantity: parseFloat(result.quantity),
+        }));
+      }
+      
+      async getLessSoldProductsRepository(limit: number): Promise<any[]> {
+        const lessSoldProductData = await this.getLessSoldProductIds(limit);
+      
+        if (lessSoldProductData.length === 0) {
+          return [];
+        }
+      
+        const lessSoldProductIds = lessSoldProductData.map(item => item.productId);
+      
+        const products = await this.productRepository
+          .createQueryBuilder('product')
+          .leftJoinAndSelect('product.subproducts', 'subproduct')
+          .leftJoinAndSelect('product.category', 'category') 
+          .addSelect('product.averageRating')  
+          .where('product.id IN (:...ids)', { ids: lessSoldProductIds })
+          .getMany();
+      
+        const formattedProducts = products.map(product => {
+          const salesData = lessSoldProductData.find(item => item.productId === product.id);
+          return {
+            product: {
+              id: product.id,
+              description: product.description,
+              presentacion: product.presentacion,
+              tipoGrano: product.tipoGrano,
+              imgUrl: product.imgUrl,
+              averageRating: product.averageRating,
+              category: product.category ? {
+                id: product.category.id,
+                name: product.category.name, 
+              } : null,
+            },
+            subproducts: product.subproducts.map(subproduct => ({
+              id: subproduct.id,
+              price: subproduct.price,
+              stock: subproduct.stock,
+              amount: subproduct.amount,
+              unit: subproduct.unit,
+              discount: subproduct.discount,
+              isAvailable: subproduct.isAvailable,
+            })),
+            totalQuantity: salesData ? salesData.quantity : 0, 
+          };
+        });
+      
+        return formattedProducts;
+      }
+      
     
     async getBestProductsRepository(limit:number) {
       const products = await this.productRepository
