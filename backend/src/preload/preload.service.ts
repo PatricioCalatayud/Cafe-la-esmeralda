@@ -175,7 +175,7 @@ export class PreloadService implements OnModuleInit {
       const order = await this.orderService.createOrder(user.id, [
         { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
         { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id },
-      ], 'Calle Wallaby 42 Sidney');
+      ], 'Calle Wallaby 42 Sidney','Transferencia', 'A');
 
       order.account = account;
       
