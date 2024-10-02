@@ -38,7 +38,7 @@ export class BillRepository {
         return await this.billRepository.save(bill);
     }
 
-    async updateBill(id: string, imgUrl: string) {
+    async updateBill(id: string, imgUrl: string | null) {
         return this.billRepository.update(id, { imgUrl });
     }
 
