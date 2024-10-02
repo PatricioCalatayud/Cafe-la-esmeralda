@@ -48,26 +48,29 @@ export class ImageService{
         return this.receiptRepository.findOneBy({ id });
     }
 
-    async uploadImageBill(id: string, to: string, file: Express.Multer.File | null) {
-        if (file===null){
+    async uploadImageBill(id: string, to: string, file: Express.Multer.File) {
+
+        
+        if (!file) {
             const imgUrl = null;
             return await this.billService.updateBill(id, imgUrl);
         }
-        if(!file) throw new BadRequestException('Debe adjuntar un archivo imagen');
-            const fileName = `${uuidv4()}-${file.originalname}`;
+        
+        const fileName = `${uuidv4()}-${file.originalname}`;
         const fileUpload = bucket.file(fileName);
     
         await fileUpload.save(file.buffer, {
             metadata: {
                 contentType: file.mimetype,
             },
-            public:true
+            public: true
         });
-
+    
         const imgUrl = fileUpload.publicUrl();
-
+    
         await this.mailerService.sendPaymentBill(to, imgUrl);
-
+    
         return await this.billService.updateBill(id, imgUrl);
     }
+    
 }
