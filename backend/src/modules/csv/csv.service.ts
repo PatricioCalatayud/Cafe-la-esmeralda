@@ -14,4 +14,9 @@ export class CsvService {
     async processCsvService( filePath: string) {
         return this.csvRepository.processCsvRepository(filePath);
     }
+    
+    async updateProductsFromCsvService(filePath){
+        return this.csvRepository.updateProductsFromCsvRepository(filePath);
+
+    }
 }
