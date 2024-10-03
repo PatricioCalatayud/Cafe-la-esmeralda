@@ -38,7 +38,7 @@ export class User extends BaseEntity {
   @JoinColumn({ name: 'orderId' })
   orders: Order[];
 
-  @OneToMany(() => Testimony, testimony => testimony.user)
+  @OneToMany(() => Testimony, testimony => testimony.user,)
   testimonies: Testimony[];
 
   @OneToOne(() => Account, account => account.user)

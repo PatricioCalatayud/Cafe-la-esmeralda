@@ -1,9 +1,0 @@
-description,imgUrl,category,presentacion,tipoGrano,subproduct_price,subproduct_stock,subproduct_amount,subproduct_unit
-Cafe Colombia,https://imgur.com/colombia.png,Coffee,Molido,Colombiano,15000,15,250,Gramos
-Cafe Colombia,https://imgur.com/colombia.png,Coffee,Molido,Colombiano,27000,10,500,Gramos
-Cafe Colombia,https://imgur.com/colombia.png,Coffee,Molido,Colombiano,35000,20,1,Kilo
-Cafe Rio de Oro,https://imgur.com/riodeoro.png,Coffee,Grano,Rio de Oro,14000,12,250,Gramos
-Cafe Rio de Oro,https://imgur.com/riodeoro.png,Coffee,Grano,Rio de Oro,26000,8,500,Gramos
-Cafe Descafeinado,https://imgur.com/descafeinado.png,Coffee,Capsulas,Descafeinado,18000,25,30,Unidades
-Te Chai,https://imgur.com/chai.png,Tea,,,3200,100,50,Sobres
-Chocolate Cacao Puro,https://imgur.com/cacaopuro.png,Chocolate,,,22000,30,50,Unidades

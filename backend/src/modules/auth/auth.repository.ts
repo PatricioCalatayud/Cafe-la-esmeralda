@@ -6,16 +6,18 @@ import { Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { UserDTO } from "../users/users.dto";
 import { Role } from "src/enum/roles.enum";
+import { Address } from "src/entities/address.entity";
 
 @Injectable()
 export class AuthRepository {
     constructor(
         @InjectRepository(User) private usersRepository: Repository<User>,
-        private readonly jwtService: JwtService
+        @InjectRepository(Address) private addressRepository: Repository<Address>,
+        private readonly jwtService: JwtService,
     ) {}
 
     async signUp(userDTO: UserDTO): Promise<User> {
-        const { email, password } = userDTO;
+        const { email, password, address } = userDTO;
 
         const existingUser = await this.usersRepository.findOne({ where: { email } });
         if (existingUser) throw new ConflictException('El usuario ya existe.');
@@ -31,6 +33,12 @@ export class AuthRepository {
         }
 
         newUser.role = Role.USER;
+
+        if (address) {
+            const newAddress = this.addressRepository.create(address); // Crea la dirección
+            await this.addressRepository.save(newAddress); // Guarda la dirección
+            newUser.address = newAddress; // Asigna la dirección al usuario
+        }
 
         return await this.usersRepository.save(newUser);
     }

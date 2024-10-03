@@ -2,6 +2,7 @@ import { ApiProperty, PickType } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import { Role } from "src/enum/roles.enum";
+import { AddressDTO } from "../address/address.dto";
 
 export class UserDTO {
     @ApiProperty({ description: 'Nombre.' })
@@ -27,6 +28,10 @@ export class UserDTO {
     @ApiProperty({ description: 'Número de celular.' })
     @IsOptional()
     phone?: string;
+
+    @ApiProperty({ description: 'Direccion.' })
+    @IsOptional()
+    address?: AddressDTO;
 }
 
 export class LoginUserDto extends PickType(UserDTO, ['email', 'password']) {}
