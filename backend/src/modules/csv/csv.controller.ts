@@ -9,7 +9,7 @@ import { diskStorage } from 'multer';
 export class CsvController {
   constructor(private readonly csvService: CsvService) {}
 
-  @Get('download')
+  @Get('download-products')
   async downloadCsv(@Res() res: Response) {
     const csvFilePath = await this.csvService.generateSalesCsvService();
 
@@ -19,31 +19,6 @@ export class CsvController {
     const fileStream = createReadStream(csvFilePath);
     fileStream.pipe(res);
   }
-
-  @Post('upload')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads', // Carpeta donde se guardarán los archivos
-        filename: (req, file, cb) => {
-          const fileName = `${Date.now()}-${file.originalname}`;
-          cb(null, fileName);
-        },
-      }),
-      fileFilter: (req, file, cb) => {
-        if (file.mimetype === 'text/csv') {
-          cb(null, true); // Solo aceptar archivos CSV
-        } else {
-          cb(new Error('Invalid file type, only CSV files are allowed!'), false);
-        }
-      },
-    }),
-  )
-  uploadCsv(@UploadedFile() file: Express.Multer.File) {
-    // Procesar el CSV una vez subido
-    return this.csvService.processCsvService(file.path);
-  }
-
   
   @Post('updateproductsfromcsv')
   @UseInterceptors(
@@ -67,4 +42,6 @@ export class CsvController {
   async updateProductsFromCsv(@UploadedFile() file: Express.Multer.File) {
     return this.csvService.updateProductsFromCsvService(file.path);
   }
+
+  
 }

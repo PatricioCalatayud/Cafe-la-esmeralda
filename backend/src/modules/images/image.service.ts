@@ -49,20 +49,28 @@ export class ImageService{
     }
 
     async uploadImageBill(id: string, to: string, file: Express.Multer.File) {
-        if(!file) throw new BadRequestException('Debe adjuntar un archivo imagen');
-            const fileName = `${uuidv4()}-${file.originalname}`;
+
+        
+        if (!file) {
+            const imgUrl = null;
+            return await this.billService.updateBill(id, imgUrl);
+        }
+        
+        const fileName = `${uuidv4()}-${file.originalname}`;
         const fileUpload = bucket.file(fileName);
     
         await fileUpload.save(file.buffer, {
             metadata: {
                 contentType: file.mimetype,
             },
-            public:true
+            public: true
         });
-
+    
         const imgUrl = fileUpload.publicUrl();
+    
         await this.mailerService.sendPaymentBill(to, imgUrl);
-
+    
         return await this.billService.updateBill(id, imgUrl);
     }
+    
 }
