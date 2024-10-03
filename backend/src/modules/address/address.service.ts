@@ -9,5 +9,4 @@ export class AddressService {
     async updateAddressService(id: string, province:number, localidad: string, deliveryNumber: number, address: string) {
         return this.addressRepository.updateAddressRepository(id, province, localidad, deliveryNumber, address);
     }
-
 }

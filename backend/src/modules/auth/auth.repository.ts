@@ -18,12 +18,12 @@ export class AuthRepository {
 
     async signUp(userDTO: UserDTO): Promise<User> {
         const { email, password, address } = userDTO;
-
+    
         const existingUser = await this.usersRepository.findOne({ where: { email } });
         if (existingUser) throw new ConflictException('El usuario ya existe.');
-
+    
         let newUser: User;
-
+    
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);
             if (!hashedPassword) throw new BadRequestException('Error encriptando contraseña.');
@@ -31,18 +31,19 @@ export class AuthRepository {
         } else {
             newUser = await this.usersRepository.create(userDTO);
         }
-
+    
         newUser.role = Role.USER;
-
+    
         if (address) {
-            const newAddress = this.addressRepository.create(address); // Crea la dirección
-            await this.addressRepository.save(newAddress); // Guarda la dirección
-            newUser.address = newAddress; // Asigna la dirección al usuario
+            console.log("Datos de la dirección:", address);
+            const newAddress = this.addressRepository.create(address); 
+            await this.addressRepository.save(newAddress);
+            newUser.address = newAddress; 
         }
-
-        return await this.usersRepository.save(newUser);
+    
+        return await this.usersRepository.save(newUser);  
     }
-
+    
     async signIn(email: string, password: string) {
         const user = await this.usersRepository.findOne({ where: { email } });
         if (!user) throw new NotFoundException('Credenciales invalidas.');

@@ -48,5 +48,6 @@ export class User extends BaseEntity {
   ratings: Rating[]
 
   @OneToOne(()=>Address, address=>address.user)
+  @JoinColumn({name:'addressId'})
   address: Address
 }
