@@ -5,12 +5,14 @@ import { Repository } from 'typeorm';
 import { Product } from 'src/entities/products/product.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
 import * as fs from 'fs';
+import { Category } from 'src/entities/category.entity';
 
 @Injectable()
 export class CsvRepository {
   constructor(
     @InjectRepository(Product) private readonly productRepository: Repository<Product>,
     @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
+    @InjectRepository(Category) private readonly categoryRepository: Repository<Category>,
   ) {}
 
   async generateSellsCsv(): Promise<string> {
@@ -76,11 +78,16 @@ export class CsvRepository {
           if (Object.values(row).every(value => value === '')) {
             return; // Ignora filas vacías
           }
+          const {category, ...rowWithoutCategory} = row;
 
+          const categoryEntity = await this.categoryRepository.findOne({ where: { name: category } });
+
+          if (!categoryEntity) {
+            throw new Error(`Category "${category}" not found.`);
+          }
           const {
             description,
             imgUrl,
-            category,
             presentacion,
             tipoGrano,
             subproduct_price,
@@ -97,7 +104,7 @@ export class CsvRepository {
             product = this.productRepository.create({
               description,
               imgUrl,
-              category,
+              category: categoryEntity,
               presentacion: presentacion || null,
               tipoGrano: tipoGrano || null,
             });
