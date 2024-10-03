@@ -74,7 +74,6 @@ export class CsvRepository {
       fileStream
         .pipe(parse({ headers: true }))
         .on('data', async (row) => {
-          // Manejo manual de líneas vacías
           if (Object.values(row).every(value => value === '')) {
             return; // Ignora filas vacías
           }
@@ -96,11 +95,9 @@ export class CsvRepository {
             subproduct_unit,
           } = row;
 
-          // Busca el producto en la base de datos
           let product = await this.productRepository.findOne({ where: { description } });
 
           if (!product) {
-            // Si no existe, crearlo
             product = this.productRepository.create({
               description,
               imgUrl,
@@ -111,7 +108,6 @@ export class CsvRepository {
             await this.productRepository.save(product);
           }
 
-          // Crear o actualizar subproducto
           const subproduct = this.subproductRepository.create({
             price: subproduct_price,
             stock: subproduct_stock,

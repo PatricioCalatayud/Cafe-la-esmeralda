@@ -5,6 +5,7 @@ import { Order } from "./order.entity";
 import { IsEmail, IsNotEmpty, IsOptional } from "class-validator";
 import { Account } from "./account.entity";
 import { Rating } from "./ratings.entity";
+import { Address } from "./address.entity";
 
 @Entity({ name: 'users'})
 export class User extends BaseEntity {
@@ -37,7 +38,7 @@ export class User extends BaseEntity {
   @JoinColumn({ name: 'orderId' })
   orders: Order[];
 
-  @OneToMany(() => Testimony, testimony => testimony.user)
+  @OneToMany(() => Testimony, testimony => testimony.user,)
   testimonies: Testimony[];
 
   @OneToOne(() => Account, account => account.user)
@@ -45,4 +46,8 @@ export class User extends BaseEntity {
   
   @OneToMany(()=>Rating, rating=>rating.user)
   ratings: Rating[]
+
+  @OneToOne(()=>Address, address=>address.user)
+  @JoinColumn({name:'addressId'})
+  address: Address
 }

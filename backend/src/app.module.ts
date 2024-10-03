@@ -31,6 +31,7 @@ import { Rating } from './entities/ratings.entity';
 import { MetricsModule } from './modules/metrics/metrics.module';
 import { OrderDetail } from './entities/orderdetail.entity';
 import { CsvModule } from './modules/csv/csv.module';
+import { Address } from './entities/address.entity';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CsvModule } from './modules/csv/csv.module';
         ConfigService.get('typeorm'),
     }),
     TypeOrmModule.forFeature([Testimony, Product, Subproduct, Category, User, Account, AccountTransaction, Order,OrderDetail, Rating]),
+    Address,
     AuthModule,
     ImageModule,
     UsersModule,
