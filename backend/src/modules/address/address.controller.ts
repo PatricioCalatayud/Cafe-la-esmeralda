@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Put } from '@nestjs/common';
+import { Body, Controller, Put } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { UpdateAddressDTO } from './address.dto';
 
@@ -8,6 +8,7 @@ export class AddressController {
         private addressService: AddressService
     ) {}
     @Put()
+
     async updateAddress(
         @Body() id: string,
         @Body() addressDto:UpdateAddressDTO
