@@ -17,11 +17,6 @@ export class CreateProductDto {
     @IsInt()
     discount?: number;
 
-    @ApiProperty({ description: 'Disponibilidad.' })
-    @IsOptional()
-    @IsBoolean()
-    isAvailable?: boolean;
-
     @ApiProperty({ description: 'ID de la categoría.' })
     @IsNotEmpty()
     @IsUUID()
@@ -71,10 +66,6 @@ export class UpdatedProductDto {
     @IsInt()
     discount?: number;
 
-    @ApiProperty({ description: 'Disponibilidad.' })
-    @IsOptional()
-    @IsBoolean()
-    isAvailable?: boolean;
 
     @ApiProperty({ description: 'ID de la categoría.' })
     @IsOptional()

@@ -31,9 +31,9 @@ export class SubproductDto {
     @IsEnum(Medida)
     unit: Medida;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsBoolean()
-    isAvailable: boolean;
+    isAvailable?: boolean;
 }
 export class UpdatedSubproductDto {
     @IsOptional()
