@@ -1,4 +1,4 @@
-import { Body, Controller, Put } from '@nestjs/common';
+import { Body, Controller, Param, Put } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { UpdateAddressDTO } from './address.dto';
 
@@ -7,10 +7,10 @@ export class AddressController {
     constructor(
         private addressService: AddressService
     ) {}
-    @Put()
+    @Put('/:id')
 
     async updateAddress(
-        @Body() id: string,
+        @Param('id') id: string,
         @Body() addressDto:UpdateAddressDTO
     ) {
         const { province, localidad, deliveryNumber, address } = addressDto;
