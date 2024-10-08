@@ -41,31 +41,31 @@ export class UpdatedSubproductDto {
     id?:string;
 
     @ApiProperty({ description: 'Precio.' })
-    @IsNotEmpty()
+    @IsOptional()
     @Type(() => Number)
     @IsPositive()
     @IsNumber()
     price?: number;
 
     @ApiProperty({ description: 'Stock.' })
-    @IsNotEmpty()
+    @IsOptional()
     @IsInt()
     @Type(() => Number)
     @IsPositive()
     stock?: number;
 
     @ApiProperty({ description: 'Cantidad.' })
-    @IsNotEmpty()
+    @IsOptional()
     @Type(() => Number)
     @IsPositive()
     @IsNumber()
     amount?: number;
     
-    @IsNotEmpty()
+    @IsOptional()
     @IsEnum(Medida)
     unit?: Medida;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsBoolean()
     isAvailable?: boolean;
 }

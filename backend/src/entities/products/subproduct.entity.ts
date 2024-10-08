@@ -27,7 +27,7 @@ export class Subproduct {
     discount: number;
 
     @Column({default: true})
-    isAvailable:boolean
+    isAvailable?:boolean
 
     @ManyToOne(() => Product, (product) => product.subproducts,{
         onDelete: 'CASCADE'
