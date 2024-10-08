@@ -25,13 +25,13 @@ export class AddressDTO {
 }
 export class UpdateAddressDTO {
   @ApiProperty({ description: 'Provincia.', example: 'Buenos Aires' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(ProvinceNumber, { message: 'Provincia no válida.' })
   province?: ProvinceNumber;
 
   @ApiProperty({ description: 'Localidad (Ciudad).' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   localidad?: string;
 
   @ApiProperty({ description: 'Número de entrega.' })
@@ -41,6 +41,6 @@ export class UpdateAddressDTO {
 
   @ApiProperty({ description: 'Dirección postal.' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   address?: string;
 }
