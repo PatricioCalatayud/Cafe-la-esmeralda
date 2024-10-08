@@ -17,7 +17,7 @@ export class UsersService {
         const [data, total] = await this.userRepository.findAndCount({
             skip: (page - 1) * limit,
             take: limit,
-            relations: ['account']
+            relations: ['account','address']
         });
         
         data.map((user) => {
