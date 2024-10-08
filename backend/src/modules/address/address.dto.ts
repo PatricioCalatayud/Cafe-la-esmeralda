@@ -1,12 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-import { ProvinceNumber } from "src/enum/provinceNumber.enum";
 
 export class AddressDTO {
   @ApiProperty({ description: 'Provincia.', example: 'Buenos Aires' })
   @IsNotEmpty()
-  @IsEnum(ProvinceNumber, { message: 'Provincia no válida.' })
-  province: ProvinceNumber;
+  @IsNumber()
+  province: number;
 
   @ApiProperty({ description: 'Localidad (Ciudad).' })
   @IsString()
@@ -26,8 +25,8 @@ export class AddressDTO {
 export class UpdateAddressDTO {
   @ApiProperty({ description: 'Provincias.', example: 'Buenos Aires' })
   @IsOptional()
-  @IsEnum(ProvinceNumber, { message: 'Provincia no válida.' })
-  province?: ProvinceNumber;
+  @IsNumber()
+  province?: number;
 
   @ApiProperty({ description: 'Localidad (Ciudad).', example: 'Chivilcoy' })
   @IsString()
