@@ -8,7 +8,7 @@ export class AddressRepository {
     constructor(
         @InjectRepository(Address) private readonly addressRepository: Repository<Address>
     ) {}
-    async updateAddressRepository(id: string, province:number, localidad: string, deliveryNumber: number, address: string): Promise<UpdateResult> {
+    async updateAddressRepository(id?: string, province?:number, localidad?: string, deliveryNumber?: number, address?: string): Promise<UpdateResult> {
         return await this.addressRepository.update({ id }, { province, localidad, deliveryNumber, address });
     }
 }
