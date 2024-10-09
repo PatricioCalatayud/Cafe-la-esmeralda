@@ -23,22 +23,22 @@ export class AddressDTO {
   address: string;
 }
 export class UpdateAddressDTO {
-  @ApiProperty({ description: 'Provincias.', example: 'Buenos Aires' })
+  @ApiProperty({ description: 'Provincias.(opt)', example: 'Buenos Aires' })
   @IsOptional()
   @IsNumber()
   province?: number;
 
-  @ApiProperty({ description: 'Localidad (Ciudad).', example: 'Chivilcoy' })
+  @ApiProperty({ description: 'Localidad (Ciudad).(opt)', example: 'Chivilcoy' })
   @IsString()
   @IsOptional()
   localidad?: string;
 
-  @ApiProperty({ description: 'Número de entrega.', example: '123' })
+  @ApiProperty({ description: 'Número de entrega.(opt)', example: '123' })
   @IsNumber()
   @IsOptional()
   deliveryNumber?: number;
 
-  @ApiProperty({ description: 'Dirección postal.', example: 'Calle falsa 123' })
+  @ApiProperty({ description: 'Dirección postal.(opt)', example: 'Calle falsa 123' })
   @IsString()
   @IsOptional()
   address?: string;
