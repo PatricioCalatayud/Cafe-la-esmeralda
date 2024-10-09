@@ -1,5 +1,6 @@
 //Provicncia, Localidad y direccion.
 
+
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 
@@ -8,8 +9,8 @@ export class Address {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ type: 'int',  })
-    province: number    
+    @Column({ type: 'int'})
+    province: number   
 
     @Column({ type: 'varchar' })
     localidad: string
