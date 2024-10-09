@@ -1,6 +1,6 @@
 //Provicncia, Localidad y direccion.
 
-import { ProvinceNumber } from "src/enum/provinceNumber.enum";
+
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 
@@ -9,8 +9,8 @@ export class Address {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ type: 'enum', enum: ProvinceNumber })
-    province: ProvinceNumber    
+    @Column({ type: 'int'})
+    province: number   
 
     @Column({ type: 'varchar' })
     localidad: string
