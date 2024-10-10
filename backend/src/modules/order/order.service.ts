@@ -11,6 +11,7 @@ import { Subproduct } from 'src/entities/products/subproduct.entity';
 import { MailerService } from '../mailer/mailer.service';
 import { Receipt } from 'src/entities/receipt.entity';
 import { AccountService } from '../account/account.service';
+import { BillService } from '../bill/bill.service';
 
 @Injectable()
 export class OrderService {
@@ -23,7 +24,8 @@ export class OrderService {
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
         private readonly dataSource: DataSource,
         private readonly mailerService: MailerService,
-        private readonly accountService: AccountService
+        private readonly accountService: AccountService,
+        private readonly billService: BillService
     ) {}
 
     async getOrders(page: number, limit: number): Promise<{ data: Order[], total: number }> {
@@ -37,7 +39,8 @@ export class OrderService {
                 'productsOrder.subproduct.product',
                 'orderDetail',
                 'orderDetail.transactions',
-                'receipt'
+                'receipt',
+                'bill'
             ],
         });
     
@@ -54,7 +57,8 @@ export class OrderService {
                 'productsOrder.subproduct.product',
                 'orderDetail',
                 'orderDetail.transactions',
-                'receipt'
+                'receipt',
+                'bill'
             ],
         });
     
@@ -72,7 +76,7 @@ export class OrderService {
             where: { id },
         });
     
-        if (!user) throw new BadRequestException(`Usuario no encontrado. ID: ${id}`);
+        if (!user) throw new NotFoundException(`Usuario no encontrado. ID: ${id}`);
     
         const [data, total] = await this.orderRepository.findAndCount({
             where: { 
@@ -84,7 +88,8 @@ export class OrderService {
                 'productsOrder.subproduct.product',
                 'orderDetail',
                 'orderDetail.transactions',
-                'receipt'
+                'receipt',
+                'bill'
             ],
             skip: (page - 1) * limit,
             take: limit,
@@ -92,7 +97,8 @@ export class OrderService {
     
         return { data, total };
     }
-    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string) {
+    
+    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string, invoiceType?: string) {
         let total = 0;
         let createdOrder;
     
@@ -111,7 +117,7 @@ export class OrderService {
                 if (foundSubproduct.stock <= 0) throw new BadRequestException(`Subproducto sin stock. ID: ${foundSubproduct.id}`);
     
                 total += (foundSubproduct.price * product.quantity * (1 - (foundSubproduct.discount/100)));
-    
+                if (foundSubproduct.stock < product.quantity) throw new BadRequestException(`Subproducto sin stock suficiente. ID: ${foundSubproduct.id}`);
                 const productsOrder = transactionalEntityManager.create(ProductsOrder, {
                     subproduct: foundSubproduct,
                     order: newOrder,
@@ -144,8 +150,15 @@ export class OrderService {
             if(account === 'Cuenta corriente') await this.accountService.registerPurchase(userId, orderDetail.totalPrice);
         });
 
-        await this.mailerService.sendEmailOrderCreated(createdOrder);
-  
+        if(invoiceType) {
+            const bill = await this.billService.createBill(createdOrder.id, invoiceType);
+            createdOrder.bill = bill;
+            await this.orderRepository.update(createdOrder.id, { bill });
+        }
+
+        const mailerRelations = await this.getOrderById(createdOrder.id)
+        await this.mailerService.sendEmailOrderCreated(mailerRelations);
+
         delete createdOrder.user.password;
         return createdOrder;
     }
@@ -159,7 +172,8 @@ export class OrderService {
                 'productsOrder.subproduct',
                 'orderDetail',
                 'orderDetail.transactions',
-                'receipt'
+                'receipt',
+                'bill'
                 ]
         });
         if (!order) throw new NotFoundException('Orden no encontrada');

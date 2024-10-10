@@ -23,6 +23,16 @@ import { MailerModule } from './modules/mailer/mailer.module';
 import { ProductRatingModule } from './modules/product-rating/product-rating.module';
 import { AccountModule } from './modules/account/account.module';
 import { TasksModule } from './modules/tasks/tasks.module';
+import { BillModule } from './modules/bill/bill.module';
+import { Account } from './entities/account.entity';
+import { AccountTransaction } from './entities/accountTransaction.entity';
+import { Order } from './entities/order.entity';
+import { Rating } from './entities/ratings.entity';
+import { MetricsModule } from './modules/metrics/metrics.module';
+import { OrderDetail } from './entities/orderdetail.entity';
+import { CsvModule } from './modules/csv/csv.module';
+import { Address } from './entities/address.entity';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -36,7 +46,8 @@ import { TasksModule } from './modules/tasks/tasks.module';
       useFactory: (ConfigService: ConfigService) =>
         ConfigService.get('typeorm'),
     }),
-    TypeOrmModule.forFeature([Testimony,Product,Subproduct,Category,User]),
+    TypeOrmModule.forFeature([Testimony, Product, Subproduct, Category, User, Account, AccountTransaction, Order,OrderDetail, Rating, Address]),
+    AddressModule,
     AuthModule,
     ImageModule,
     UsersModule,
@@ -53,7 +64,10 @@ import { TasksModule } from './modules/tasks/tasks.module';
     CategoryModule,
     MailerModule,
     AccountModule,
-    TasksModule
+    TasksModule,
+    BillModule,
+    MetricsModule,
+    CsvModule
   ],
   controllers: [AppController],
   providers: [AppService, PreloadService],

@@ -51,4 +51,17 @@ export class ImageController {
     ) file: Express.Multer.File, @Body('id') id: string){
         return await this.uploadService.uploadImageTransfer(file, id);
     }
+
+    @ApiOperation({ 
+        summary: 'Sube imagen del comprobante de factura.',
+        description: 'Esta ruta permite subir imagenes de los comprobantes de factura.'
+    })
+    @Put('bill')
+    @UseInterceptors(FileInterceptor('image'))
+    async uploadBill(
+      @Body() data: { id: string, to: string }, 
+      @UploadedFile() file?: Express.Multer.File
+    ) {
+        return await this.uploadService.uploadImageBill(data.id, data.to, file);
+    }
 }

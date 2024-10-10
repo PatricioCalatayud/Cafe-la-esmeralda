@@ -7,7 +7,9 @@ import { Account } from "src/entities/account.entity";
 @ApiTags('Cuentas corrientes')
 @Controller('account')
 export class AccountController {
-    constructor(private readonly accountService: AccountService) {}
+    constructor(
+      private readonly accountService: AccountService
+    ) {}
 
     @ApiOperation({ summary: 'Obtiene todas las cuentas corrientes', description: 'Este endpoint retorna todas las ordenes.' })
     @Get()
@@ -18,7 +20,7 @@ export class AccountController {
       return await this.accountService.getAccounts(page, limit);
     }
 
-    @ApiOperation({ summary: 'Obtiene la cuenta corriente de un cliente por su ID', description: 'Este endpoint retorna la cuenta corriente con todas las operaciones de un cliente por su ID.' })
+    @ApiOperation({ summary: 'Obtiene la cuenta corriente de un cliente por ID', description: 'Este endpoint retorna la cuenta corriente con todas las operaciones de un cliente por su ID.' })
     @Get('user/:id')
     async getAccountTransactionsByUserId (
       @Param('id', ParseUUIDPipe) id: string,
