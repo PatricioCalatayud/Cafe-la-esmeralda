@@ -35,7 +35,6 @@ export class AuthRepository {
         newUser.role = Role.USER;
     
         if (address) {
-            console.log("Datos de la dirección:", address);
             const newAddress = this.addressRepository.create(address); 
             await this.addressRepository.save(newAddress);
             newUser.address = newAddress; 
