@@ -57,9 +57,9 @@ export class AuthRepository {
                 sub: user.id,
                 roles: userRoles,
                 address: user.address ? {
-                    street: user.address.address,
-                    city: user.address.localidad,
-                    postalCode: user.address.province,
+                    address: user.address.address,
+                    localidad: user.address.localidad,
+                    province: user.address.province,
                     deliveryNumber: user.address.deliveryNumber
                   } : null
             };
@@ -79,9 +79,9 @@ export class AuthRepository {
             sub: user.id, 
             roles: userRoles,
             address: user.address ? {
-                street: user.address.address,
-                city: user.address.localidad,
-                postalCode: user.address.province,
+                address: user.address.address,
+                localidad: user.address.localidad,
+                province: user.address.province,
                 deliveryNumber: user.address.deliveryNumber
               } : null
         }
