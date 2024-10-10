@@ -45,7 +45,7 @@ export class AuthRepository {
     }
     
     async signIn(email: string, password: string) {
-        const user = await this.usersRepository.findOne({ where: { email } });
+        const user = await this.usersRepository.findOne({ where: { email }, relations: ['address'] });
         if (!user) throw new NotFoundException('Credenciales invalidas.');
         let userRoles: Role[] = [user.role];
 
@@ -55,7 +55,13 @@ export class AuthRepository {
                 email: user.email,
                 phone: user.phone, 
                 sub: user.id,
-                roles: userRoles
+                roles: userRoles,
+                address: user.address ? {
+                    street: user.address.address,
+                    city: user.address.localidad,
+                    postalCode: user.address.province,
+                    deliveryNumber: user.address.deliveryNumber
+                  } : null
             };
     
             const accessToken = this.jwtService.sign(payload);
@@ -71,7 +77,13 @@ export class AuthRepository {
             email: user.email,
             phone: user.phone, 
             sub: user.id, 
-            roles: userRoles
+            roles: userRoles,
+            address: user.address ? {
+                street: user.address.address,
+                city: user.address.localidad,
+                postalCode: user.address.province,
+                deliveryNumber: user.address.deliveryNumber
+              } : null
         }
         
         const accessToken = this.jwtService.sign(payload);
