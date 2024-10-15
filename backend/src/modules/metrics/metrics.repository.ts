@@ -87,8 +87,6 @@ export class OrdersMetricsRepository {
     return formattedProducts;
   }
   
-  
-
       async getLessSoldProductIds(limit: number): Promise<{ productId: string, quantity: number }[]> {
         const lessSoldProducts = await this.productsOrderRepository
           .createQueryBuilder('productsOrder')
@@ -268,5 +266,52 @@ export class OrdersMetricsRepository {
       throw new Error('Error al obtener productos por mes.');
     }
   }
+
+  async getProductsByMonthByUserRepository(dateSelected: Date, userId: string, limit: number) {
+    const products = await this.productsOrderRepository
+        .createQueryBuilder('productsOrder')
+        .leftJoinAndSelect('productsOrder.subproduct', 'subproduct')
+        .leftJoinAndSelect('subproduct.product', 'product')
+        .leftJoinAndSelect('productsOrder.order', 'order')
+        .leftJoinAndSelect('order.user', 'user')
+        .where('user.id = :userId', { userId })
+        .andWhere('order.date BETWEEN :startDate AND :endDate', {
+            startDate: new Date(dateSelected.getFullYear(), 0, 1), 
+            endDate: new Date(dateSelected.getFullYear(), 11, 31), 
+        })
+        .orderBy('order.date', 'DESC') 
+        .limit(limit)
+        .getRawMany();
+
+    const formatMonthYear = (date: Date) => {
+        const months = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        const month = months[date.getMonth()];
+        const year = String(date.getFullYear()).slice(2);
+        return `${month} '${year}`;
+    };
+
+    const groupedByMonth = products.reduce((acc, product) => {
+        const monthYear = formatMonthYear(new Date(product.order_date)); 
+        if (!acc[monthYear]) {
+            acc[monthYear] = [];
+        }
+        acc[monthYear].push(product);
+        return acc;
+    }, {});
+
+    const result = Object.entries(groupedByMonth).map(([month, items]) => {
+        return {
+            month,
+            items,
+        };
+    });
+
+    return result;
+}
+
+  
 
 }

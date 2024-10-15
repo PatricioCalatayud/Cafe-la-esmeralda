@@ -38,4 +38,9 @@ export class OrdersMetricsService {
     return await this.ordersMetricsRepository.geAllTimeProductsRepository(productId, limit);
   }
 
+  async getProductsByMonthByUserService(dateSelected: Date, userId: string, limit: number) {
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsByMonthByUserRepository(dateSelected, userId, limit);
+  }
+
 }
