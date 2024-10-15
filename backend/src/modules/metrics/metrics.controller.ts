@@ -85,7 +85,21 @@ export class MetricsController {
         if (isNaN(dateSelected.getTime())) {
             throw new BadRequestException('Fecha inválida');
         }
-    
+        
         return await this.ordersMetricsService.getProductsByMonthByUserService(dateSelected, userId, limit);
+    }
+
+    @Post('productos-por-mes-usuario-bonificados')
+    async getProductsByUserByMonthBonified(
+        @Body('date') date: string,
+        @Body('userId') userId: string,
+        @Body('limit') limit: number
+    ) {
+        const dateSelected = new Date(date);
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+        
+        return await this.ordersMetricsService.getProductsByUserByMonthBonifiedService(dateSelected, userId, limit);
     }
 }
