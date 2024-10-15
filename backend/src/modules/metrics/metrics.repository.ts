@@ -432,6 +432,144 @@ async getProductsByMonthByUserBonifiedRepository(
   return result;
 }
 
+async getProductsAndImportByMonthByUserBonifiedRepository(
+  dateSelected: Date,
+  userId: string,
+  limit: number
+) {
+  const startDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth(), 1);
+  const endDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 0);
+
+  const products = await this.productsOrderRepository
+    .createQueryBuilder("productsOrder")
+    .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
+    .leftJoinAndSelect("subproduct.product", "product")
+    .leftJoinAndSelect("productsOrder.order", "order")
+    .leftJoinAndSelect("order.user", "user")
+    .where("user.id = :userId", { userId })
+    .andWhere("order.date BETWEEN :startDate AND :endDate", {
+      startDate,
+      endDate,
+    })
+    .orderBy("order.date", "DESC")
+    .limit(limit)
+    .getRawMany();
+
+  console.log("Productos obtenidos:", products);
+
+  const formatMonthYear = (date: Date) => {
+    const months = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+    ];
+    const month = months[date.getMonth()];
+    const year = String(date.getFullYear()).slice(2);
+    return `${month} '${year}`;
+  };
+
+  const convertToKilos = (amount: number, unit: string): number => {
+    switch (unit.toUpperCase()) {
+      case "KILO":
+        return amount;
+      case "GRAMOS":
+        return amount / 1000;
+      case "TONELADAS":
+        return amount * 1000;
+      default:
+        return 0;
+    }
+  };
+
+  const groupedByMonth = products.reduce((acc, product) => {
+    const monthYear = formatMonthYear(new Date(product.order_date));
+    const userId = product.user_id;
+
+    if (!acc[monthYear]) {
+      acc[monthYear] = {};
+    }
+
+    if (!acc[monthYear][userId]) {
+      acc[monthYear][userId] = {
+        kilosFacturados: 0,
+        unidadesFacturadas: 0,
+        kilosBonificados: 0,
+        unidadesBonificadas: 0,
+        importeGenerado: 0, 
+      };
+    }
+
+    const userGroup = acc[monthYear][userId];
+
+    if (product.subproduct_discount < 100) {
+      if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
+        const kilos = convertToKilos(
+          product.subproduct_amount * product.productsOrder_quantity,
+          product.subproduct_unit
+        );
+        userGroup.kilosFacturados += kilos;
+        userGroup.importeGenerado += (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100); 
+      } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
+        const unidades = product.productsOrder_quantity;
+        userGroup.unidadesFacturadas += unidades;
+        userGroup.importeGenerado += product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
+      }
+    } else if (product.subproduct_discount === 100) {
+      if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
+        const kilos = convertToKilos(
+          product.subproduct_amount * product.productsOrder_quantity,
+          product.subproduct_unit
+        );
+        userGroup.kilosBonificados += kilos;
+      } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
+        const unidades = product.productsOrder_quantity;
+        userGroup.unidadesBonificadas += unidades;
+      }
+    }
+
+    return acc;
+  }, {});
+
+  const result = Object.entries(groupedByMonth).map(([month, users]) => {
+    return {
+      month,
+      users: Object.entries(users).map(([userId, data]) => ({
+        userId,
+        ...data,
+      })),
+    };
+  });
+
+  return result;
+}
+
+  
+  async getProductsByDeliveryByMonthRepository(
+    dateSelected: Date,
+    deliveryNumber: number,
+    limit: number
+  ) {
+    const startDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth(), 1);
+    const endDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 0);
+  
+    const products = await this.productsOrderRepository
+      .createQueryBuilder("productsOrder")
+      .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
+      .leftJoinAndSelect("subproduct.product", "product")
+      .leftJoinAndSelect("productsOrder.order", "order")
+      .leftJoinAndSelect("order.user", "user")
+      .leftJoinAndSelect("user.address", "address") // Realizamos el join de Address a través de User
+      .where("address.deliveryNumber = :deliveryNumber", { deliveryNumber }) // Filtramos por deliveryNumber
+      .andWhere("order.date BETWEEN :startDate AND :endDate", {
+        startDate,
+        endDate,
+      })
+      .orderBy("order.date", "DESC")
+      .limit(limit)
+      .getRawMany();
+  
+    return products;
+  }
+  
 }
 
 

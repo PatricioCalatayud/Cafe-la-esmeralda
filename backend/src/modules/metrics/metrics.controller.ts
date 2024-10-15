@@ -102,4 +102,30 @@ export class MetricsController {
         
         return await this.ordersMetricsService.getProductsByUserByMonthBonifiedService(dateSelected, userId, limit);
     }
+    @Post('productos-por-mes-usuario-bonificados-importe')
+    async getProductsAndImportByUserByMonthBonified(
+        @Body('date') date: string,
+        @Body('userId') userId: string,
+        @Body('limit') limit: number
+    ) {
+        const dateSelected = new Date(date);
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+        
+        return await this.ordersMetricsService.getProductsAndImportByUserByMonthBonifiedService(dateSelected, userId, limit);
+    }
+
+    @Post('productos-por-reparto-por-mes')
+    async getProductsByDeliveryByMonth(
+        @Body('date') date: string,
+        @Body('deliveryNumber') deliveryNumber: number,
+        @Body('limit') limit: number
+    ){
+        const dateSelected = new Date(date);
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+        return await this.ordersMetricsService.getProductsByDeliveryByMonthService(dateSelected, deliveryNumber, limit);
+    }
 }
