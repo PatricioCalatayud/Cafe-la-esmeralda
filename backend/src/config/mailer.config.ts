@@ -7,7 +7,7 @@ export const email = 'Informes@cafelaesmeralda.com.ar';
 
 const transporter = nodemailer.createTransport({
     host: 'mxout3.hostingtelefonica.com.ar',
-    port: 25,
+    port: 587,
     secure: false,
     auth: {
         user: email,
