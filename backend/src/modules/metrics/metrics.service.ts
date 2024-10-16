@@ -38,4 +38,23 @@ export class OrdersMetricsService {
     return await this.ordersMetricsRepository.geAllTimeProductsRepository(productId, limit);
   }
 
+  async getProductsByMonthByUserService(dateSelected: Date, userId: string, limit: number) {
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsByMonthByUserRepository(dateSelected, userId, limit);
+  }
+
+  async getProductsByUserByMonthBonifiedService(dateSelected: Date, userId: string, limit: number) {
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsByMonthByUserBonifiedRepository(dateSelected, userId, limit);
+  }
+
+  async getProductsAndImportByUserByMonthBonifiedService(dateSelected: Date, userId: string, limit: number) {
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsAndImportByMonthByUserBonifiedRepository(dateSelected, userId, limit);
+  }
+
+  async getProductsByDeliveryByMonthService(dateSelected: Date, deliveryNumber: number, limit: number) {
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsByDeliveryByMonthRepository(dateSelected, deliveryNumber, limit);
+  }
 }
