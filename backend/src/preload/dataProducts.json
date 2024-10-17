@@ -82,7 +82,7 @@
         "description": "Portasobres",
         "imgUrl": "https://imgur.com/qFVuRNx.png",
         "category": "Accesory",
-        "discount": 20,
+        "discount": 100,
         "subproducts": [
             {
                 "price": 2825,
