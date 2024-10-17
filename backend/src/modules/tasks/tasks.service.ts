@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { orderRepository } from '../order/order.repository';
+import { OrderService } from '../order/order.service';
 import { MailerService } from '../mailer/mailer.service';
 import { UsersService } from '../users/users.service';
-import * as moment from 'moment';
 
 @Injectable()
 export class TasksService {
     constructor(
-        private readonly orderRepository: orderRepository,
+        private readonly orderService: OrderService,
         private readonly mailerService: MailerService,
         private readonly usersService: UsersService
     ) {}
 
     @Cron(CronExpression.EVERY_DAY_AT_4PM)
     async handleExpiredOrders() {
-        const ordersUnpaid = await this.orderRepository.getUnpaidOrders();
+        const ordersUnpaid = await this.orderService.getUnpaidOrders();
         if(ordersUnpaid.length === 0) {
             console.log('No hay ordenes sin pagar.');
             return 'No hay ordenes sin pagar.';
@@ -24,7 +23,7 @@ export class TasksService {
         for(const order of ordersUnpaid) {
             try {
                 await this.mailerService.sendEmailOrderExpired(order.user.email, order.id);
-                await this.orderRepository.deleteOrder(order.id);
+                await this.orderService.deleteOrder(order.id);
             } catch (error) {
                 console.log(`Error al procesar la orden ${order.id}: ${error.message}`);
             }
