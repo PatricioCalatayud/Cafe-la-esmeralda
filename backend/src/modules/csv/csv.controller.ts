@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { Response } from 'express';
+import { Controller, Get, Post, Res, UploadedFile, UseInterceptors,Body, BadRequestException } from '@nestjs/common';
 import { CsvService } from './csv.service';
 import { createReadStream } from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { Response } from 'express';
 
 @Controller('csv')
 export class CsvController {
@@ -42,5 +42,133 @@ export class CsvController {
   async updateProductsFromCsv(@UploadedFile() file: Express.Multer.File) {
     return this.csvService.updateProductsFromCsvService(file.path);
   }
+
+
+  @Post('productos-mas-vendidos')
+    async getMostSoldProducts(
+        @Body('limit') limit: number
+    ) {
+        // return await this.csvService.getMostSoldProductsService(limit);
+    }
+    @Post('productos-menos-vendidos')
+    async getLessSoldProducts(
+        @Body('limit') limit: number
+    ) {
+        // return await this.csvService.getLessSoldProductsService(limit);
+    }
+
+    @Post('mejores-productos')
+    async getBestProducts(
+        @Body('limit') limit: number
+    ) {
+        // return await this.csvService.getBestProductsService(limit);
+    }
+    @Post('peores-productos')
+    async getWorstProducts(
+        @Body('limit') limit: number
+    ) {
+      // return await this.csvService.getWorstProductsService(limit);
+    }
+
+    @Post('deudores')
+    async getLargestDebtors(
+        @Body('limit') limit: number
+    ) {
+        // return await this.csvService.getLargestDebtorsService(limit);
+    }
+
+    @Post('pedidos-usuario-mes')
+    async getOrdersByUserIdAndDate(
+        @Body('id') id: string,
+        @Body('date') date: string
+    ) {
+        const dateSelected = new Date(date);
+        
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+    
+        // return await this.csvService.getOrdersByUserIdAndDateService(id, dateSelected);
+    }
+
+    @Post('productos-por-mes')
+    async getProductsByMonth(
+        @Body('date') date: string,
+        @Body('productId') productId: string,
+        @Body('limit') limit: number
+    ) {
+        const dateSelected = new Date(date);
+        
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+    
+        // return await this.csvService.getProductsByMonthService(dateSelected, productId, limit);
+    }
+    
+    @Post('productos-vendidos')
+    async geAllTimeProducts(
+        @Body('productId') productId: string,
+        @Body('limit') limit: number,
+        @Res() res: Response
+      ): Promise<void> {
+          await this.csvService.geAllTimeProductsService(productId, limit, res);
+      
+    }
+
+    @Post('productos-por-mes-usuario')
+    async getProductsByMonthByUser(
+        @Body('date') date: string,
+        @Body('userId') userId: string,
+        @Body('limit') limit: number
+    ) {
+        const dateSelected = new Date(date);
+        
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+        
+        // return await this.csvService.getProductsByMonthByUserService(dateSelected, userId, limit);
+    }
+
+    @Post('productos-por-mes-usuario-bonificados')
+    async getProductsByUserByMonthBonified(
+        @Body('date') date: string,
+        @Body('userId') userId: string,
+        @Body('limit') limit: number
+    ) {
+        const dateSelected = new Date(date);
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+        
+        // return await this.csvService.getProductsByUserByMonthBonifiedService(dateSelected, userId, limit);
+    }
+    @Post('productos-por-mes-usuario-bonificados-importe')
+    async getProductsAndImportByUserByMonthBonified(
+        @Body('date') date: string,
+        @Body('userId') userId: string,
+        @Body('limit') limit: number
+    ) {
+        const dateSelected = new Date(date);
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+        
+        // return await this.csvService.getProductsAndImportByUserByMonthBonifiedService(dateSelected, userId, limit);
+    }
+
+    @Post('productos-por-reparto-por-mes')
+    async getProductsByDeliveryByMonth(
+        @Body('date') date: string,
+        @Body('deliveryNumber') deliveryNumber: number,
+        @Body('limit') limit: number
+    ){
+        const dateSelected = new Date(date);
+        if (isNaN(dateSelected.getTime())) {
+            throw new BadRequestException('Fecha inválida');
+        }
+        // return await this.csvService.getProductsByDeliveryByMonthService(dateSelected, deliveryNumber, limit);
+    }
 
 }
