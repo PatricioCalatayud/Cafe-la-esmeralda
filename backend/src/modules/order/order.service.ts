@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from 'src/entities/order.entity';
 import { OrderDetail } from 'src/entities/orderdetail.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, LessThan, Repository } from 'typeorm';
 import { ProductInfo, UpdateOrderDto } from './order.dto';
 import { User } from 'src/entities/user.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
@@ -12,6 +12,7 @@ import { MailerService } from '../mailer/mailer.service';
 import { Receipt } from 'src/entities/receipt.entity';
 import { AccountService } from '../account/account.service';
 import { BillService } from '../bill/bill.service';
+import { subDays } from 'date-fns';
 
 @Injectable()
 export class OrderService {
@@ -96,6 +97,10 @@ export class OrderService {
         });
     
         return { data, total };
+    }
+
+    async getUnpaidOrders(): Promise<Order[]> {
+        return await this.orderRepository.find({ where: { orderStatus: false, date: LessThan(subDays(new Date(), 2)) }, relations: ['user'] });
     }
     
     async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string, invoiceType?: string) {
