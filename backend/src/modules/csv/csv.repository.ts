@@ -227,4 +227,229 @@ export class CsvRepository {
         });
     });
   }
+
+    async bestAverageRatingRepository(limit: number, res: Response): Promise<void> {
+      const metricsDto = { limit };
+      const url = 'http://localhost:3001/metrics/mejores-productos'; // Tu URL para obtener los mejores productos
+  
+      try {
+        const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+        console.log('Datos recibidos:', JSON.stringify(response.data, null, 2));
+  
+        if (!response.data || response.data.length === 0) {
+          throw new Error('No se recibieron productos de la métrica');
+        }
+  
+        const csvRows = response.data.map(item => {
+          return {
+            ProductId: item.id, 
+            ProductDescription: item.description,
+            AverageRating: item.averageRating   
+          };
+        });
+  
+        console.log('Filas procesadas:', csvRows.length);
+        console.log('Primera fila de ejemplo:', csvRows[0]);
+  
+        const timestamp = new Date().getTime();
+        const localFilePath = join(process.cwd(), 'temp', `best_products_${timestamp}.csv`);
+  
+        if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+          fs.mkdirSync(join(process.cwd(), 'temp'));
+        }
+  
+        await new Promise<void>((resolve, reject) => {
+          const writeStream = fs.createWriteStream(localFilePath);
+          const csvStream = fastcsv.format({
+            headers: true,
+            delimiter: ',',
+            quote: '"'
+          });
+  
+          writeStream.on('error', (error) => {
+            console.error('Error escribiendo archivo:', error);
+            reject(error);
+          });
+  
+          writeStream.on('finish', () => {
+            console.log('Archivo CSV escrito correctamente');
+            resolve();
+          });
+  
+          csvStream.pipe(writeStream);
+  
+          csvRows.forEach(row => csvStream.write(row));
+  
+          csvStream.end();
+        });
+  
+        const fileContent = fs.readFileSync(localFilePath, 'utf-8');
+  
+        res.status(200).json({
+          message: 'CSV generado correctamente',
+          localFilePath,
+          csvContent: fileContent,
+          rowCount: csvRows.length,
+          firstRow: csvRows[0]
+        });
+  
+      } catch (error) {
+        console.error('Error completo:', error);
+        res.status(500).json({
+          error: 'No se pudo obtener la información de productos',
+          details: error.message,
+          stack: error.stack
+      });
+    }
+  }
+
+  async worstAverageRatingRepository(limit: number, res: Response): Promise<void> {
+    const metricsDto = { limit };
+    const url = 'http://localhost:3001/metrics/peores-productos'; 
+
+    try {
+      const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+      console.log('Datos recibidos:', JSON.stringify(response.data, null, 2));
+
+      if (!response.data || response.data.length === 0) {
+        throw new Error('No se recibieron productos de la métrica');
+      }
+
+      const csvRows = response.data.map(item => {
+        return {
+          ProductId: item.id, 
+          ProductDescription: item.description, 
+          AverageRating: item.averageRating 
+        };
+      });
+
+      console.log('Filas procesadas:', csvRows.length);
+      console.log('Primera fila de ejemplo:', csvRows[0]);
+
+      const timestamp = new Date().getTime();
+      const localFilePath = join(process.cwd(), 'temp', `best_products_${timestamp}.csv`);
+
+      if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+        fs.mkdirSync(join(process.cwd(), 'temp'));
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        const writeStream = fs.createWriteStream(localFilePath);
+        const csvStream = fastcsv.format({
+          headers: true,
+          delimiter: ',',
+          quote: '"'
+        });
+
+        writeStream.on('error', (error) => {
+          console.error('Error escribiendo archivo:', error);
+          reject(error);
+        });
+
+        writeStream.on('finish', () => {
+          console.log('Archivo CSV escrito correctamente');
+          resolve();
+        });
+
+        csvStream.pipe(writeStream);
+
+        csvRows.forEach(row => csvStream.write(row));
+
+        csvStream.end();
+      });
+
+      const fileContent = fs.readFileSync(localFilePath, 'utf-8');
+
+      res.status(200).json({
+        message: 'CSV generado correctamente',
+        localFilePath,
+        csvContent: fileContent,
+        rowCount: csvRows.length,
+        firstRow: csvRows[0]
+      });
+
+    } catch (error) {
+      console.error('Error completo:', error);
+      res.status(500).json({
+        error: 'No se pudo obtener la información de productos',
+        details: error.message,
+        stack: error.stack
+    });
+  }
+}
+  async debtorsRepository(limit: number, res: Response): Promise<void> {
+    const metricsDto = { limit };
+    const url = 'http://localhost:3001/metrics/deudores'; 
+
+    try {
+      const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+      console.log('Datos recibidos:', JSON.stringify(response.data, null, 2));
+
+      if (!response.data || response.data.length === 0) {
+        throw new Error('No se recibieron productos de la métrica');
+      }
+
+      const csvRows = response.data.map(item => {
+        return {
+          ProductId: item.id, 
+          ProductDescription: item.description, 
+          AverageRating: item.averageRating 
+        };
+      });
+
+      console.log('Filas procesadas:', csvRows.length);
+      console.log('Primera fila de ejemplo:', csvRows[0]);
+
+      const timestamp = new Date().getTime();
+      const localFilePath = join(process.cwd(), 'temp', `best_products_${timestamp}.csv`);
+
+      if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+        fs.mkdirSync(join(process.cwd(), 'temp'));
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        const writeStream = fs.createWriteStream(localFilePath);
+        const csvStream = fastcsv.format({
+          headers: true,
+          delimiter: ',',
+          quote: '"'
+        });
+
+        writeStream.on('error', (error) => {
+          console.error('Error escribiendo archivo:', error);
+          reject(error);
+        });
+
+        writeStream.on('finish', () => {
+          console.log('Archivo CSV escrito correctamente');
+          resolve();
+        });
+
+        csvStream.pipe(writeStream);
+
+        csvRows.forEach(row => csvStream.write(row));
+
+        csvStream.end();
+      });
+
+      const fileContent = fs.readFileSync(localFilePath, 'utf-8');
+
+      res.status(200).json({
+        message: 'CSV generado correctamente',
+        localFilePath,
+        csvContent: fileContent,
+        rowCount: csvRows.length,
+        firstRow: csvRows[0]
+      });
+
+    } catch (error) {
+      console.error('Error completo:', error);
+      res.status(500).json({
+        error: 'No se pudo obtener la información de productos',
+        details: error.message,
+        stack: error.stack
+    });
+  }
+}
+  
 }

@@ -59,22 +59,26 @@ export class CsvController {
 
     @Post('mejores-productos')
     async getBestProducts(
-        @Body('limit') limit: number
+        @Body('limit') limit: number,
+        @Res() res: Response
+
     ) {
-        // return await this.csvService.getBestProductsService(limit);
+        return await this.csvService.bestAverageRatingService(limit, res);
     }
     @Post('peores-productos')
     async getWorstProducts(
-        @Body('limit') limit: number
+        @Body('limit') limit: number,
+        @Res() res: Response
     ) {
-      // return await this.csvService.getWorstProductsService(limit);
+        return await this.csvService.worstAverageRatingService(limit, res);
     }
 
     @Post('deudores')
     async getLargestDebtors(
-        @Body('limit') limit: number
+        @Body('limit') limit: number,
+        @Res() res: Response
     ) {
-        // return await this.csvService.getLargestDebtorsService(limit);
+        return await this.csvService.debtorsService(limit, res);
     }
 
     @Post('pedidos-usuario-mes')
