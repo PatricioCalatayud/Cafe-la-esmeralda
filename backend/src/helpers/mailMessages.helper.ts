@@ -2616,3 +2616,9 @@ export const sendPaymentBill = (imgUrl: string) => {
 </body>
 </html> `
 }
+
+export const sendShipmentAlert = (order: Order) => {
+  return `
+    ACÁ VA EL TEXTO DE PATO
+  `
+}
