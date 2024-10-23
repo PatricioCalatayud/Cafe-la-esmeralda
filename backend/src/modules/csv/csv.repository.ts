@@ -535,4 +535,379 @@ async productsByDeliveryRepository(deliveryNumber: number, date: string, limit: 
   }
 }
 
+
+async getProductsByUserMonthByMonthRepository(userId: string, date: string, limit: number, res: Response): Promise<void> {
+  const metricsDto = { userId, date, limit };
+  const url = 'http://localhost:3001/metrics/productos-mes-por-mes-usuario';
+
+  try {
+      const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+      console.log('Datos recibidos:', JSON.stringify(response.data, null, 2));
+
+      // Validación adicional
+      if (!response.data || response.data.length === 0) {
+          throw new Error('No se recibieron productos para el usuario');
+      }
+
+      const csvRows = [];
+      response.data.forEach((monthData: any) => {
+          // Validación para monthData.items
+          if (Array.isArray(monthData.items) && monthData.items.length > 0) {
+              monthData.items.forEach((item: any) => {
+                  csvRows.push({
+                      Month: monthData.month,
+                      ProductId: item.product_id,
+                      ProductDescription: item.product_description,
+                      Price: item.subproduct_price,
+                      Amount: item.subproduct_amount,
+                      Unit: item.subproduct_unit,
+                      OrderId: item.order_id,
+                      OrderDate: item.order_date,
+                      UserName: item.user_name,
+                      UserEmail: item.user_email,
+                      UserPhone: item.user_phone
+                  });
+              });
+          }
+      });
+
+      console.log('Filas procesadas:', csvRows.length);
+
+      // Validación de filas
+      if (csvRows.length === 0) {
+          throw new Error('No se generaron filas para el CSV');
+      }
+
+      console.log('Primera fila de ejemplo:', csvRows[0]);
+
+      // Ruta para guardar el archivo CSV
+      const timestamp = new Date().getTime();
+      const localFilePath = join(process.cwd(), 'temp', `user_products_${timestamp}.csv`);
+
+      // Crear la carpeta 'temp' si no existe
+      if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+          fs.mkdirSync(join(process.cwd(), 'temp'));
+      }
+
+      // Generar el archivo CSV
+      await new Promise<void>((resolve, reject) => {
+          const writeStream = fs.createWriteStream(localFilePath);
+          const csvStream = fastcsv.format({
+              headers: true,
+              delimiter: ',',
+              quote: '"'
+          });
+
+          writeStream.on('error', (error) => {
+              console.error('Error escribiendo archivo:', error);
+              reject(error);
+          });
+
+          writeStream.on('finish', () => {
+              console.log('Archivo CSV escrito correctamente');
+              resolve();
+          });
+
+          csvStream.pipe(writeStream);
+
+          csvRows.forEach(row => csvStream.write(row));
+
+          csvStream.end();
+      });
+
+      const fileContent = fs.readFileSync(localFilePath, 'utf-8');
+
+      res.status(200).json({
+          message: 'CSV generado correctamente',
+          localFilePath,
+          csvContent: fileContent,
+          rowCount: csvRows.length,
+          firstRow: csvRows[0]
+      });
+
+  } catch (error) {
+      console.error('Error completo:', error);
+      res.status(500).json({
+          error: 'No se pudo obtener la información de productos por usuario',
+          details: error.message,
+          stack: error.stack
+      });
+  }
+}
+
+async getOrdersByUserByMonthRepository(userId: string, date: string, res: Response): Promise<void> {
+  const metricsDto = { id: userId, date };
+  const url = 'http://localhost:3001/metrics/pedidos-usuario-mes';
+
+  try {
+      const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+      console.log('Datos recibidos:', JSON.stringify(response.data, null, 2));
+
+      // Accessing the correct array structure: response.data.data
+      const ordersData = response.data.data;
+
+      // Validación adicional para asegurar que el arreglo tiene pedidos
+      if (!ordersData || ordersData.length === 0) {
+          throw new Error('No se recibieron pedidos para el usuario en el mes especificado');
+      }
+
+      const csvRows = [];
+      ordersData.forEach((orderData: any) => {
+          // Validación para orderData.productsOrder
+          if (Array.isArray(orderData.productsOrder) && orderData.productsOrder.length > 0) {
+              orderData.productsOrder.forEach((productOrder: any) => {
+                  const product = productOrder.subproduct.product;
+
+                  csvRows.push({
+                      OrderId: orderData.id,
+                      OrderDate: orderData.date,
+                      DeliveryDate: orderData.orderDetail.deliveryDate,
+                      DeliveryAddress: orderData.orderDetail.addressDelivery,
+                      TotalPrice: orderData.orderDetail.totalPrice,
+                      TransactionStatus: orderData.orderDetail.transactions.status,
+                      ProductId: product.id,
+                      ProductDescription: product.description,
+                      ProductPrice: productOrder.subproduct.price,
+                      ProductAmount: productOrder.subproduct.amount,
+                      ProductUnit: productOrder.subproduct.unit,
+                      IsAvailable: productOrder.subproduct.isAvailable,
+                      OrderStatus: orderData.orderStatus ? 'Completado' : 'Pendiente',
+                      BillType: orderData.bill ? orderData.bill.type : 'N/A',
+                      ReceiptStatus: orderData.receipt ? orderData.receipt.status : 'N/A'
+                  });
+              });
+          }
+      });
+
+      console.log('Filas procesadas:', csvRows.length);
+
+      if (csvRows.length === 0) {
+          throw new Error('No se generaron filas para el CSV');
+      }
+
+      console.log('Primera fila de ejemplo:', csvRows[0]);
+
+      const timestamp = new Date().getTime();
+      const localFilePath = join(process.cwd(), 'temp', `user_orders_${timestamp}.csv`);
+
+      if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+          fs.mkdirSync(join(process.cwd(), 'temp'));
+      }
+
+      await new Promise<void>((resolve, reject) => {
+          const writeStream = fs.createWriteStream(localFilePath);
+          const csvStream = fastcsv.format({
+              headers: true,
+              delimiter: ',',
+              quote: '"'
+          });
+
+          writeStream.on('error', (error) => {
+              console.error('Error escribiendo archivo:', error);
+              reject(error);
+          });
+
+          writeStream.on('finish', () => {
+              console.log('Archivo CSV escrito correctamente');
+              resolve();
+          });
+
+          csvStream.pipe(writeStream);
+
+          csvRows.forEach(row => csvStream.write(row));
+
+          csvStream.end();
+      });
+
+      const fileContent = fs.readFileSync(localFilePath, 'utf-8');
+
+      res.status(200).json({
+          message: 'CSV generado correctamente',
+          localFilePath,
+          csvContent: fileContent,
+          rowCount: csvRows.length,
+          firstRow: csvRows[0]
+      });
+
+  } catch (error) {
+      console.error('Error completo:', error);
+      res.status(500).json({
+          error: 'No se pudo obtener la información de pedidos por usuario en el mes',
+          details: error.message,
+          stack: error.stack
+      });
+  }
+}
+
+
+async productsBonifiedByUserByMonthRepository(userId: string, date: string, res: Response): Promise<void> {
+  const metricsDto = { userId, date, limit: 10 }; // Ajusta el límite según lo necesites.
+  const url = 'http://localhost:3001/metrics/productos-por-mes-usuario-bonificados';
+
+  try {
+      const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+      console.log('Datos recibidos:', JSON.stringify(response.data, null, 2));
+
+      const { data } = response;
+      if (!data || !data.length || !data[0].users || !data[0].users.length) {
+          throw new Error('No se recibieron datos para el usuario en el mes especificado');
+      }
+
+      const monthData = data[0]; // El mes y los usuarios están en el primer objeto
+      const usersData = monthData.users;
+
+      const filteredData = usersData.map((user: any) => ({
+          Month: monthData.month,
+          UserId: user.userId,
+          KilosFacturados: user.kilosFacturados,
+          UnidadesFacturadas: user.unidadesFacturadas,
+          KilosBonificados: user.kilosBonificados,
+          UnidadesBonificadas: user.unidadesBonificadas,
+      }));
+
+      console.log('Filas procesadas:', filteredData.length);
+
+      if (filteredData.length === 0) {
+          throw new Error('No se generaron filas para el CSV');
+      }
+
+      console.log('Primera fila de ejemplo:', filteredData[0]);
+
+      const timestamp = new Date().getTime();
+      const localFilePath = join(process.cwd(), 'temp', `user_bonificados_facturados_${timestamp}.csv`);
+
+      if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+          fs.mkdirSync(join(process.cwd(), 'temp'));
+      }
+
+      await new Promise<void>((resolve, reject) => {
+          const writeStream = fs.createWriteStream(localFilePath);
+          const csvStream = fastcsv.format({
+              headers: true,
+              delimiter: ',',
+              quote: '"'
+          });
+
+          writeStream.on('error', (error) => {
+              console.error('Error escribiendo archivo:', error);
+              reject(error);
+          });
+
+          writeStream.on('finish', () => {
+              console.log('Archivo CSV escrito correctamente');
+              resolve();
+          });
+
+          csvStream.pipe(writeStream);
+
+          filteredData.forEach(row => csvStream.write(row));
+
+          csvStream.end();
+      });
+
+      const fileContent = fs.readFileSync(localFilePath, 'utf-8');
+
+      res.status(200).json({
+          message: 'CSV generado correctamente',
+          localFilePath,
+          csvContent: fileContent,
+          rowCount: filteredData.length,
+          firstRow: filteredData[0]
+      });
+
+  } catch (error) {
+      console.error('Error completo:', error);
+      res.status(500).json({
+          error: 'No se pudo obtener la información de bonificados y facturados',
+          details: error.message,
+          stack: error.stack
+      });
+  }
+}
+async productsBonifiedAndImportByUserByMonthRepository(userId: string, date: string, res: Response): Promise<void> {
+  const metricsDto = { userId, date, limit: 10 }; // Ajusta el límite según lo necesites.
+  const url = 'http://localhost:3001/metrics/productos-por-mes-usuario-bonificados-importe';
+
+  try {
+      const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+      console.log('Datos recibidos:', JSON.stringify(response.data, null, 2));
+
+      const { data } = response;
+      if (!data || !data.length || !data[0].users || !data[0].users.length) {
+          throw new Error('No se recibieron datos para el usuario en el mes especificado');
+      }
+
+      const monthData = data[0]; // El mes y los usuarios están en el primer objeto
+      const usersData = monthData.users;
+
+      const filteredData = usersData.map((user: any) => ({
+          Month: monthData.month,
+          UserId: user.userId,
+          KilosFacturados: user.kilosFacturados,
+          UnidadesFacturadas: user.unidadesFacturadas,
+          KilosBonificados: user.kilosBonificados,
+          UnidadesBonificadas: user.unidadesBonificadas,
+          ImporteGenerado: user.importeGenerado
+      }));
+
+      console.log('Filas procesadas:', filteredData.length);
+
+      if (filteredData.length === 0) {
+          throw new Error('No se generaron filas para el CSV');
+      }
+
+      console.log('Primera fila de ejemplo:', filteredData[0]);
+
+      const timestamp = new Date().getTime();
+      const localFilePath = join(process.cwd(), 'temp', `user_bonificados_facturados_${timestamp}.csv`);
+
+      if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+          fs.mkdirSync(join(process.cwd(), 'temp'));
+      }
+
+      await new Promise<void>((resolve, reject) => {
+          const writeStream = fs.createWriteStream(localFilePath);
+          const csvStream = fastcsv.format({
+              headers: true,
+              delimiter: ',',
+              quote: '"'
+          });
+
+          writeStream.on('error', (error) => {
+              console.error('Error escribiendo archivo:', error);
+              reject(error);
+          });
+
+          writeStream.on('finish', () => {
+              console.log('Archivo CSV escrito correctamente');
+              resolve();
+          });
+
+          csvStream.pipe(writeStream);
+
+          filteredData.forEach(row => csvStream.write(row));
+
+          csvStream.end();
+      });
+
+      const fileContent = fs.readFileSync(localFilePath, 'utf-8');
+
+      res.status(200).json({
+          message: 'CSV generado correctamente',
+          localFilePath,
+          csvContent: fileContent,
+          rowCount: filteredData.length,
+          firstRow: filteredData[0]
+      });
+
+  } catch (error) {
+      console.error('Error completo:', error);
+      res.status(500).json({
+          error: 'No se pudo obtener la información de bonificados y facturados',
+          details: error.message,
+          stack: error.stack
+      });
+  }
+}
+
 }

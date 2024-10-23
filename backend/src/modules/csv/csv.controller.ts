@@ -57,42 +57,16 @@ export class CsvController {
         // return await this.csvService.getLessSoldProductsService(limit);
     }
 
-    @Post('mejores-productos')
-    async getBestProducts(
-        @Body('limit') limit: number,
-        @Res() res: Response
-
-    ) {
-        return await this.csvService.bestAverageRatingService(limit, res);
-    }
-    @Post('peores-productos')
-    async getWorstProducts(
-        @Body('limit') limit: number,
-        @Res() res: Response
-    ) {
-        return await this.csvService.worstAverageRatingService(limit, res);
-    }
-
-    @Post('deudores')
-    async getLargestDebtors(
-        @Body('limit') limit: number,
-        @Res() res: Response
-    ) {
-        return await this.csvService.debtorsService(limit, res);
-    }
-
+    
     @Post('pedidos-usuario-mes')
     async getOrdersByUserIdAndDate(
         @Body('id') id: string,
-        @Body('date') date: string
+        @Body('date') date: string,
+        @Res() res: Response
+
     ) {
-        const dateSelected = new Date(date);
-        
-        if (isNaN(dateSelected.getTime())) {
-            throw new BadRequestException('Fecha inválida');
-        }
-    
-        // return await this.csvService.getOrdersByUserIdAndDateService(id, dateSelected);
+
+        return await this.csvService.getProductsByUserByMonthService(id, date, res);
     }
 
     @Post('productos-por-mes')
@@ -110,56 +84,25 @@ export class CsvController {
         // return await this.csvService.getProductsByMonthService(dateSelected, productId, limit);
     }
     
-    @Post('productos-vendidos')
-    async geAllTimeProducts(
-        @Body('productId') productId: string,
-        @Body('limit') limit: number,
-        @Res() res: Response
-      ): Promise<void> {
-          await this.csvService.geAllTimeProductsService(productId, limit, res);
-      
-    }
-
-    @Post('productos-por-mes-usuario')
-    async getProductsByMonthByUser(
-        @Body('date') date: string,
-        @Body('userId') userId: string,
-        @Body('limit') limit: number
-    ) {
-        const dateSelected = new Date(date);
-        
-        if (isNaN(dateSelected.getTime())) {
-            throw new BadRequestException('Fecha inválida');
-        }
-        
-        // return await this.csvService.getProductsByMonthByUserService(dateSelected, userId, limit);
-    }
-
+    
+  
     @Post('productos-por-mes-usuario-bonificados')
     async getProductsByUserByMonthBonified(
-        @Body('date') date: string,
         @Body('userId') userId: string,
-        @Body('limit') limit: number
+        @Body('date') date: string,
+        @Res() res: Response
     ) {
-        const dateSelected = new Date(date);
-        if (isNaN(dateSelected.getTime())) {
-            throw new BadRequestException('Fecha inválida');
-        }
         
-        // return await this.csvService.getProductsByUserByMonthBonifiedService(dateSelected, userId, limit);
+         return await this.csvService.productsBonifiedByUserByMonthService( userId, date,  res);
     }
     @Post('productos-por-mes-usuario-bonificados-importe')
     async getProductsAndImportByUserByMonthBonified(
-        @Body('date') date: string,
         @Body('userId') userId: string,
-        @Body('limit') limit: number
+        @Body('date') date: string,
+        @Res() res: Response
     ) {
-        const dateSelected = new Date(date);
-        if (isNaN(dateSelected.getTime())) {
-            throw new BadRequestException('Fecha inválida');
-        }
         
-        // return await this.csvService.getProductsAndImportByUserByMonthBonifiedService(dateSelected, userId, limit);
+         return await this.csvService.productsBonifiedAndImportByUserByMonthService( userId, date,  res);
     }
 
     @Post('productos-por-reparto-por-mes')
@@ -171,7 +114,51 @@ export class CsvController {
     ){
 
         return await this.csvService.productsByDeliveryService(deliveryNumber, date, limit, res);
-
+        
     }
+    
+    @Post('productos-vendidos')
+    async geAllTimeProducts(
+        @Body('productId') productId: string,
+        @Body('limit') limit: number,
+        @Res() res: Response
+      ): Promise<void> {
+          await this.csvService.geAllTimeProductsService(productId, limit, res);
+          
+        }
+        @Post('mejores-productos')
+        async getBestProducts(
+            @Body('limit') limit: number,
+            @Res() res: Response
+            
+        ) {
+            return await this.csvService.bestAverageRatingService(limit, res);
+        }
+        @Post('peores-productos')
+        async getWorstProducts(
+            @Body('limit') limit: number,
+            @Res() res: Response
+        ) {
+            return await this.csvService.worstAverageRatingService(limit, res);
+        }
+    
+        @Post('deudores')
+        async getLargestDebtors(
+            @Body('limit') limit: number,
+            @Res() res: Response
+        ) {
+            return await this.csvService.debtorsService(limit, res);
+        }
 
-}
+        @Post('productos-mes-por-mes-usuario')
+        async getProductsByMonthByUser(
+            @Body('date') date: string,
+            @Body('userId') userId: string,
+            @Body('limit') limit: number,
+            @Res() res: Response
+        ) {
+    
+             return await this.csvService.getProductsByUserMonthByMonthService( userId, date, limit, res);
+        }
+    }
+    
