@@ -169,10 +169,7 @@ export class CsvController {
         @Body('limit') limit: number,
         @Res() res: Response
     ){
-        // const date = new Date(dateSelected);
-        // if (isNaN(date.getTime())) {
-        //     throw new BadRequestException('Fecha inválida');
-        // }
+
         return await this.csvService.productsByDeliveryService(deliveryNumber, date, limit, res);
 
     }
