@@ -1,0 +1,3 @@
+ProductId,ProductDescription,ProductPrice,OrderId,OrderDate,UserName,UserEmail,UserPhone,DeliveryNumber,Address
+909a704e-480c-4385-b4d1-c056a184fa15,Capsulas Esmeralda,22600,20f99122-7439-44df-8643-505d155f2764,2024-10-16T15:19:18.214Z,nico,nicolasaddamo1@gmail.com,987567124,0,Alvarez 3321
+920ff331-a718-45f5-aa11-d67b7f72c77d,Cafe Santos,33000,fc9f5a51-8a4a-45e0-bad7-e8a40e19bead,2024-10-15T20:22:11.671Z,client02aa,a@a.com,987567124,0,Alvarez 3321
