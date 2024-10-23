@@ -166,13 +166,15 @@ export class CsvController {
     async getProductsByDeliveryByMonth(
         @Body('date') date: string,
         @Body('deliveryNumber') deliveryNumber: number,
-        @Body('limit') limit: number
+        @Body('limit') limit: number,
+        @Res() res: Response
     ){
-        const dateSelected = new Date(date);
-        if (isNaN(dateSelected.getTime())) {
-            throw new BadRequestException('Fecha inválida');
-        }
-        // return await this.csvService.getProductsByDeliveryByMonthService(dateSelected, deliveryNumber, limit);
+        // const date = new Date(dateSelected);
+        // if (isNaN(date.getTime())) {
+        //     throw new BadRequestException('Fecha inválida');
+        // }
+        return await this.csvService.productsByDeliveryService(deliveryNumber, date, limit, res);
+
     }
 
 }

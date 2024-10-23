@@ -39,4 +39,10 @@ export class CsvService {
     ): Promise<void> {
         return this.csvRepository.debtorsRepository(limit, res);
     }
+
+
+    async productsByDeliveryService(deliveryNumber: number, date: string, limit: number, res: Response
+    ): Promise<void> {
+        return this.csvRepository.productsByDeliveryRepository(deliveryNumber, date, limit, res);
+    }
 }
