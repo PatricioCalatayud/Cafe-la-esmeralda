@@ -194,7 +194,10 @@ export class OrderService {
 
         if(data.deliveryDate) await this.orderDetailRepository.update({ id: order.orderDetail.id }, { deliveryDate: data.deliveryDate });
 
-        if(data.status) await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status, timestamp: new Date() });
+        if(data.status) {
+            await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: data.status, timestamp: new Date() });
+            if(data.status === 'Transito') await this.mailerService.sendShipmentAlert(order);
+        }
 
         if(data.transferStatus) {
             if(order.receipt === null) throw new BadRequestException();
