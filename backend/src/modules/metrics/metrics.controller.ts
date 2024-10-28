@@ -74,7 +74,7 @@ export class MetricsController {
         return await this.ordersMetricsService.geAllTimeProductsService(productId, limit);
     }
 
-    @Post('productos-por-mes-usuario')
+    @Post('productos-mes-por-mes-usuario')
     async getProductsByMonthByUser(
         @Body('date') date: string,
         @Body('userId') userId: string,
