@@ -133,7 +133,7 @@ export class OrderService {
             }));
     
             const orderDetail = transactionalEntityManager.create(OrderDetail, {
-                totalPrice: Number(total.toFixed(2)),
+                totalPrice: Number((total * 1.21).toFixed(2)),
                 order: newOrder,
                 addressDelivery: address || 'Retiro en local',
             });
@@ -202,7 +202,7 @@ export class OrderService {
         if(data.transferStatus) {
             if(order.receipt === null) throw new BadRequestException();
             await this.receiptRepository.update({ id: order.receipt.id }, { status: data.transferStatus });
-            await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: 'En preparación', timestamp: new Date() });
+            if(data.transferStatus === 'Comprobante verificado') await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: 'En preparación', timestamp: new Date() });
         }
 
         return { HttpCode: 200 };
