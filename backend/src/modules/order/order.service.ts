@@ -103,14 +103,21 @@ export class OrderService {
         return await this.orderRepository.find({ where: { orderStatus: false, date: LessThan(subDays(new Date(), 2)) }, relations: ['user'] });
     }
     
-    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string, invoiceType?: string) {
+    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string, invoiceType?: string, date?: Date) {
         let total = 0;
         let createdOrder;
     
         const user = await this.userRepository.findOneBy({ id: userId});
     
         await this.dataSource.transaction(async (transactionalEntityManager) => {
-            const order = transactionalEntityManager.create(Order, { user, date: new Date() });
+            
+            if(!date){
+
+                const order = transactionalEntityManager.create(Order, { user, date: new Date()});
+                const newOrder = await transactionalEntityManager.save(order);
+                createdOrder = newOrder;
+            }
+            const order = transactionalEntityManager.create(Order, { user, date});
             const newOrder = await transactionalEntityManager.save(order);
             createdOrder = newOrder;
     
@@ -133,7 +140,7 @@ export class OrderService {
             }));
     
             const orderDetail = transactionalEntityManager.create(OrderDetail, {
-                totalPrice: Number(total.toFixed(2)),
+                totalPrice: Number((total * 1.21).toFixed(2)),
                 order: newOrder,
                 addressDelivery: address || 'Retiro en local',
             });
@@ -160,6 +167,7 @@ export class OrderService {
             createdOrder.bill = bill;
             await this.orderRepository.update(createdOrder.id, { bill });
         }
+
 
         const mailerRelations = await this.getOrderById(createdOrder.id)
         await this.mailerService.sendEmailOrderCreated(mailerRelations);
@@ -202,7 +210,7 @@ export class OrderService {
         if(data.transferStatus) {
             if(order.receipt === null) throw new BadRequestException();
             await this.receiptRepository.update({ id: order.receipt.id }, { status: data.transferStatus });
-            await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: 'En preparación', timestamp: new Date() });
+            if(data.transferStatus === 'Comprobante verificado') await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: 'En preparación', timestamp: new Date() });
         }
 
         return { HttpCode: 200 };
