@@ -140,14 +140,14 @@ export class PreloadService implements OnModuleInit {
   }
   
 
-  async addDefaultOrder() {
+  async addDefaultOrders() {
     try {
       const users = await this.userRepository.find();
       if (users.length === 0) {
         console.error('No hay usuarios disponibles.');
         return;
       }
-
+  
       const product1 = await this.productRepository.findOne({
         where: { description: 'Cafe Mezcla' },
         relations: ['subproducts'],
@@ -156,44 +156,65 @@ export class PreloadService implements OnModuleInit {
         where: { description: 'Portasobres' },
         relations: ['subproducts'],
       });
-
+  
       if (!product1?.subproducts?.length || !product2?.subproducts?.length) {
         console.error('Productos o subproductos no encontrados.');
         return;
       }
-
+  
       const user = users[0];
-
       const account = await this.accountRepository.findOne({
         where: { user: { id: user.id } },
       });
-
+  
       if (!account) {
         throw new Error(`Cuenta no encontrada para el usuario ${user.id}`);
       }
-
-      const order = await this.orderService.createOrder(user.id, [
-        { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
-        { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id },
-      ], 'Calle Wallaby 42 Sidney','Transferencia', 'A');
-
-      order.account = account;
-      
-      await this.orderRepository.save(order);
-
-      const accountTransaction = this.accountTransactionRepository.create({
-        amount: 500,
-        type: TransactionType.PURCHASE,
-        account: account,
-      });
-
-      await this.accountTransactionRepository.save(accountTransaction);
-
-      console.log('Precarga de pedido y transacción exitosa.');
+  
+      const orderDates = [
+        new Date('2024-01-01'),
+        new Date('2024-01-15'),
+        new Date('2024-01-25'),
+        new Date('2024-02-10'),
+        new Date('2024-02-20'),
+        new Date('2024-10-05'),
+        new Date('2024-10-15'),
+        new Date('2024-10-25'),
+      ];
+  
+      for (const date of orderDates) {
+        const order = await this.orderService.createOrder(
+          user.id,
+          [
+            { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
+            { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id },
+          ],
+          'Calle Wallaby 42 Sidney',
+          'Transferencia',
+          'A',
+          date  // Asegúrate de que el método createOrder acepte la fecha
+        );
+  
+        order.account = account;
+        await this.orderRepository.save(order);
+  
+        const accountTransaction = this.accountTransactionRepository.create({
+          amount: 500,
+          type: TransactionType.PURCHASE,
+          account: account,
+        });
+  
+        await this.accountTransactionRepository.save(accountTransaction);
+  
+        console.log(`Pedido creado con fecha ${date.toISOString()}`);
+      }
+  
+      console.log('Precarga de múltiples pedidos y transacciones exitosa.');
     } catch (error) {
-      console.error(`Error al crear el pedido: ${error.message}`);
+      console.error(`Error al crear los pedidos: ${error.message}`);
     }
   }
+  
 
   async addDefaultTestimonies() {
     try {
@@ -293,7 +314,7 @@ async updateAverageRating(productId: string): Promise<UpdateResult> {
     await this.addDefaultProducts();
     await this.addDefaultUser();
     await this.addDefaultAccounts();
-    await this.addDefaultOrder();
+    await this.addDefaultOrders();
     await this.addDefaultTestimonies();
     await this.rateProduct(dataRatings)
   }

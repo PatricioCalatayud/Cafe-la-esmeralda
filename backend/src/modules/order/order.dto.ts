@@ -60,7 +60,13 @@ export class AddOrderDto {
     @ApiProperty({ description: 'Propiedad para facturación, solo admite "A", "B", o "C".' })
     @IsEnum(Bill)
     @IsOptional()
-    invoiceType?: Bill | null; 
+    invoiceType?: Bill | null;
+
+
+    @ApiProperty({ description: 'Propiedad para facturación, solo admite "A", "B", o "C".' })
+    @IsDate()
+    @IsOptional()
+    date?: Date;
 }
 
 export class UpdateOrderDto {
