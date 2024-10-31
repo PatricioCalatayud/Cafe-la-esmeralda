@@ -111,13 +111,8 @@ export class OrderService {
     
         await this.dataSource.transaction(async (transactionalEntityManager) => {
             
-            if(!date){
-
-                const order = transactionalEntityManager.create(Order, { user, date: new Date()});
-                const newOrder = await transactionalEntityManager.save(order);
-                createdOrder = newOrder;
-            }
-            const order = transactionalEntityManager.create(Order, { user, date});
+            const orderDate = date ?? new Date();
+            const order = transactionalEntityManager.create(Order, { user, date: orderDate});
             const newOrder = await transactionalEntityManager.save(order);
             createdOrder = newOrder;
     
