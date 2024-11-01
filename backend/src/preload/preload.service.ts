@@ -172,14 +172,14 @@ export class PreloadService implements OnModuleInit {
       }
   
       const orderDates = [
-        new Date('2024-01-01'),
-        new Date('2024-01-15'),
-        new Date('2024-01-25'),
-        new Date('2024-02-10'),
-        new Date('2024-02-20'),
-        new Date('2024-10-05'),
-        new Date('2024-10-15'),
-        new Date('2024-10-25'),
+        new Date('2024-03-01'),
+        new Date('2024-03-15'),
+        new Date('2024-04-25'),
+        new Date('2024-05-10'),
+        new Date('2024-06-20'),
+        new Date('2024-07-05'),
+        new Date('2024-08-15'),
+        new Date('2024-09-25'),
       ];
   
       for (const date of orderDates) {

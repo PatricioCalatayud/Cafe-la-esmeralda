@@ -1061,7 +1061,8 @@ export const sendEmailOrderCreated = (order: Order) => {
       </html>`
     );
 
-} 
+}else {
+  
 return `<!DOCTYPE html>
 <html lang="es" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
@@ -1567,6 +1568,8 @@ ${productsHtml}
 <!-- End -->
 </body>
 </html>` }
+
+}
 
 export const sendEmailOrderPaid = (order: Order) => {
   
