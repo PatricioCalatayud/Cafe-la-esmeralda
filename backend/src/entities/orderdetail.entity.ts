@@ -13,7 +13,7 @@ export class OrderDetail {
     @Column({ type: 'timestamp' })
     deliveryDate: Date;
 
-    @Column({ type: 'decimal', scale: 2 })
+    @Column({ type: 'int' })
     totalPrice: number;
 
     @OneToOne(() => Order, (order) => order.orderDetail, { onDelete: 'CASCADE' })
