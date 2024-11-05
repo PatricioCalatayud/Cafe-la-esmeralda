@@ -1,0 +1,9 @@
+OrderId;OrderDate;OrderStatus;ProductId;ProductDescription;Presentacion;TipoGrano;SubproductAmount;Unit;Stock;Price;Discount;IsAvailable;Quantity;Total;CustomerName;CustomerEmail;CustomerPhone
+6f565f0e-c0af-4a00-86b1-f68a077e3937;29/2/2024;Pendiente;8f09001c-39fd-4d8b-ad25-89930f6e41c4;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;Patricio;patocalatayud@gmail.com;987567123
+e5480bb8-62ea-4458-8bcf-13bd938bc998;14/3/2024;Pendiente;8f09001c-39fd-4d8b-ad25-89930f6e41c4;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;Patricio;patocalatayud@gmail.com;987567123
+a582cdba-9491-420c-be3a-e37fc28fda42;24/4/2024;Pendiente;8f09001c-39fd-4d8b-ad25-89930f6e41c4;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;Patricio;patocalatayud@gmail.com;987567123
+3b6c39ad-861b-4ca2-b687-699b33abc92f;9/5/2024;Pendiente;8f09001c-39fd-4d8b-ad25-89930f6e41c4;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;Patricio;patocalatayud@gmail.com;987567123
+ec87086c-af05-44d2-a8d0-3b9de7dbc625;19/6/2024;Pendiente;8f09001c-39fd-4d8b-ad25-89930f6e41c4;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;Patricio;patocalatayud@gmail.com;987567123
+76fe08e5-dfb2-4f1c-895b-aaf4232449d1;4/7/2024;Pendiente;8f09001c-39fd-4d8b-ad25-89930f6e41c4;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;Patricio;patocalatayud@gmail.com;987567123
+3c3e9538-49f1-45d9-981f-5d5cdbca89f2;14/8/2024;Pendiente;8f09001c-39fd-4d8b-ad25-89930f6e41c4;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;Patricio;patocalatayud@gmail.com;987567123
+3c459a3c-4428-4df8-97f5-64801bf7e1bb;24/9/2024;Pendiente;8f09001c-39fd-4d8b-ad25-89930f6e41c4;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;Patricio;patocalatayud@gmail.com;987567123
