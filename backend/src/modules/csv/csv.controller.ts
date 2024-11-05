@@ -46,15 +46,16 @@ export class CsvController {
 
   @Post('productos-mas-vendidos')
   async getMostSoldProducts(
+      @Res() res: Response,
       @Body('limit') limit: number
   ) {
-      // return await this.csvService.getMostSoldProductsService(limit);
+    return await this.csvService.getMostSoldProductsService(res, limit);
   }
   @Post('productos-menos-vendidos')
   async getLessSoldProducts(
       @Body('limit') limit: number
   ) {
-      // return await this.csvService.getLessSoldProductsService(limit);
+    return await this.csvService.getLessSoldProductsService(limit);
   }
 
   

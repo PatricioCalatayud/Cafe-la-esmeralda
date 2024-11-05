@@ -8,6 +8,12 @@ export class CsvService {
     constructor(
         private readonly csvRepository: CsvRepository
     ) {}
+    getMostSoldProductsService(res: Response, limit: number) {
+        return this.csvRepository.generateMostSoldProductsCsvRepository(res, limit);
+    }
+    getLessSoldProductsService(limit: number) {
+        return this.csvRepository.generateLessSoldProductsCsvRepository(limit);
+    }
     
     async generateSalesCsvService() {
         return this.csvRepository.generateSellsCsv();
