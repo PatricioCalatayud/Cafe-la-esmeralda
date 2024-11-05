@@ -76,7 +76,7 @@ export class CsvRepository {
             const writeStream = fs.createWriteStream(localFilePath);
             const csvStream = fastcsv.format({ 
                 headers: true,
-                delimiter: ',',
+                delimiter: ';',
                 quote: '"'
             });
 
@@ -262,7 +262,7 @@ export class CsvRepository {
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
             headers: true,
-            delimiter: ',',
+            delimiter: ';',
             quote: '"'
           });
   
@@ -337,7 +337,7 @@ export class CsvRepository {
         const writeStream = fs.createWriteStream(localFilePath);
         const csvStream = fastcsv.format({
           headers: true,
-          delimiter: ',',
+          delimiter: ';',
           quote: '"'
         });
 
@@ -411,7 +411,7 @@ export class CsvRepository {
         const writeStream = fs.createWriteStream(localFilePath);
         const csvStream = fastcsv.format({
           headers: true,
-          delimiter: ',',
+          delimiter: ';',
           quote: '"'
         });
 
@@ -494,7 +494,7 @@ async productsByDeliveryRepository(deliveryNumber: number, date: string, limit: 
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -594,7 +594,7 @@ async getProductsByUserMonthByMonthRepository(userId: string, date: string, limi
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -698,7 +698,7 @@ async getOrdersByUserByMonthRepository(userId: string, date: string, res: Respon
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -784,7 +784,7 @@ async productsBonifiedByUserByMonthRepository(userId: string, date: string, res:
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -869,7 +869,7 @@ async productsBonifiedAndImportByUserByMonthRepository(userId: string, date: str
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
