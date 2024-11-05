@@ -3,6 +3,8 @@
         "description": "Cafe Santos",
         "imgUrl": "https://imgur.com/U9juK3e.png",
         "category": "Coffee",
+        "tipoGrano":"Santos",
+        "presentacion":"Molido",
         "subproducts": [
             {
                 "price": 13000,
@@ -29,6 +31,8 @@
         "description": "Cafe Mezcla",
         "imgUrl": "https://imgur.com/tubPom4.png",
         "category": "Coffee",
+        "tipoGrano":"Santos",
+        "presentacion":"Mezcla baja calidad",
         "subproducts": [
             {
                 "price": 80000,
