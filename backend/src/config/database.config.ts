@@ -19,4 +19,4 @@ const config = {
 };
 
 export default registerAs('typeorm', () => config);
-const connectionSource = new DataSource(config as DataSourceOptions);
+const connectionSource = new DataSource(config as DataSourceOptions); 
