@@ -33,7 +33,7 @@ export class OrdersMetricsRepository {
       .orderBy('quantity', 'DESC')
       .limit(limit)
       .getRawMany();
-  
+
     return mostSoldProducts.map(result => ({
       productId: result.productId,
       quantity: parseFloat(result.quantity),
