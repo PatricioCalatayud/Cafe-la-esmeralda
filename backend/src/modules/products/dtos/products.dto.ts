@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateNested, IsArray, IsEnum, IsPositive, IsNumber } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateNested, IsArray, IsEnum, IsPositive, IsNumber } from "class-validator";
 import { SubproductDto, UpdatedSubproductDto } from "./subproduct.dto"; 
 import { ApiProperty } from "@nestjs/swagger";
 import { Presentacion } from "src/enum/presentacion.enum";
@@ -23,9 +23,9 @@ export class CreateProductDto {
     categoryID: string;
 
     @ApiProperty({ description: 'Peso.' })
-    @IsNotEmpty()
+    @IsOptional()
     @IsEnum(Presentacion)
-    presentacion: Presentacion;
+    presentacion?: Presentacion;
     
     @ApiProperty({ description: 'Tipo de grano.' })
     @IsOptional()
