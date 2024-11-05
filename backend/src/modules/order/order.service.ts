@@ -103,26 +103,29 @@ export class OrderService {
         return await this.orderRepository.find({ where: { orderStatus: false, date: LessThan(subDays(new Date(), 2)) }, relations: ['user'] });
     }
     
-    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string, invoiceType?: string) {
+    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string, invoiceType?: string, date?: Date) {
         let total = 0;
         let createdOrder;
     
         const user = await this.userRepository.findOneBy({ id: userId});
     
         await this.dataSource.transaction(async (transactionalEntityManager) => {
-            const order = transactionalEntityManager.create(Order, { user, date: new Date() });
+            
+            const orderDate = date ?? new Date();
+            const order = transactionalEntityManager.create(Order, { user, date: orderDate});
             const newOrder = await transactionalEntityManager.save(order);
             createdOrder = newOrder;
     
             await Promise.all(productsInfo.map(async (product) => {
-                await this.updateStock(product.subproductId, product.quantity);
-    
                 const foundSubproduct = await transactionalEntityManager.findOneBy(Subproduct, { id: product.subproductId });
                 if (!foundSubproduct) throw new BadRequestException(`Subproducto no encontrado. ID: ${product.subproductId}`);
                 if (foundSubproduct.stock <= 0) throw new BadRequestException(`Subproducto sin stock. ID: ${foundSubproduct.id}`);
-    
+                
                 total += (foundSubproduct.price * product.quantity * (1 - (foundSubproduct.discount/100)));
                 if (foundSubproduct.stock < product.quantity) throw new BadRequestException(`Subproducto sin stock suficiente. ID: ${foundSubproduct.id}`);
+                
+                await this.updateStock(product.subproductId, product.quantity);
+
                 const productsOrder = transactionalEntityManager.create(ProductsOrder, {
                     subproduct: foundSubproduct,
                     order: newOrder,
@@ -133,7 +136,7 @@ export class OrderService {
             }));
     
             const orderDetail = transactionalEntityManager.create(OrderDetail, {
-                totalPrice: Number((total * 1.21).toFixed(2)),
+                totalPrice: Math.ceil((total * 1.21)),
                 order: newOrder,
                 addressDelivery: address || 'Retiro en local',
             });
@@ -160,6 +163,7 @@ export class OrderService {
             createdOrder.bill = bill;
             await this.orderRepository.update(createdOrder.id, { bill });
         }
+
 
         const mailerRelations = await this.getOrderById(createdOrder.id)
         await this.mailerService.sendEmailOrderCreated(mailerRelations);
