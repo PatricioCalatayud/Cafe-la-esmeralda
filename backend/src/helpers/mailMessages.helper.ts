@@ -664,7 +664,7 @@ export const sendEmailOrderCreated = (order: Order) => {
 
   order.productsOrder.forEach((product) => {
     productsHtml += `
-      <tr>
+    <tr>
         <td class="column" style="text-align: center; padding: 10px; vertical-align: top;" width="100%">
           <table border="0" cellpadding="0" cellspacing="0" class="row-content" role="presentation" width="100%" style="text-align: center;">
             <tr>
@@ -836,6 +836,17 @@ export const sendEmailOrderCreated = (order: Order) => {
       <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:30px;line-height:120%;text-align:center;mso-line-height-alt:36px;">
       <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Gracias por tu pedido</strong></span></p>
       </div>
+      <table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+    <tr>
+        <td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
+            <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:center;mso-line-height-alt:22.5px;">
+                <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #808389;">
+                    Si ya subiste tu comprobante de transferencia, ignora este email. Si tienes una cuenta corriente con La Esmeralda, carga tu comprobante de pago para poder saldar tus cuentas.
+                </span></p>
+            </div>
+        </td>
+    </tr>
+</table>
       </td>
       </tr>
       </table>
@@ -1224,6 +1235,17 @@ return `<!DOCTYPE html>
 <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:30px;line-height:120%;text-align:center;mso-line-height-alt:36px;">
 <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #2b303a;"><strong>Gracias por tu pedido</strong></span></p>
 </div>
+<table border="0" cellpadding="0" cellspacing="0" class="paragraph_block block-5" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width="100%">
+    <tr>
+        <td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
+            <div style="color:#555555;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:15px;line-height:150%;text-align:center;mso-line-height-alt:22.5px;">
+                <p style="margin: 0; word-break: break-word;"><span style="word-break: break-word; color: #808389;">
+                    Si ya subiste tu comprobante de transferencia, ignora este email. Si tienes una cuenta corriente con La Esmeralda, carga tu comprobante de pago para poder saldar tus cuentas.
+                </span></p>
+            </div>
+        </td>
+    </tr>
+</table>
 </td>
 </tr>
 </table>
