@@ -13,8 +13,10 @@ import { Product } from 'src/entities/products/product.entity';
 @Controller('products')
 export class ProductsController {
     constructor(private readonly productService: ProductsService) {}
-
-    @Get()
+    @Get("bonified")
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
+    @ApiBearerAuth()
     @ApiOperation({ summary: 'Obtiene todos los productos', description: 'Este endpoint retorna todos los productos.' })
     async getAll(
         @Query('category') category: string, 
@@ -24,6 +26,18 @@ export class ProductsController {
     {
         if(category) return this.productService.getAllByCategory(category, page, limit);
         else return this.productService.getAllService(page, limit);
+    }
+    @Get()
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Obtiene todos los productos', description: 'Este endpoint retorna todos los productos.' })
+    async getAllUnbonified(
+        @Query('category') category: string, 
+        @Query('page', new DefaultValuePipe(1)) page: number, 
+        @Query('limit', new DefaultValuePipe(10)) limit: number)
+        : Promise<{ data: Product[], total: number }>
+    {
+        if(category) return this.productService.getAllByCategory(category, page, limit);
+        else return this.productService.getAllUnbonifiedService(page, limit);
     }
 
     @Get("available")

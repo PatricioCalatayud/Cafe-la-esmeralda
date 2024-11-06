@@ -23,6 +23,27 @@
                 "stock": 13,
                 "amount": 1,
                 "unit": "Kilo"
+            },
+            {
+                "price": 13000,
+                "stock": 10,
+                "amount": 250,
+                "unit": "Gramos",
+                "discount":100
+            },
+            {
+                "price": 23000,
+                "stock": 10,
+                "discount":100,
+                "amount": 500,
+                "unit": "Gramos"
+            },
+            {
+                "discount":100,
+                "price": 33000,
+                "stock": 13,
+                "amount": 1,
+                "unit": "Kilo"
             }
         ]
     },
@@ -39,6 +60,13 @@
                 "stock": 23,
                 "amount": 1,
                 "unit": "Kilo"
+            },
+            {
+                "price": 80000,
+                "stock": 23,
+                "amount": 1,
+                "unit": "Kilo",
+                "discount":100
             }
         ]
     },

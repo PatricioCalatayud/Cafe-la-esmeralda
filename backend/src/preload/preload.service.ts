@@ -83,6 +83,7 @@ export class PreloadService implements OnModuleInit {
                 amount: subproduct.amount,
                 unit: subproduct.unit as Medida,
                 product: savedProduct,
+                discount: subproduct.discount,
               }),
             );
             await this.subproductRepository.save(subproducts);
