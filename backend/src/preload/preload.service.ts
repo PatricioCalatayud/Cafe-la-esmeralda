@@ -157,8 +157,12 @@ export class PreloadService implements OnModuleInit {
         where: { description: 'Portasobres' },
         relations: ['subproducts'],
       });
+      const product3 = await this.productRepository.findOne({
+        where: { description: 'Cafe Santos' },
+        relations: ['subproducts'],
+      });
   
-      if (!product1?.subproducts?.length || !product2?.subproducts?.length) {
+      if (!product1?.subproducts?.length || !product2?.subproducts?.length || !product3?.subproducts?.length) {
         console.error('Productos o subproductos no encontrados.');
         return;
       }
@@ -189,6 +193,7 @@ export class PreloadService implements OnModuleInit {
           [
             { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
             { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id },
+            { productId: product3.id, quantity: 3, subproductId: product2.subproducts[0].id }
           ],
           'Calle Wallaby 42 Sidney',
           'Transferencia',
