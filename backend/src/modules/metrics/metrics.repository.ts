@@ -33,7 +33,7 @@ export class OrdersMetricsRepository {
       .orderBy('quantity', 'DESC')
       .limit(limit)
       .getRawMany();
-  
+
     return mostSoldProducts.map(result => ({
       productId: result.productId,
       quantity: parseFloat(result.quantity),
@@ -184,15 +184,16 @@ export class OrdersMetricsRepository {
       .addSelect('user.name', 'userName')
       .addSelect('SUM(account.balance)', 'balance')
       .innerJoin('account.user', 'user')
-      .where('user.role = :role', { role: 'Cliente' }) 
+      // .where('user.role = :role', { role: 'Cliente' })
       .groupBy('user.id, user.name')
+      .having('SUM(account.balance) > 0')  // Excluir usuarios con saldo 0 o positivo
       .orderBy('balance', 'DESC')
       .limit(limit)
       .getRawMany();
   
     return debtors;
   }
-
+  
   async getOrdersByUserIdAndDateRepository(id: string, date: Date): Promise<{ data: Order[], total: number }> {
     const user = await this.userRepository.findOne({
         where: { id },

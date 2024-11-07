@@ -1,15 +1,37 @@
-import { BadRequestException, Body, Controller, Get, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { OrdersMetricsService } from './metrics.service';
+import * as fastcsv from 'fast-csv';
+import { Response } from 'express';
 
 @Controller('metrics')
 export class MetricsController {
     constructor(private readonly ordersMetricsService: OrdersMetricsService) {}
-    @Post('productos-mas-vendidos')
-    async getMostSoldProducts(
-        @Body('limit') limit: number
-    ) {
-        return await this.ordersMetricsService.getMostSoldProductsService(limit);
-    }
+    // @Post('productos-mas-vendidos')
+    // async getMostSoldProducts(
+    //     @Body('limit') limit: number
+    // ) {
+    //     return await this.ordersMetricsService.getMostSoldProductsService(limit);
+    // }
+
+
+  @Post('productos-mas-vendidos')
+  async getMostSoldProducts(
+    @Body('limit') limit: number,
+    @Res() res: Response,  // Usamos @Res para manipular directamente la respuesta
+  ) {
+    // Llamamos al servicio para obtener los productos más vendidos
+    const mostSoldProducts = await this.ordersMetricsService.getMostSoldProductsService(limit);
+
+    // Configura el encabezado para descargar el archivo como CSV
+    res.setHeader('Content-Disposition', 'attachment; filename="most_sold_products.csv"');
+    res.setHeader('Content-Type', 'text/csv');
+
+    // Usa fast-csv para generar y enviar el archivo CSV
+    fastcsv
+      .write(mostSoldProducts, { headers: true })
+      .pipe(res);
+  }
+
     @Post('productos-menos-vendidos')
     async getLessSoldProducts(
         @Body('limit') limit: number

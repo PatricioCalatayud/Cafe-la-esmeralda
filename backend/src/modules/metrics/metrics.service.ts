@@ -9,8 +9,8 @@ export class OrdersMetricsService {
 
 
   async getMostSoldProductsService(limit: number) {
-    if(!limit) limit = 10
-    return await this.ordersMetricsRepository.getMostSoldProductsRepository(limit);
+    if (!limit) limit = 10;
+    return await this.ordersMetricsRepository.getMostSoldProductIds(limit);
   }
   async getLessSoldProductsService(limit: number) {
     if(!limit) limit = 10
