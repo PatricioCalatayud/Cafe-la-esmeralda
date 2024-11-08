@@ -57,4 +57,12 @@ export class OrdersMetricsService {
     if(!limit) limit = 20
     return await this.ordersMetricsRepository.getProductsByDeliveryByMonthRepository(dateSelected, deliveryNumber, limit);
   }
+  async getProductsAndImportByMonthBonifiedService(dateSelected: Date, limit: number){
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsAndImportByMonthBonifiedRepository(dateSelected,limit)
+  }
+  async getProductsAndImportByMonthBonifiedServiceDetailed(dateSelected: Date, limit: number){
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsAndImportByMonthBonifiedRepositoryDetailed(dateSelected,limit)
+  }
 }
