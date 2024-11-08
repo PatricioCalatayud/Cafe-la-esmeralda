@@ -9,8 +9,8 @@ export class OrdersMetricsService {
 
 
   async getMostSoldProductsService(limit: number) {
-    if(!limit) limit = 10
-    return await this.ordersMetricsRepository.getMostSoldProductsRepository(limit);
+    if (!limit) limit = 10;
+    return await this.ordersMetricsRepository.getMostSoldProductIds(limit);
   }
   async getLessSoldProductsService(limit: number) {
     if(!limit) limit = 10
@@ -56,5 +56,13 @@ export class OrdersMetricsService {
   async getProductsByDeliveryByMonthService(dateSelected: Date, deliveryNumber: number, limit: number) {
     if(!limit) limit = 20
     return await this.ordersMetricsRepository.getProductsByDeliveryByMonthRepository(dateSelected, deliveryNumber, limit);
+  }
+  async getProductsAndImportByMonthBonifiedService(dateSelected: Date, limit: number){
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsAndImportByMonthBonifiedRepository(dateSelected,limit)
+  }
+  async getProductsAndImportByMonthBonifiedServiceDetailed(dateSelected: Date, limit: number){
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsAndImportByMonthBonifiedRepositoryDetailed(dateSelected,limit)
   }
 }

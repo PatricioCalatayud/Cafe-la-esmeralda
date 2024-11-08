@@ -25,6 +25,16 @@ export class ProductsRepository {
       
         return { data, total };
     } 
+    async getAllUnbonifiedRepository(page: number, limit: number): Promise<{ data: Product[], total: number }> {
+        const [data, total] = await this.productRepository.findAndCount({
+            skip: (page - 1) * limit,
+            take: limit,
+            relations: { category: true, subproducts: true }
+        })
+        data.map(product => product.subproducts = product.subproducts.filter(subproduct => subproduct.discount<=99));
+      
+        return { data, total };
+    } 
 
     async getAllByCategory(category: string, page: number = 1, limit: number = 10): Promise<{ data: Product[], total: number }> {
         const categoryFound = await this.categoryRepository.findOne({ where: { name: category }});

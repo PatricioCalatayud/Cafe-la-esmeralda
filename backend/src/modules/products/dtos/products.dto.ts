@@ -79,4 +79,3 @@ export class UpdatedProductDto {
     @IsArray()
     subproducts?: UpdatedSubproductDto[];
 }
-

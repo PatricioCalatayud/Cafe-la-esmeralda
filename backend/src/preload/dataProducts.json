@@ -7,6 +7,13 @@
         "presentacion":"Molido",
         "subproducts": [
             {
+                "discount":100,
+                "price": 33000,
+                "stock": 13,
+                "amount": 1,
+                "unit": "Kilo"
+            },
+            {
                 "price": 13000,
                 "stock": 10,
                 "amount": 250,
@@ -23,7 +30,22 @@
                 "stock": 13,
                 "amount": 1,
                 "unit": "Kilo"
+            },
+            {
+                "price": 23000,
+                "stock": 10,
+                "discount":100,
+                "amount": 500,
+                "unit": "Gramos"
+            },
+            {
+                "price": 13000,
+                "stock": 10,
+                "amount": 250,
+                "unit": "Gramos",
+                "discount":100
             }
+            
         ]
     },
     {
@@ -34,6 +56,14 @@
         "tipoGrano":"Santos",
         "presentacion":"Mezcla baja calidad",
         "subproducts": [
+            {
+                "price": 80000,
+                "stock": 23,
+                "amount": 1,
+                "unit": "Kilo",
+                "discount":100
+
+            },
             {
                 "price": 80000,
                 "stock": 23,
@@ -86,7 +116,6 @@
         "description": "Portasobres",
         "imgUrl": "https://imgur.com/qFVuRNx.png",
         "category": "Accesory",
-        "discount": 100,
         "subproducts": [
             {
                 "price": 2825,
