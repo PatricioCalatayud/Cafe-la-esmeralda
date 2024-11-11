@@ -12,7 +12,14 @@ export class Bill {
     @Column({ type: 'varchar', nullable: true })
     imgUrl: string | null;
 
+    @Column({type: 'integer', nullable: true})
+    dni: number | null;
+    
+    @Column({type: 'integer', nullable: true})
+    cuit: number | null;
+
     @OneToOne(() => Order, order => order.id)
     @JoinColumn()
     order: Order['id'];
+   
 }

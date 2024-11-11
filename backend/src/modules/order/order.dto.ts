@@ -90,4 +90,8 @@ export class UpdateOrderDto {
     @IsString()
     @IsOptional()
     transferStatus?: string;
+
+    @IsOptional()
+    @Type(() => ProductInfo)
+    products?: ProductInfo[];
 }
