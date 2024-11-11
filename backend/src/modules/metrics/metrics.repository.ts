@@ -816,7 +816,6 @@ async getProductsAndImportByMonthByUserBonifiedRepository(
           const group = acc[monthYear];
 
           if (product.subproduct_discount < 100) {
-              // Productos con cargo
               if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
                   const kilos = convertToKilos(
                       product.subproduct_amount * product.productsOrder_quantity,
@@ -832,7 +831,6 @@ async getProductsAndImportByMonthByUserBonifiedRepository(
                   group.totalSold += unidades;
               }
           } else if (product.subproduct_discount === 100) {
-              // Productos bonificados
               if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
                   const kilos = convertToKilos(
                       product.subproduct_amount * product.productsOrder_quantity,
