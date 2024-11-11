@@ -63,7 +63,6 @@ export class OrdersMetricsService {
     return await this.ordersMetricsRepository.getProductsByDeliveryByMonthRepository(dateSelected, limit, deliveryFilter);
   }
   
-  
   async getProductsAndImportByMonthBonifiedService(dateSelected: Date, limit: number){
     if(!limit) limit = 20
     return await this.ordersMetricsRepository.getProductsAndImportByMonthBonifiedRepository(dateSelected,limit)
