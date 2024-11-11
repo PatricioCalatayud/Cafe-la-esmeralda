@@ -142,14 +142,18 @@ export class MetricsController {
     async getProductsByDeliveryByMonth(
         @Body('date') date: string,
         @Body('deliveryNumber') deliveryNumber: number,
-        @Body('limit') limit: number
-    ){
+        @Body('limit') limit?: number,
+        @Body('province') province?: string,
+        @Body('localidad') localidad?: string
+      ) {
         const dateSelected = new Date(date);
         if (isNaN(dateSelected.getTime())) {
-            throw new BadRequestException('Fecha inválida');
+          throw new BadRequestException('Fecha inválida');
         }
-        return await this.ordersMetricsService.getProductsByDeliveryByMonthService(dateSelected, deliveryNumber, limit);
+        // Pasa todos los filtros al servicio
+        return await this.ordersMetricsService.getProductsByDeliveryByMonthService(dateSelected, deliveryNumber, limit, province, localidad);
     }
+
     @Post('productos-cargo-y-sin-cargo-por-mes')
     async getProductsAndImportByMonthBonified(
         @Body('date') date: string,

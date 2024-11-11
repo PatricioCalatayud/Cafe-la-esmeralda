@@ -52,11 +52,17 @@ export class OrdersMetricsService {
     if(!limit) limit = 20
     return await this.ordersMetricsRepository.getProductsAndImportByMonthByUserBonifiedRepository(dateSelected, userId, limit);
   }
-
-  async getProductsByDeliveryByMonthService(dateSelected: Date, deliveryNumber: number, limit: number) {
-    if(!limit) limit = 20
-    return await this.ordersMetricsRepository.getProductsByDeliveryByMonthRepository(dateSelected, deliveryNumber, limit);
+  async getProductsByDeliveryByMonthService(
+    dateSelected: Date,
+    deliveryNumber: number,
+    limit: number = 20,
+    province?: string,
+    localidad?: string
+  ) {
+    const deliveryFilter = { deliveryNumber, province, localidad };
+    return await this.ordersMetricsRepository.getProductsByDeliveryByMonthRepository(dateSelected, limit, deliveryFilter);
   }
+  
   async getProductsAndImportByMonthBonifiedService(dateSelected: Date, limit: number){
     if(!limit) limit = 20
     return await this.ordersMetricsRepository.getProductsAndImportByMonthBonifiedRepository(dateSelected,limit)

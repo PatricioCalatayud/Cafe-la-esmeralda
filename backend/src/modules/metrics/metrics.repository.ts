@@ -541,36 +541,9 @@ async getProductsAndImportByMonthByUserBonifiedRepository(
 
   async getProductsByDeliveryByMonthRepository(
     dateSelected: Date,
-    deliveryNumber: number,
-    limit: number
-  ) {
-    const startDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth(), 1);
-    const endDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 0);
-  
-    const products = await this.productsOrderRepository
-      .createQueryBuilder("productsOrder")
-      .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
-      .leftJoinAndSelect("subproduct.product", "product")
-      .leftJoinAndSelect("productsOrder.order", "order")
-      .leftJoinAndSelect("order.user", "user")
-      .leftJoinAndSelect("user.address", "address") // Realizamos el join de Address a través de User
-      .where("address.deliveryNumber = :deliveryNumber", { deliveryNumber }) // Filtramos por deliveryNumber
-      .andWhere("order.date BETWEEN :startDate AND :endDate", {
-        startDate,
-        endDate,
-      })
-      .orderBy("order.date", "DESC")
-      .limit(limit)
-      .getRawMany();
-  
-    return products;
-  }
-  
-
-  async getProductsAndImportByMonthBonifiedRepository(
-    dateSelected: Date,
-    limit: number
-): Promise<Record<string, {
+    limit: number,
+    deliveryFilter: { deliveryNumber?: number; province?: string; localidad?: string }
+  ): Promise<Record<string, {
     kilosFacturados: number;
     unidadesFacturadas: number;
     kilosBonificados: number;
@@ -580,212 +553,6 @@ async getProductsAndImportByMonthByUserBonifiedRepository(
     totalBonified: number;
     revenueFromChargedProducts: number;
     revenueFromBonifiedProducts: number;
-}>> {
-    const startDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth(), 1);
-    const endDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 0);
-
-    const products = await this.productsOrderRepository
-        .createQueryBuilder("productsOrder")
-        .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
-        .leftJoinAndSelect("subproduct.product", "product")
-        .leftJoinAndSelect("productsOrder.order", "order")
-        .where("order.date BETWEEN :startDate AND :endDate", {
-            startDate,
-            endDate,
-        })
-        .orderBy("order.date", "DESC")
-        .limit(limit)
-        .getRawMany();
-
-    console.log("Productos obtenidos:", products);
-
-    const formatMonthYear = (date: Date) => {
-        const months = [
-            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
-        ];
-        const month = months[date.getMonth()];
-        const year = String(date.getFullYear()).slice(2);
-        return `${month} '${year}`;
-    };
-
-    const convertToKilos = (amount: number, unit: string): number => {
-        switch (unit.toUpperCase()) {
-            case "KILO":
-                return amount;
-            case "GRAMOS":
-                return amount / 1000;
-            case "TONELADAS":
-                return amount * 1000;
-            default:
-                return 0;
-        }
-    };
-
-    interface MonthlyMetrics {
-        kilosFacturados: number;
-        unidadesFacturadas: number;
-        kilosBonificados: number;
-        unidadesBonificadas: number;
-        importeGenerado: number;
-        totalSold: number;
-        totalBonified: number;
-    }
-
-    const groupedByMonth: Record<string, MonthlyMetrics> = products.reduce((acc, product) => {
-        const monthYear = formatMonthYear(new Date(product.order_date));
-
-        if (!acc[monthYear]) {
-            acc[monthYear] = {
-                kilosFacturados: 0,
-                unidadesFacturadas: 0,
-                kilosBonificados: 0,
-                unidadesBonificadas: 0,
-                importeGenerado: 0,
-                totalSold: 0,
-                totalBonified: 0,
-            };
-        }
-
-        const group = acc[monthYear];
-
-        if (product.subproduct_discount < 100) {
-            // Productos con cargo
-            if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
-                const kilos = convertToKilos(
-                    product.subproduct_amount * product.productsOrder_quantity,
-                    product.subproduct_unit
-                );
-                group.kilosFacturados += kilos;
-                group.importeGenerado += (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100);
-                group.totalSold += product.productsOrder_quantity;
-            } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
-                const unidades = product.productsOrder_quantity;
-                group.unidadesFacturadas += unidades;
-                group.importeGenerado += product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
-                group.totalSold += unidades;
-            }
-        } else if (product.subproduct_discount === 100) {
-            // Productos bonificados
-            if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
-                const kilos = convertToKilos(
-                    product.subproduct_amount * product.productsOrder_quantity,
-                    product.subproduct_unit
-                );
-                group.kilosBonificados += kilos;
-                group.totalBonified += product.productsOrder_quantity;
-            } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
-                const unidades = product.productsOrder_quantity;
-                group.unidadesBonificadas += unidades;
-                group.totalBonified += unidades;
-            }
-        }
-
-        return acc;
-    }, {} as Record<string, MonthlyMetrics>);
-
-    const result: Record<string, MonthlyMetrics & {
-        revenueFromChargedProducts: number;
-        revenueFromBonifiedProducts: number;
-    }> = {};
-
-    // Cálculo de ingresos por productos
-    for (const [monthYear, metrics] of Object.entries(groupedByMonth)) {
-        result[monthYear] = {
-            ...metrics,
-            revenueFromChargedProducts: 0,
-            revenueFromBonifiedProducts: 0,
-        };
-
-        const totalSold = metrics.totalSold;
-        const totalBonified = metrics.totalBonified;
-        const totalRevenue = metrics.importeGenerado;
-        const totalProductsSold = totalSold + totalBonified;
-
-        if (totalProductsSold > 0) {
-            const revenuePerProduct = totalRevenue / totalProductsSold;
-
-            result[monthYear].revenueFromChargedProducts = revenuePerProduct * totalSold;
-            result[monthYear].revenueFromBonifiedProducts = revenuePerProduct * totalBonified;
-        }
-    }
-
-    console.log("Métricas por mes:", result);
-    return result;
-}
-async getProductsAndImportByMonthBonifiedRepositoryDetailed(
-  dateSelected: Date,
-  limit: number
-): Promise<Record<string, {
-  kilosFacturados: number;
-  unidadesFacturadas: number;
-  kilosBonificados: number;
-  unidadesBonificadas: number;
-  importeGenerado: number;
-  totalSold: number;
-  totalBonified: number;
-  revenueFromChargedProducts: number;
-  revenueFromBonifiedProducts: number;
-  productsDetail: Array<{
-    productId: string;
-    productDescription: string;
-    subproductId: string;
-    subproductDescription: string;
-    subproductUnit: string;
-    subproductQuantity: number;
-    subproductBonified: number;
-    subproductRevenue: number;
-  }>;
-}>> {
-  const startDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth(), 1);
-  const endDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 0);
-
-  const products = await this.productsOrderRepository
-    .createQueryBuilder("productsOrder")
-    .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
-    .leftJoinAndSelect("subproduct.product", "product")
-    .leftJoinAndSelect("productsOrder.order", "order")
-    .where("order.date BETWEEN :startDate AND :endDate", {
-      startDate,
-      endDate,
-    })
-    .orderBy("order.date", "DESC")
-    .limit(limit)
-    .getRawMany();
-
-  console.log("Productos obtenidos:", products);
-
-  const formatMonthYear = (date: Date) => {
-    const months = [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
-    ];
-    const month = months[date.getMonth()];
-    const year = String(date.getFullYear()).slice(2);
-    return `${month} '${year}`;
-  };
-
-  const convertToKilos = (amount: number, unit: string): number => {
-    switch (unit.toUpperCase()) {
-      case "KILO":
-        return amount;
-      case "GRAMOS":
-        return amount / 1000;
-      case "TONELADAS":
-        return amount * 1000;
-      default:
-        return 0;
-    }
-  };
-
-  interface MonthlyMetrics {
-    kilosFacturados: number;
-    unidadesFacturadas: number;
-    kilosBonificados: number;
-    unidadesBonificadas: number;
-    importeGenerado: number;
-    totalSold: number;
-    totalBonified: number;
     productsDetail: Array<{
       productId: string;
       productDescription: string;
@@ -796,102 +563,498 @@ async getProductsAndImportByMonthBonifiedRepositoryDetailed(
       subproductBonified: number;
       subproductRevenue: number;
     }>;
+  }>> {
+    const startDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth(), 1);
+    const endDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 0);
+  
+    // Construimos la consulta base
+    let query = this.productsOrderRepository
+      .createQueryBuilder("productsOrder")
+      .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
+      .leftJoinAndSelect("subproduct.product", "product")
+      .leftJoinAndSelect("productsOrder.order", "order")
+      .leftJoinAndSelect("order.user", "user")
+      .leftJoinAndSelect("user.address", "address")
+      .where("order.date BETWEEN :startDate AND :endDate", { startDate, endDate })
+      .orderBy("order.date", "DESC")
+      .limit(limit);
+  
+    // Aplicamos el filtro de reparto si existe
+    if (deliveryFilter) {
+      if (deliveryFilter.province) {
+        query = query.andWhere("address.province = :province", { province: deliveryFilter.province });
+      }
+      if (deliveryFilter.localidad) {
+        query = query.andWhere("address.localidad = :localidad", { localidad: deliveryFilter.localidad });
+      }
+      if (deliveryFilter.deliveryNumber) {
+        query = query.andWhere("address.deliveryNumber = :deliveryNumber", { deliveryNumber: deliveryFilter.deliveryNumber });
+      }
+    }
+  
+    const products = await query.getRawMany();
+    console.log("Productos obtenidos:", products);
+  
+    // Función para formatear el mes y año
+    const formatMonthYear = (date: Date) => {
+      const months = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+      ];
+      const month = months[date.getMonth()];
+      const year = String(date.getFullYear()).slice(2);
+      return `${month} '${year}`;
+    };
+  
+    const convertToKilos = (amount: number, unit: string): number => {
+      switch (unit.toUpperCase()) {
+        case "KILO":
+          return amount;
+        case "GRAMOS":
+          return amount / 1000;
+        case "TONELADAS":
+          return amount * 1000;
+        default:
+          return 0;
+      }
+    };
+  
+    interface MonthlyMetrics {
+      kilosFacturados: number;
+      unidadesFacturadas: number;
+      kilosBonificados: number;
+      unidadesBonificadas: number;
+      importeGenerado: number;
+      totalSold: number;
+      totalBonified: number;
+      productsDetail: Array<{
+        productId: string;
+        productDescription: string;
+        subproductId: string;
+        subproductDescription: string;
+        subproductUnit: string;
+        subproductQuantity: number;
+        subproductBonified: number;
+        subproductRevenue: number;
+      }>;
+    }
+  
+    const groupedByMonth: Record<string, MonthlyMetrics> = products.reduce((acc, product) => {
+      const monthYear = formatMonthYear(new Date(product.order_date));
+  
+      if (!acc[monthYear]) {
+        acc[monthYear] = {
+          kilosFacturados: 0,
+          unidadesFacturadas: 0,
+          kilosBonificados: 0,
+          unidadesBonificadas: 0,
+          importeGenerado: 0,
+          totalSold: 0,
+          totalBonified: 0,
+          productsDetail: [],
+        };
+      }
+  
+      const group = acc[monthYear];
+      const productDetail = {
+        productId: product.product_id,
+        productDescription: product.product_description,
+        subproductId: product.subproduct_id,
+        subproductDescription: product.subproduct_description,
+        subproductUnit: product.subproduct_unit,
+        subproductQuantity: product.productsOrder_quantity,
+        subproductBonified: 0,
+        subproductRevenue: 0,
+      };
+  
+      if (product.subproduct_discount < 100) {
+        // Productos con cargo
+        if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
+          const kilos = convertToKilos(product.subproduct_amount * product.productsOrder_quantity, product.subproduct_unit);
+          group.kilosFacturados += kilos;
+          group.importeGenerado += (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100);
+          group.totalSold += product.productsOrder_quantity;
+          productDetail.subproductRevenue = (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100);
+        } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
+          const unidades = product.productsOrder_quantity;
+          group.unidadesFacturadas += unidades;
+          group.importeGenerado += product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
+          group.totalSold += unidades;
+          productDetail.subproductRevenue = product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
+        }
+      } else if (product.subproduct_discount === 100) {
+        // Productos bonificados
+        if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
+          const kilos = convertToKilos(product.subproduct_amount * product.productsOrder_quantity, product.subproduct_unit);
+          group.kilosBonificados += kilos;
+          group.totalBonified += product.productsOrder_quantity;
+          productDetail.subproductBonified = product.productsOrder_quantity;
+        } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
+          const unidades = product.productsOrder_quantity;
+          group.unidadesBonificadas += unidades;
+          group.totalBonified += unidades;
+          productDetail.subproductBonified = unidades;
+        }
+      }
+  
+      group.productsDetail.push(productDetail);
+  
+      return acc;
+    }, {} as Record<string, MonthlyMetrics>);
+  
+    const result: Record<string, MonthlyMetrics & {
+      revenueFromChargedProducts: number;
+      revenueFromBonifiedProducts: number;
+    }> = {};
+  
+    // Cálculo de ingresos por productos cargados y bonificados
+    for (const [monthYear, metrics] of Object.entries(groupedByMonth)) {
+      result[monthYear] = {
+        ...metrics,
+        revenueFromChargedProducts: 0,
+        revenueFromBonifiedProducts: 0,
+      };
+  
+      const totalSold = metrics.totalSold;
+      const totalBonified = metrics.totalBonified;
+      const totalRevenue = metrics.importeGenerado;
+      const totalProductsSold = totalSold + totalBonified;
+  
+      if (totalProductsSold > 0) {
+        const revenuePerProduct = totalRevenue / totalProductsSold;
+  
+        result[monthYear].revenueFromChargedProducts = revenuePerProduct * totalSold;
+        result[monthYear].revenueFromBonifiedProducts = revenuePerProduct * totalBonified;
+      }
+    }
+  
+    console.log("Métricas por mes (con desglose):", result);
+    return result;
+  }
+  
+
+    async getProductsAndImportByMonthBonifiedRepository(
+      dateSelected: Date,
+      limit: number
+  ): Promise<Record<string, {
+      kilosFacturados: number;
+      unidadesFacturadas: number;
+      kilosBonificados: number;
+      unidadesBonificadas: number;
+      importeGenerado: number;
+      totalSold: number;
+      totalBonified: number;
+      revenueFromChargedProducts: number;
+      revenueFromBonifiedProducts: number;
+  }>> {
+      const startDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth(), 1);
+      const endDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 0);
+
+      const products = await this.productsOrderRepository
+          .createQueryBuilder("productsOrder")
+          .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
+          .leftJoinAndSelect("subproduct.product", "product")
+          .leftJoinAndSelect("productsOrder.order", "order")
+          .where("order.date BETWEEN :startDate AND :endDate", {
+              startDate,
+              endDate,
+          })
+          .orderBy("order.date", "DESC")
+          .limit(limit)
+          .getRawMany();
+
+      console.log("Productos obtenidos:", products);
+
+      const formatMonthYear = (date: Date) => {
+          const months = [
+              "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+              "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+          ];
+          const month = months[date.getMonth()];
+          const year = String(date.getFullYear()).slice(2);
+          return `${month} '${year}`;
+      };
+
+      const convertToKilos = (amount: number, unit: string): number => {
+          switch (unit.toUpperCase()) {
+              case "KILO":
+                  return amount;
+              case "GRAMOS":
+                  return amount / 1000;
+              case "TONELADAS":
+                  return amount * 1000;
+              default:
+                  return 0;
+          }
+      };
+
+      interface MonthlyMetrics {
+          kilosFacturados: number;
+          unidadesFacturadas: number;
+          kilosBonificados: number;
+          unidadesBonificadas: number;
+          importeGenerado: number;
+          totalSold: number;
+          totalBonified: number;
+      }
+
+      const groupedByMonth: Record<string, MonthlyMetrics> = products.reduce((acc, product) => {
+          const monthYear = formatMonthYear(new Date(product.order_date));
+
+          if (!acc[monthYear]) {
+              acc[monthYear] = {
+                  kilosFacturados: 0,
+                  unidadesFacturadas: 0,
+                  kilosBonificados: 0,
+                  unidadesBonificadas: 0,
+                  importeGenerado: 0,
+                  totalSold: 0,
+                  totalBonified: 0,
+              };
+          }
+
+          const group = acc[monthYear];
+
+          if (product.subproduct_discount < 100) {
+              if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
+                  const kilos = convertToKilos(
+                      product.subproduct_amount * product.productsOrder_quantity,
+                      product.subproduct_unit
+                  );
+                  group.kilosFacturados += kilos;
+                  group.importeGenerado += (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100);
+                  group.totalSold += product.productsOrder_quantity;
+              } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
+                  const unidades = product.productsOrder_quantity;
+                  group.unidadesFacturadas += unidades;
+                  group.importeGenerado += product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
+                  group.totalSold += unidades;
+              }
+          } else if (product.subproduct_discount === 100) {
+              if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
+                  const kilos = convertToKilos(
+                      product.subproduct_amount * product.productsOrder_quantity,
+                      product.subproduct_unit
+                  );
+                  group.kilosBonificados += kilos;
+                  group.totalBonified += product.productsOrder_quantity;
+              } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
+                  const unidades = product.productsOrder_quantity;
+                  group.unidadesBonificadas += unidades;
+                  group.totalBonified += unidades;
+              }
+          }
+
+          return acc;
+      }, {} as Record<string, MonthlyMetrics>);
+
+      const result: Record<string, MonthlyMetrics & {
+          revenueFromChargedProducts: number;
+          revenueFromBonifiedProducts: number;
+      }> = {};
+
+      // Cálculo de ingresos por productos
+      for (const [monthYear, metrics] of Object.entries(groupedByMonth)) {
+          result[monthYear] = {
+              ...metrics,
+              revenueFromChargedProducts: 0,
+              revenueFromBonifiedProducts: 0,
+          };
+
+          const totalSold = metrics.totalSold;
+          const totalBonified = metrics.totalBonified;
+          const totalRevenue = metrics.importeGenerado;
+          const totalProductsSold = totalSold + totalBonified;
+
+          if (totalProductsSold > 0) {
+              const revenuePerProduct = totalRevenue / totalProductsSold;
+
+              result[monthYear].revenueFromChargedProducts = revenuePerProduct * totalSold;
+              result[monthYear].revenueFromBonifiedProducts = revenuePerProduct * totalBonified;
+          }
+      }
+
+      console.log("Métricas por mes:", result);
+      return result;
   }
 
-  const groupedByMonth: Record<string, MonthlyMetrics> = products.reduce((acc, product) => {
-    const monthYear = formatMonthYear(new Date(product.order_date));
-
-    if (!acc[monthYear]) {
-      acc[monthYear] = {
-        kilosFacturados: 0,
-        unidadesFacturadas: 0,
-        kilosBonificados: 0,
-        unidadesBonificadas: 0,
-        importeGenerado: 0,
-        totalSold: 0,
-        totalBonified: 0,
-        productsDetail: [],
-      };
-    }
-
-    const group = acc[monthYear];
-    const productDetail = {
-      productId: product.product_id,
-      productDescription: product.product_description,
-      subproductId: product.subproduct_id,
-      subproductDescription: product.subproduct_description,
-      subproductUnit: product.subproduct_unit,
-      subproductQuantity: product.productsOrder_quantity,
-      subproductBonified: 0,
-      subproductRevenue: 0,
-    };
-
-    if (product.subproduct_discount < 100) {
-      // Productos con cargo
-      if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
-        const kilos = convertToKilos(product.subproduct_amount * product.productsOrder_quantity, product.subproduct_unit);
-        group.kilosFacturados += kilos;
-        group.importeGenerado += (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100);
-        group.totalSold += product.productsOrder_quantity;
-        productDetail.subproductRevenue = (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100);
-      } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
-        const unidades = product.productsOrder_quantity;
-        group.unidadesFacturadas += unidades;
-        group.importeGenerado += product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
-        group.totalSold += unidades;
-        productDetail.subproductRevenue = product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
-      }
-    } else if (product.subproduct_discount === 100) {
-      // Productos bonificados
-      if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
-        const kilos = convertToKilos(product.subproduct_amount * product.productsOrder_quantity, product.subproduct_unit);
-        group.kilosBonificados += kilos;
-        group.totalBonified += product.productsOrder_quantity;
-        productDetail.subproductBonified = product.productsOrder_quantity;
-      } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
-        const unidades = product.productsOrder_quantity;
-        group.unidadesBonificadas += unidades;
-        group.totalBonified += unidades;
-        productDetail.subproductBonified = unidades;
-      }
-    }
-
-    group.productsDetail.push(productDetail);
-
-    return acc;
-  }, {} as Record<string, MonthlyMetrics>);
-
-  const result: Record<string, MonthlyMetrics & {
+  async getProductsAndImportByMonthBonifiedRepositoryDetailed(
+    dateSelected: Date,
+    limit: number
+  ): Promise<Record<string, {
+    kilosFacturados: number;
+    unidadesFacturadas: number;
+    kilosBonificados: number;
+    unidadesBonificadas: number;
+    importeGenerado: number;
+    totalSold: number;
+    totalBonified: number;
     revenueFromChargedProducts: number;
     revenueFromBonifiedProducts: number;
-  }> = {};
+    productsDetail: Array<{
+      productId: string;
+      productDescription: string;
+      subproductId: string;
+      subproductDescription: string;
+      subproductUnit: string;
+      subproductQuantity: number;
+      subproductBonified: number;
+      subproductRevenue: number;
+    }>;
+  }>> {
+    const startDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth(), 1);
+    const endDate = new Date(dateSelected.getFullYear(), dateSelected.getMonth() + 1, 0);
 
-  // Cálculo de ingresos por productos cargados y bonificados
-  for (const [monthYear, metrics] of Object.entries(groupedByMonth)) {
-    result[monthYear] = {
-      ...metrics,
-      revenueFromChargedProducts: 0,
-      revenueFromBonifiedProducts: 0,
+    const products = await this.productsOrderRepository
+      .createQueryBuilder("productsOrder")
+      .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
+      .leftJoinAndSelect("subproduct.product", "product")
+      .leftJoinAndSelect("productsOrder.order", "order")
+      .where("order.date BETWEEN :startDate AND :endDate", {
+        startDate,
+        endDate,
+      })
+      .orderBy("order.date", "DESC")
+      .limit(limit)
+      .getRawMany();
+
+    console.log("Productos obtenidos:", products);
+
+    const formatMonthYear = (date: Date) => {
+      const months = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+      ];
+      const month = months[date.getMonth()];
+      const year = String(date.getFullYear()).slice(2);
+      return `${month} '${year}`;
     };
 
-    const totalSold = metrics.totalSold;
-    const totalBonified = metrics.totalBonified;
-    const totalRevenue = metrics.importeGenerado;
-    const totalProductsSold = totalSold + totalBonified;
+    const convertToKilos = (amount: number, unit: string): number => {
+      switch (unit.toUpperCase()) {
+        case "KILO":
+          return amount;
+        case "GRAMOS":
+          return amount / 1000;
+        case "TONELADAS":
+          return amount * 1000;
+        default:
+          return 0;
+      }
+    };
 
-    if (totalProductsSold > 0) {
-      const revenuePerProduct = totalRevenue / totalProductsSold;
-
-      result[monthYear].revenueFromChargedProducts = revenuePerProduct * totalSold;
-      result[monthYear].revenueFromBonifiedProducts = revenuePerProduct * totalBonified;
+    interface MonthlyMetrics {
+      kilosFacturados: number;
+      unidadesFacturadas: number;
+      kilosBonificados: number;
+      unidadesBonificadas: number;
+      importeGenerado: number;
+      totalSold: number;
+      totalBonified: number;
+      productsDetail: Array<{
+        productId: string;
+        productDescription: string;
+        subproductId: string;
+        subproductDescription: string;
+        subproductUnit: string;
+        subproductQuantity: number;
+        subproductBonified: number;
+        subproductRevenue: number;
+      }>;
     }
+
+    const groupedByMonth: Record<string, MonthlyMetrics> = products.reduce((acc, product) => {
+      const monthYear = formatMonthYear(new Date(product.order_date));
+
+      if (!acc[monthYear]) {
+        acc[monthYear] = {
+          kilosFacturados: 0,
+          unidadesFacturadas: 0,
+          kilosBonificados: 0,
+          unidadesBonificadas: 0,
+          importeGenerado: 0,
+          totalSold: 0,
+          totalBonified: 0,
+          productsDetail: [],
+        };
+      }
+
+      const group = acc[monthYear];
+      const productDetail = {
+        productId: product.product_id,
+        productDescription: product.product_description,
+        subproductId: product.subproduct_id,
+        subproductDescription: product.subproduct_description,
+        subproductUnit: product.subproduct_unit,
+        subproductQuantity: product.productsOrder_quantity,
+        subproductBonified: 0,
+        subproductRevenue: 0,
+      };
+
+      if (product.subproduct_discount < 100) {
+        // Productos con cargo
+        if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
+          const kilos = convertToKilos(product.subproduct_amount * product.productsOrder_quantity, product.subproduct_unit);
+          group.kilosFacturados += kilos;
+          group.importeGenerado += (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100);
+          group.totalSold += product.productsOrder_quantity;
+          productDetail.subproductRevenue = (product.subproduct_price * product.productsOrder_quantity) * (1 - product.subproduct_discount / 100);
+        } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
+          const unidades = product.productsOrder_quantity;
+          group.unidadesFacturadas += unidades;
+          group.importeGenerado += product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
+          group.totalSold += unidades;
+          productDetail.subproductRevenue = product.subproduct_price * unidades * (1 - product.subproduct_discount / 100);
+        }
+      } else if (product.subproduct_discount === 100) {
+        // Productos bonificados
+        if (["KILO", "GRAMOS", "TONELADAS"].includes(product.subproduct_unit.toUpperCase())) {
+          const kilos = convertToKilos(product.subproduct_amount * product.productsOrder_quantity, product.subproduct_unit);
+          group.kilosBonificados += kilos;
+          group.totalBonified += product.productsOrder_quantity;
+          productDetail.subproductBonified = product.productsOrder_quantity;
+        } else if (["UNIDADES", "SOBRES", "CAJAS"].includes(product.subproduct_unit.toUpperCase())) {
+          const unidades = product.productsOrder_quantity;
+          group.unidadesBonificadas += unidades;
+          group.totalBonified += unidades;
+          productDetail.subproductBonified = unidades;
+        }
+      }
+
+      group.productsDetail.push(productDetail);
+
+      return acc;
+    }, {} as Record<string, MonthlyMetrics>);
+
+    const result: Record<string, MonthlyMetrics & {
+      revenueFromChargedProducts: number;
+      revenueFromBonifiedProducts: number;
+    }> = {};
+
+    // Cálculo de ingresos por productos cargados y bonificados
+    for (const [monthYear, metrics] of Object.entries(groupedByMonth)) {
+      result[monthYear] = {
+        ...metrics,
+        revenueFromChargedProducts: 0,
+        revenueFromBonifiedProducts: 0,
+      };
+
+      const totalSold = metrics.totalSold;
+      const totalBonified = metrics.totalBonified;
+      const totalRevenue = metrics.importeGenerado;
+      const totalProductsSold = totalSold + totalBonified;
+
+      if (totalProductsSold > 0) {
+        const revenuePerProduct = totalRevenue / totalProductsSold;
+
+        result[monthYear].revenueFromChargedProducts = revenuePerProduct * totalSold;
+        result[monthYear].revenueFromBonifiedProducts = revenuePerProduct * totalBonified;
+      }
+    }
+
+    console.log("Métricas por mes (con desglose):", result);
+    return result;
   }
-
-  console.log("Métricas por mes (con desglose):", result);
-  return result;
-}
-
-  
 }
 
 
