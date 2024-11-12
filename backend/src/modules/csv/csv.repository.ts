@@ -1049,4 +1049,102 @@ async generateLessSoldProductsCsvRepository(limit: number): Promise<string> {
   }
 }
 
+async generateSalesReport(
+  date: string,
+  deliveryNumber: number,
+  limit: number,
+  province: number,
+  localidad: string,
+  res: Response
+): Promise<void> {
+  try {
+    const body = { date, deliveryNumber, limit, province, localidad };
+
+    const response = await firstValueFrom(
+      this.httpService.post('http://localhost:3001/metrics/productos-por-reparto-por-mes', body)
+    );
+
+    const productsDetail = response.data?.["Marzo '24"]?.productsDetail;
+
+    if (!productsDetail || productsDetail.length === 0) {
+      throw new Error('No se encontraron datos de productos');
+    }
+
+    const csvRows = productsDetail.map((item, index) => {
+      const kgsCharged = item.subproductQuantity - item.subproductBonified;
+      const kgsBonified = item.subproductBonified;
+      const avgPrice = kgsCharged > 0 ? item.subproductRevenue / kgsCharged : 0;
+      return {
+        'Descripcion del Producto': `${index + 1} ${item.productDescription}`,
+        'Kgs./Unid Importe': kgsCharged.toFixed(2),
+        'Kgs./Unid Importe (Bonificados)': kgsBonified.toFixed(2),
+        'P/Prom': avgPrice.toFixed(2),
+      };
+    });
+
+    const timestamp = Date.now();
+    const tempDir = join(process.cwd(), 'temp');
+    const localFilePath = join(tempDir, `sales_report_${timestamp}.csv`);
+
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir);
+    }
+
+    await new Promise<void>((resolve, reject) => {
+      const writeStream = fs.createWriteStream(localFilePath);
+      const csvStream = fastcsv.format({
+        headers: [
+          'Descripcion del Producto',
+          'Kgs./Unid Importe',
+          'Kgs./Unid Importe (Bonificados)',
+          'P/Prom'
+        ],
+        delimiter: ';',
+        quote: '"',
+        writeBOM: true,
+      });
+
+      writeStream.on('finish', resolve);
+      writeStream.on('error', reject);
+
+      csvStream.pipe(writeStream);
+
+      // Write the report title and headers
+      csvStream.write({
+        'Descripcion del Producto': 'INFORME DE VENTAS POR PRODUCTO DEL PERIODO: 1/06/20 30/06/20',
+        'Kgs./Unid Importe': 'Reparto: ** GENERAL **',
+        'Kgs./Unid Importe (Bonificados)': 'AL',
+        'P/Prom': 'Filtros -.- Grupo Economico: Provincia:',
+      });
+      csvStream.write({
+        'Descripcion del Producto': '-',
+        'Kgs./Unid Importe': 'c/Cargo',
+        'Kgs./Unid Importe (Bonificados)': 's/Cargo',
+        'P/Prom': '',
+      });
+
+      // Write data rows
+      csvRows.forEach(row => csvStream.write(row));
+      csvStream.end();
+    });
+
+    // Send the CSV file as a response and delete the local file after sending
+    res.attachment(`sales_report_${timestamp}.csv`);
+    res.sendFile(localFilePath, (err) => {
+      if (err) {
+        console.error('Error al enviar el archivo:', err);
+        res.status(500).json({ error: 'Error al enviar el archivo' });
+      }
+      fs.unlinkSync(localFilePath); // Clean up temp file after sending
+    });
+  } catch (error) {
+    console.error('Error en la generación del informe:', error);
+    res.status(500).json({
+      error: 'No se pudo generar el informe de ventas',
+      details: error.message,
+    });
+  }
 }
+
+}
+
