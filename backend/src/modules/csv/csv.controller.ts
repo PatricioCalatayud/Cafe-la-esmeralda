@@ -104,18 +104,6 @@ export class CsvController {
         return await this.csvService.productsBonifiedAndImportByUserByMonthService( userId, date,  res);
   }
 
-  @Post('productos-por-reparto-por-mes')
-  async getProductsByDeliveryByMonth(
-      @Body('date') date: string,
-      @Body('deliveryNumber') deliveryNumber: number,
-      @Body('limit') limit: number,
-      @Res() res: Response
-  ){
-
-      return await this.csvService.productsByDeliveryService(deliveryNumber, date, limit, res);
-      
-  }
-  
   @Post('productos-vendidos')
   async geAllTimeProducts(
       @Body('productId') productId: string,
@@ -158,6 +146,25 @@ export class CsvController {
   ) {
 
         return await this.csvService.getProductsByUserMonthByMonthService( userId, date, limit, res);
+  }
+
+  @Post('productos-por-reparto-por-mes')
+  async getSalesReportByDelivery(
+    @Body('date') date: string,
+    @Body('deliveryNumber') deliveryNumber: number,
+    @Body('limit') limit: number,
+    @Body('province') province: number,
+    @Body('localidad') localidad: string,
+    @Res() res: Response
+  ) {
+    return await this.csvService.getSalesReportByDeliveryService(
+      date,
+      deliveryNumber,
+      limit,
+      province,
+      localidad,
+      res
+    );
   }
 }
     
