@@ -1,3 +1,0 @@
-OrderId,OrderDate,DeliveryDate,DeliveryAddress,TotalPrice,TransactionStatus,ProductId,ProductDescription,ProductPrice,ProductAmount,ProductUnit,IsAvailable,OrderStatus,BillType,ReceiptStatus
-f3a63319-674a-44d4-81f0-cc7bfda0d4c0,2024-09-25T00:00:00.000Z,2024-11-12T13:13:39.421Z,Calle Wallaby 42 Sidney,203855,Pendiente de pago,cf009bd0-9489-4e10-b4cc-b331084a69f6,Cafe Mezcla,80000,1,Kilo,true,Pendiente,A,Pendiente de subir comprobante
-f3a63319-674a-44d4-81f0-cc7bfda0d4c0,2024-09-25T00:00:00.000Z,2024-11-12T13:13:39.421Z,Calle Wallaby 42 Sidney,203855,Pendiente de pago,ddcfe581-98da-4de9-bc67-06ee9e5e88f4,Portasobres,2825,1,Unidades,true,Pendiente,A,Pendiente de subir comprobante

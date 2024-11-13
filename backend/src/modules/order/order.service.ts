@@ -8,6 +8,7 @@ import { User } from 'src/entities/user.entity';
 import { ProductsOrder } from 'src/entities/product-order.entity';
 import { Transaccion } from 'src/entities/transaction.entity';
 import { Subproduct } from 'src/entities/products/subproduct.entity';
+import { Product } from 'src/entities/products/product.entity';
 import { MailerService } from '../mailer/mailer.service';
 import { Receipt } from 'src/entities/receipt.entity';
 import { AccountService } from '../account/account.service';
@@ -23,6 +24,8 @@ export class OrderService {
         @InjectRepository(Transaccion) private readonly transactionRepository: Repository<Transaccion>,
         @InjectRepository(Receipt) private readonly receiptRepository: Repository<Receipt>,
         @InjectRepository(Subproduct) private readonly subproductRepository: Repository<Subproduct>,
+        @InjectRepository(Product) private readonly productRepository: Repository<Product>,
+        @InjectRepository(ProductsOrder) private readonly productsOrderRepository: Repository<ProductsOrder>,
         private readonly dataSource: DataSource,
         private readonly mailerService: MailerService,
         private readonly accountService: AccountService,
@@ -207,6 +210,27 @@ export class OrderService {
             if(order.receipt === null) throw new BadRequestException();
             await this.receiptRepository.update({ id: order.receipt.id }, { status: data.transferStatus });
             if(data.transferStatus === 'Comprobante verificado') await this.transactionRepository.update({ id: order.orderDetail.transactions.id }, { status: 'En preparación', timestamp: new Date() });
+        }
+
+        if (data.products) {
+            for (const productInfo of data.products) {
+                const productOrder = order.productsOrder.find(p => 
+                    p.subproduct && p.subproduct.id === productInfo.subproductId 
+                    
+                );
+        
+                if (productOrder) {
+                    productOrder.quantity = productInfo.quantity;
+                    await this.productsOrderRepository.save(productOrder); 
+                } else {
+                    const newProductOrder = this.productsOrderRepository.create({
+                        order: order,
+                        subproduct: { id: productInfo.subproductId },
+                        quantity: productInfo.quantity
+                    });
+                    await this.productsOrderRepository.save(newProductOrder);
+                }
+            }
         }
 
         return { HttpCode: 200 };

@@ -3,11 +3,11 @@ import { CsvRepository } from './csv.repository';
 import { Response } from 'express';
 
 @Injectable()
-
 export class CsvService {
-    constructor(
-        private readonly csvRepository: CsvRepository
-    ) {}
+
+constructor(
+    private readonly csvRepository: CsvRepository
+) {}
     getMostSoldProductsService(res: Response, limit: number) {
         return this.csvRepository.generateMostSoldProductsCsvRepository(res, limit);
     }
@@ -46,11 +46,6 @@ export class CsvService {
         return this.csvRepository.debtorsRepository(limit, res);
     }
 
-    async productsByDeliveryService(deliveryNumber: number, date: string, limit: number, res: Response
-    ): Promise<void> {
-        return this.csvRepository.productsByDeliveryRepository(deliveryNumber, date, limit, res);
-    }
-
     async getProductsByUserMonthByMonthService(userId: string, date: string, limit: number, res: Response
     ): Promise<void> {
         return this.csvRepository.getProductsByUserMonthByMonthRepository(userId, date, limit, res);
@@ -67,4 +62,9 @@ export class CsvService {
     ): Promise<void> {
         return this.csvRepository.productsBonifiedByUserByMonthRepository(userId, date, res);
     }
+    getSalesReportByDeliveryService(date: string, deliveryNumber: number, limit: number, province: number, localidad: string, res: Response<any, Record<string, any>>) {
+        return this.csvRepository.generateSalesReport(date, deliveryNumber, limit, province, localidad, res);
+    }
+
+
 }

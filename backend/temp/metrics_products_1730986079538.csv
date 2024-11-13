@@ -1,9 +1,0 @@
-OrderId;OrderDate;OrderStatus;ProductId;ProductDescription;Presentacion;TipoGrano;SubproductAmount;Unit;Stock;Price;Discount;IsAvailable;Quantity;Total;CustomerName;CustomerEmail;CustomerPhone
-a8673efd-ae94-4a12-b4f4-5f2133fa6ca7;29/2/2024;Pendiente;7a795034-6729-4da6-952b-184642b4e78a;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;admin01;admin01@gmail.com;987567123
-80c9194f-706c-4772-ac14-72f09c34656c;14/3/2024;Pendiente;7a795034-6729-4da6-952b-184642b4e78a;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;admin01;admin01@gmail.com;987567123
-099f849e-a609-46bc-b6de-dc03cbcb410a;24/4/2024;Pendiente;7a795034-6729-4da6-952b-184642b4e78a;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;admin01;admin01@gmail.com;987567123
-9ea2351b-7432-45a3-a8c4-5be07e8fbc11;9/5/2024;Pendiente;7a795034-6729-4da6-952b-184642b4e78a;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;admin01;admin01@gmail.com;987567123
-f5f87862-b9d6-41e5-9423-691b6c4f4ec9;19/6/2024;Pendiente;7a795034-6729-4da6-952b-184642b4e78a;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;admin01;admin01@gmail.com;987567123
-279c9b46-6a38-4492-b989-3324c3ee154b;4/7/2024;Pendiente;7a795034-6729-4da6-952b-184642b4e78a;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;admin01;admin01@gmail.com;987567123
-c209eabd-9453-43f1-95c8-3669203cbfa0;14/8/2024;Pendiente;7a795034-6729-4da6-952b-184642b4e78a;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;admin01;admin01@gmail.com;987567123
-9c8ec73d-98a5-4657-b6eb-f9fff0cbf2f5;24/9/2024;Pendiente;7a795034-6729-4da6-952b-184642b4e78a;Cafe Mezcla;N/A;N/A;1;Kilo;7;80000;0;Yes;2;160000;admin01;admin01@gmail.com;987567123
