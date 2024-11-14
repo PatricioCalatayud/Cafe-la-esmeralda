@@ -11,6 +11,8 @@ import { Category } from 'src/entities/category.entity';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { join } from 'path';
+import { parse as csvParse } from 'csv-parse/sync';
+
 
 @Injectable()
 export class CsvRepository {
@@ -76,7 +78,7 @@ export class CsvRepository {
             const writeStream = fs.createWriteStream(localFilePath);
             const csvStream = fastcsv.format({ 
                 headers: true,
-                delimiter: ',',
+                delimiter: ';',
                 quote: '"'
             });
 
@@ -262,7 +264,7 @@ export class CsvRepository {
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
             headers: true,
-            delimiter: ',',
+            delimiter: ';',
             quote: '"'
           });
   
@@ -337,7 +339,7 @@ export class CsvRepository {
         const writeStream = fs.createWriteStream(localFilePath);
         const csvStream = fastcsv.format({
           headers: true,
-          delimiter: ',',
+          delimiter: ';',
           quote: '"'
         });
 
@@ -411,7 +413,7 @@ export class CsvRepository {
         const writeStream = fs.createWriteStream(localFilePath);
         const csvStream = fastcsv.format({
           headers: true,
-          delimiter: ',',
+          delimiter: ';',
           quote: '"'
         });
 
@@ -494,7 +496,7 @@ async productsByDeliveryRepository(deliveryNumber: number, date: string, limit: 
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -594,7 +596,7 @@ async getProductsByUserMonthByMonthRepository(userId: string, date: string, limi
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -698,7 +700,7 @@ async getOrdersByUserByMonthRepository(userId: string, date: string, res: Respon
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -784,7 +786,7 @@ async productsBonifiedByUserByMonthRepository(userId: string, date: string, res:
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -869,7 +871,7 @@ async productsBonifiedAndImportByUserByMonthRepository(userId: string, date: str
           const writeStream = fs.createWriteStream(localFilePath);
           const csvStream = fastcsv.format({
               headers: true,
-              delimiter: ',',
+              delimiter: ';',
               quote: '"'
           });
 
@@ -910,4 +912,239 @@ async productsBonifiedAndImportByUserByMonthRepository(userId: string, date: str
   }
 }
 
+async generateMostSoldProductsCsvRepository(res, limit: number) {
+  const metricsDto = { limit };
+  const url = 'http://localhost:3001/metrics/productos-mas-vendidos';
+
+  try {
+    const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+    console.log('Datos recibidos:', response.data);
+
+    // Asegúrate de que `response.data` sea un string para `parse`
+    const csvData = typeof response.data === 'string' ? response.data : response.data.toString();
+    const records = csvParse(csvData, {
+      columns: true,
+      skip_empty_lines: true
+    }) as { productId: string; quantity: string }[];
+
+    console.log('Datos parseados:', records);
+
+    const csvRows = records.map(item => ({
+      ProductId: item.productId,
+      Quantity: parseInt(item.quantity, 10),
+    }));
+
+    const timestamp = new Date().getTime();
+    const localFilePath = join(process.cwd(), 'temp', `most_sold_products_${timestamp}.csv`);
+
+    if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+      fs.mkdirSync(join(process.cwd(), 'temp'));
+    }
+
+    await new Promise<void>((resolve, reject) => {
+      const writeStream = fs.createWriteStream(localFilePath);
+      const csvStream = fastcsv.format({
+        headers: true,
+        delimiter: ';',
+        quote: '"'
+      });
+
+      writeStream.on('error', (error) => {
+        console.error('Error escribiendo archivo:', error);
+        reject(error);
+      });
+
+      writeStream.on('finish', () => {
+        console.log('Archivo CSV escrito correctamente');
+        resolve();
+      });
+
+      csvStream.pipe(writeStream);
+
+      csvRows.forEach(row => csvStream.write(row as any));
+
+      csvStream.end();
+    });
+
+    const fileContent = fs.readFileSync(localFilePath, 'utf-8');
+
+    res.status(200).json({
+      message: 'CSV generado correctamente',
+      localFilePath,
+      csvContent: fileContent,
+      rowCount: csvRows.length,
+      firstRow: csvRows[0]
+    });
+
+  } catch (error) {
+    console.error('Error completo:', error);
+    res.status(500).json({
+      error: 'No se pudo obtener la información de productos',
+      details: error.message,
+      stack: error.stack
+    });
+  }
 }
+
+
+async generateLessSoldProductsCsvRepository(limit: number): Promise<string> {
+  const metricsDto = { limit };
+  const url = 'http://localhost:3001/metrics/productos-menos-vendidos'; 
+
+  try {
+    const response = await firstValueFrom(this.httpService.post(url, metricsDto));
+    console.log('Datos recibidos:', JSON.stringify(response.data, null, 2));
+
+    if (!response.data || response.data.length === 0) {
+      throw new Error('No se recibieron productos de la métrica');
+    }
+
+    // Transformar la respuesta en filas para el CSV
+    const csvRows = response.data.map(item => ({
+      ProductId: item.product.id,
+      ProductDescription: item.product.description,
+      TotalQuantity: item.totalQuantity,
+    }));
+
+    console.log('Filas procesadas:', csvRows.length);
+    console.log('Primera fila de ejemplo:', csvRows[0]);
+
+    const timestamp = new Date().getTime();
+    const localFilePath = join(process.cwd(), 'temp', `least_sold_products_${timestamp}.csv`);
+
+    // Crear directorio si no existe
+    if (!fs.existsSync(join(process.cwd(), 'temp'))) {
+      fs.mkdirSync(join(process.cwd(), 'temp'));
+    }
+
+    // Escribir el archivo CSV
+    await new Promise<void>((resolve, reject) => {
+      const writeStream = fs.createWriteStream(localFilePath);
+      const csvStream = fastcsv.format({
+        headers: true,
+        delimiter: ';', // Cambiar a punto y coma
+        quote: '"',
+      });
+
+      writeStream.on('error', (error) => {
+        console.error('Error escribiendo archivo:', error);
+        reject(error);
+      });
+
+      writeStream.on('finish', () => {
+        console.log('Archivo CSV escrito correctamente');
+        resolve();
+      });
+
+      csvStream.pipe(writeStream);
+      csvRows.forEach(row => csvStream.write(row));
+      csvStream.end();
+    });
+
+    return localFilePath;
+
+  } catch (error) {
+    console.error('Error completo:', error);
+    throw new Error('No se pudo obtener la información de productos');
+  }
+}
+
+async generateSalesReport(
+  date: string,
+  deliveryNumber: number,
+  limit: number,
+  province: number,
+  localidad: string,
+  res: Response
+): Promise<void> {
+  try {
+    const body = { date, deliveryNumber, limit, province, localidad };
+
+    const response = await firstValueFrom(
+      this.httpService.post('http://localhost:3001/metrics/productos-por-reparto-por-mes', body)
+    );
+
+    const productsDetail = response.data?.["Marzo '24"]?.productsDetail;
+
+    if (!productsDetail || productsDetail.length === 0) {
+      throw new Error('No se encontraron datos de productos');
+    }
+
+    const csvRows = productsDetail.map((item, index) => {
+      const kgsCharged = item.subproductQuantity - item.subproductBonified;
+      const kgsBonified = item.subproductBonified;
+      const avgPrice = kgsCharged > 0 ? item.subproductRevenue / kgsCharged : 0;
+      return {
+        'Descripcion del Producto': `${index + 1} ${item.productDescription}`,
+        'Kgs./Unid Importe': kgsCharged.toFixed(2),
+        'Kgs./Unid Importe (Bonificados)': kgsBonified.toFixed(2),
+        'P/Prom': avgPrice.toFixed(2),
+      };
+    });
+
+    const timestamp = Date.now();
+    const tempDir = join(process.cwd(), 'temp');
+    const localFilePath = join(tempDir, `sales_report_${timestamp}.csv`);
+
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir);
+    }
+
+    await new Promise<void>((resolve, reject) => {
+      const writeStream = fs.createWriteStream(localFilePath);
+      const csvStream = fastcsv.format({
+        headers: [
+          'Descripcion del Producto',
+          'Kgs./Unid Importe',
+          'Kgs./Unid Importe (Bonificados)',
+          'P/Prom'
+        ],
+        delimiter: ';',
+        quote: '"',
+        writeBOM: true,
+      });
+
+      writeStream.on('finish', resolve);
+      writeStream.on('error', reject);
+
+      csvStream.pipe(writeStream);
+
+      // Write the report title and headers
+      csvStream.write({
+        'Descripcion del Producto': 'INFORME DE VENTAS POR PRODUCTO DEL PERIODO: 1/06/20 30/06/20',
+        'Kgs./Unid Importe': 'Reparto: ** GENERAL **',
+        'Kgs./Unid Importe (Bonificados)': 'AL',
+        'P/Prom': 'Filtros -.- Grupo Economico: Provincia:',
+      });
+      csvStream.write({
+        'Descripcion del Producto': '-',
+        'Kgs./Unid Importe': 'c/Cargo',
+        'Kgs./Unid Importe (Bonificados)': 's/Cargo',
+        'P/Prom': '',
+      });
+
+      // Write data rows
+      csvRows.forEach(row => csvStream.write(row));
+      csvStream.end();
+    });
+
+    // Send the CSV file as a response and delete the local file after sending
+    res.attachment(`sales_report_${timestamp}.csv`);
+    res.sendFile(localFilePath, (err) => {
+      if (err) {
+        console.error('Error al enviar el archivo:', err);
+        res.status(500).json({ error: 'Error al enviar el archivo' });
+      }
+      fs.unlinkSync(localFilePath); // Clean up temp file after sending
+    });
+  } catch (error) {
+    console.error('Error en la generación del informe:', error);
+    res.status(500).json({
+      error: 'No se pudo generar el informe de ventas',
+      details: error.message,
+    });
+  }
+}
+
+}
+

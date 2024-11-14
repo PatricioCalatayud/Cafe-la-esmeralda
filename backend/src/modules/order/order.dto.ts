@@ -62,6 +62,10 @@ export class AddOrderDto {
     @IsOptional()
     invoiceType?: Bill | null;
 
+    @ApiProperty({ description: 'Propiedad para DNI o CUIT.' })
+    @IsOptional()
+    @IsString()
+    identification?: string | null;
 
     @ApiProperty({ description: 'Propiedad para facturación, solo admite "A", "B", o "C".' })
     @IsDate()
@@ -90,4 +94,8 @@ export class UpdateOrderDto {
     @IsString()
     @IsOptional()
     transferStatus?: string;
+
+    @IsOptional()
+    @Type(() => ProductInfo)
+    products?: ProductInfo[];
 }
