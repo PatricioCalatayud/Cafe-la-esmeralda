@@ -25,6 +25,11 @@ export class BillController {
         return await this.billService.getBillById(id);
     }
 
+    @Put(':id')
+    async updateBill(@Param('id', ParseUUIDPipe) id: string, @Body('imgUrl') imgUrl: string | null) {
+        return await this.billService.updateBill(id, imgUrl);
+    }
+
     @ApiOperation({ summary: 'Elimina una factura de la base de datos por su ID', description: 'Este endpoint elimina una factura de la base de datos por su ID.' })
     @Delete(':id')
     async deleteBill(@Param('id', ParseUUIDPipe) id: string) {

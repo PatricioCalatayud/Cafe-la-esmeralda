@@ -106,7 +106,7 @@ export class OrderService {
         return await this.orderRepository.find({ where: { orderStatus: false, date: LessThan(subDays(new Date(), 2)) }, relations: ['user'] });
     }
     
-    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string, invoiceType?: string, date?: Date) {
+    async createOrder(userId: string, productsInfo: ProductInfo[], address: string | undefined, account?: string, invoiceType?: string, date?: Date, identification?: string) {
         let total = 0;
         let createdOrder;
     
@@ -162,7 +162,7 @@ export class OrderService {
         });
 
         if(invoiceType) {
-            const bill = await this.billService.createBill(createdOrder.id, invoiceType);
+            const bill = await this.billService.createBill(createdOrder.id, invoiceType, identification);
             createdOrder.bill = bill;
             await this.orderRepository.update(createdOrder.id, { bill });
         }

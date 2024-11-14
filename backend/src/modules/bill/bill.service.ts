@@ -14,8 +14,8 @@ export class BillService {
         return await this.billRepository.getBillById(id);
     }
 
-    async createBill(orderId: string, type: string) {
-        return await this.billRepository.createBill(orderId, type);
+    async createBill(orderId: string, type: string, identification: string) {
+        return await this.billRepository.createBill(orderId, type, identification);
     }
 
     async updateBill(id: string, imgUrl: string | null) {
