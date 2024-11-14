@@ -39,8 +39,8 @@ export class OrderController {
     @ApiOperation({ summary: 'Crea una orden de compra', description: 'Este endpoint crea una orden de compra usando AddOrderDto.' })
     @Post()
     async createOrder(@Body() orderInfo: AddOrderDto) {
-        const { userId, products, address, account, invoiceType, date } = orderInfo;
-        return await this.orderService.createOrder(userId, products, address, account, invoiceType, date);
+        const { userId, products, address, account, invoiceType, date, identification } = orderInfo;
+        return await this.orderService.createOrder(userId, products, address, account, invoiceType, date, identification);
     }
 
     @ApiOperation({ summary: 'Actualiza una orden de compra', description: 'Este endpoint actualiza una orden de compra, recibe el ID de la orden por param y updateOrderDto por body.'})
