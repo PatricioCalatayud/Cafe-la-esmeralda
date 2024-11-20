@@ -113,17 +113,16 @@ export class MetricsController {
 
     @Post('productos-por-mes-usuario-bonificados')
     async getProductsByUserByMonthBonified(
-        @Body('date') date: string,
         @Body('userId') userId: string,
+        @Body('startDate') startDate: Date,
+        @Body('endDate') endDate: Date,
         @Body('limit') limit: number
     ) {
-        const dateSelected = new Date(date);
-        if (isNaN(dateSelected.getTime())) {
-            throw new BadRequestException('Fecha inválida');
-        }
+ 
         
-        return await this.ordersMetricsService.getProductsByUserByMonthBonifiedService(dateSelected, userId, limit);
+        return await this.ordersMetricsService.getProductsByUserByMonthBonifiedService(userId,startDate, endDate, limit);
     }
+    
     @Post('productos-por-mes-usuario-bonificados-importe')
     async getProductsAndImportByUserByMonthBonified(
         @Body('date') date: string,

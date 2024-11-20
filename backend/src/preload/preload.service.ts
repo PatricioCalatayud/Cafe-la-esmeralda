@@ -143,84 +143,103 @@ export class PreloadService implements OnModuleInit {
 
   async addDefaultOrders() {
     try {
-      const users = await this.userRepository.find();
-      if (users.length === 0) {
-        console.error('No hay usuarios disponibles.');
-        return;
-      }
-  
-      const product1 = await this.productRepository.findOne({
-        where: { description: 'Cafe Mezcla' },
-        relations: ['subproducts'],
-      });
-      const product2 = await this.productRepository.findOne({
-        where: { description: 'Portasobres' },
-        relations: ['subproducts'],
-      });
-      const product3 = await this.productRepository.findOne({
-        where: { description: 'Cafe Santos' },
-        relations: ['subproducts'],
-      });
-  
-      if (!product1?.subproducts?.length || !product2?.subproducts?.length || !product3?.subproducts?.length) {
-        console.error('Productos o subproductos no encontrados.');
-        return;
-      }
-  
-      const user = users[0];
-      const account = await this.accountRepository.findOne({
-        where: { user: { id: user.id } },
-      });
-  
-      if (!account) {
-        throw new Error(`Cuenta no encontrada para el usuario ${user.id}`);
-      }
-  
-      const orderDates = [
-        new Date('2024-03-01'),
-        new Date('2024-03-15'),
-        new Date('2024-04-25'),
-        new Date('2024-05-10'),
-        new Date('2024-06-20'),
-        new Date('2024-07-05'),
-        new Date('2024-08-15'),
-        new Date('2024-09-25'),
-      ];
-  
-      for (const date of orderDates) {
-        const order = await this.orderService.createOrder(
-          user.id,
-          [
-            { productId: product1.id, quantity: 2, subproductId: product1.subproducts[0].id },
-            { productId: product2.id, quantity: 3, subproductId: product2.subproducts[0].id },
-            { productId: product3.id, quantity: 3, subproductId: product2.subproducts[0].id }
-          ],
-          'Calle Wallaby 42 Sidney',
-          'Transferencia',
-          'A',
-          date  // Asegúrate de que el método createOrder acepte la fecha
-        );
-  
-        order.account = account;
-        await this.orderRepository.save(order);
-  
-        const accountTransaction = this.accountTransactionRepository.create({
-          amount: 500,
-          type: TransactionType.PURCHASE,
-          account: account,
+        const users = await this.userRepository.find();
+        if (users.length === 0) {
+            console.error('No hay usuarios disponibles.');
+            return;
+        }
+
+        const products = await this.productRepository.find({
+            relations: ['subproducts'],
         });
-  
-        await this.accountTransactionRepository.save(accountTransaction);
-  
-        console.log(`Pedido creado con fecha ${date.toISOString()}`);
-      }
-  
-      console.log('Precarga de múltiples pedidos y transacciones exitosa.');
+
+        if (products.length === 0) {
+            console.error('No hay productos disponibles.');
+            return;
+        }
+
+        const orderSchedules = [
+            { month: 0, usersCount: 2, ordersCount: 3 }, // Enero
+            { month: 1, usersCount: 3, ordersCount: 5 }, // Febrero
+            { month: 2, usersCount: 1, ordersCount: 1 }, // Marzo
+            { month: 3, usersCount: 2, ordersCount: 2 }, // Abril
+            { month: 4, usersCount: 3, ordersCount: 4 }, // Mayo
+            { month: 5, usersCount: 2, ordersCount: 2 }, // Junio
+            { month: 6, usersCount: users.length, ordersCount: 25 }, // Julio
+            { month: 7, usersCount: users.length, ordersCount: 25 }, // Agosto
+            { month: 8, usersCount: users.length, ordersCount: 25 }, // Septiembre
+            { month: 9, usersCount: 3, ordersCount: 5 }, // Octubre
+            { month: 10, usersCount: 2, ordersCount: 3 }, // Noviembre
+            { month: 11, usersCount: 1, ordersCount: 1 }, // Diciembre
+        ];
+
+        for (const schedule of orderSchedules) {
+            const { month, usersCount, ordersCount } = schedule;
+
+            const selectedUsers = users.slice(0, usersCount);
+            const dates = Array.from({ length: ordersCount }, (_, i) =>
+                new Date(2024, month, Math.floor(Math.random() * 28) + 1)
+            );
+
+            for (let i = 0; i < ordersCount; i++) {
+                const user = selectedUsers[i % usersCount];
+                const account = await this.accountRepository.findOne({
+                    where: { user: { id: user.id } },
+                });
+
+                if (!account) {
+                    console.error(`Cuenta no encontrada para el usuario ${user.id}`);
+                    continue;
+                }
+
+                const productSelections = products.slice(0, 3).map((product) => {
+                    const subproduct = product.subproducts[0];
+                    
+                    // Verificar si el mes es impar
+                    const isOddMonth = month % 2 !== 0;
+                    if (isOddMonth && subproduct) {
+                        subproduct.discount = 100; // Bonificar subproducto
+                        console.log(`Subproducto ${subproduct.id} bonificado en el mes ${month + 1}`);
+                    }
+
+                    return {
+                        productId: product.id,
+                        quantity: Math.floor(Math.random() * 5) + 1,
+                        subproductId: subproduct?.id,
+                    };
+                });
+
+                const order = await this.orderService.createOrder(
+                    user.id,
+                    productSelections,
+                    'Calle Wallaby 42 Sidney',
+                    'Transferencia',
+                    'A',
+                    dates[i]
+                );
+
+                order.account = account;
+                await this.orderRepository.save(order);
+
+                const accountTransaction = this.accountTransactionRepository.create({
+                    amount: 500,
+                    type: TransactionType.PURCHASE,
+                    account: account,
+                });
+
+                await this.accountTransactionRepository.save(accountTransaction);
+
+                console.log(`Pedido creado con fecha ${dates[i].toISOString()} para el usuario ${user.id}`);
+            }
+        }
+
+        console.log('Precarga de pedidos exitosa con distribución mensual.');
     } catch (error) {
-      console.error(`Error al crear los pedidos: ${error.message}`);
+        console.error(`Error al crear los pedidos: ${error.message}`);
     }
-  }
-  
+}
+
+
 
   async addDefaultTestimonies() {
     try {
