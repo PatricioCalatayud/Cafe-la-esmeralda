@@ -20,6 +20,7 @@ import { Order } from 'src/entities/order.entity';
 import { TransactionType } from 'src/enum/accountTransactionType.enum';
 import { Role } from 'src/enum/roles.enum';
 import { Rating } from 'src/entities/ratings.entity';
+import { Bill } from 'src/entities/bill.entity';
 @Injectable()
 export class PreloadService implements OnModuleInit {
   constructor(
@@ -32,6 +33,7 @@ export class PreloadService implements OnModuleInit {
     @InjectRepository(AccountTransaction) private accountTransactionRepository: Repository<AccountTransaction>,
     @InjectRepository(Order) private readonly orderRepository: Repository<Order>,
     @InjectRepository(Rating) private readonly ratingRepository: Repository<Rating>,
+    @InjectRepository(Bill) private readonly billRepository: Repository<Bill>,
     private readonly orderService: OrderService,
   ) {}
 
@@ -194,8 +196,7 @@ export class PreloadService implements OnModuleInit {
 
                 const productSelections = products.slice(0, 3).map((product) => {
                     const subproduct = product.subproducts[0];
-                    
-                    // Verificar si el mes es impar
+
                     const isOddMonth = month % 2 !== 0;
                     if (isOddMonth && subproduct) {
                         subproduct.discount = 100; // Bonificar subproducto
@@ -209,13 +210,17 @@ export class PreloadService implements OnModuleInit {
                     };
                 });
 
+                // Generar una identificación de ejemplo para las facturas
+                const identification = `ID-${user.id}-${dates[i].getTime()}`;
+
                 const order = await this.orderService.createOrder(
                     user.id,
                     productSelections,
                     'Calle Wallaby 42 Sidney',
                     'Transferencia',
                     'A',
-                    dates[i]
+                    dates[i],
+                    identification // Pasar el parámetro identification
                 );
 
                 order.account = account;
@@ -224,7 +229,7 @@ export class PreloadService implements OnModuleInit {
                 const accountTransaction = this.accountTransactionRepository.create({
                     amount: 500,
                     type: TransactionType.PURCHASE,
-                    account: account,
+                    account: account
                 });
 
                 await this.accountTransactionRepository.save(accountTransaction);
@@ -238,7 +243,6 @@ export class PreloadService implements OnModuleInit {
         console.error(`Error al crear los pedidos: ${error.message}`);
     }
 }
-
 
 
   async addDefaultTestimonies() {
@@ -278,7 +282,7 @@ export class PreloadService implements OnModuleInit {
             const account = this.accountRepository.create({
               user,
               creditLimit: 1000000,
-              balance: 0,
+              balance: 0
             });
 
             await this.accountRepository.save(account);
