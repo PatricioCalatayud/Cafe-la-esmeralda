@@ -30,12 +30,11 @@ export class BillRepository {
         return bill;
     }
 
-    async createBill(orderId: string, type: string, dni?:number | null ,cuit?:number | null )  {
+    async createBill(orderId: string, type: string, identification: string)  {
         const bill = new Bill();
         bill.order = orderId;
         bill.type = type;
-        bill.dni = dni;
-        bill.cuit = cuit;
+        bill.identification = identification;
 
         return await this.billRepository.save(bill);
     }
