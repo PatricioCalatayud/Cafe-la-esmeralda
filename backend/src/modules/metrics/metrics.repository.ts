@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Account } from 'src/entities/account.entity';
 import { Order } from 'src/entities/order.entity';
@@ -219,7 +219,11 @@ export class OrdersMetricsRepository {
     return { data, total };
   }
 
-  async getProductsByMonthRepository(dateSelected, productId, limit) {  
+  async getProductsByMonthRepository(dateSelected: Date, productId:string, limit: number) {
+    if(!limit) limit = 20
+    if (!dateSelected) {
+      throw new BadRequestException('Fecha inválida');
+  }  
     const year = dateSelected.getFullYear();
     const month = dateSelected.getMonth() + 2;
     
@@ -1125,6 +1129,142 @@ async getProductsByDeliveryByMonthRepository(
     console.log("Métricas por mes (con desglose):", result);
     return result;
   }
+  async getProductsByMonthGroupedByUserRepository(
+    startDate: Date,
+    endDate: Date,
+    limit: number
+  ): Promise<Record<string, Record<string, {
+    orders: Array<{
+      orderId: string;
+      orderDate: Date;
+      productsDetail: Array<{
+        productId: string;
+        productDescription: string;
+        subproductId: string;
+        subproductDescription: string;
+        subproductUnit: string;
+        subproductQuantity: number;
+        subproductBonified: number;
+        subproductRevenue: number;
+      }>;
+    }>;
+    kilosFacturados: number;
+    unidadesFacturadas: number;
+    kilosBonificados: number;
+    unidadesBonificadas: number;
+    importeGenerado: number;
+    totalSold: number;
+    totalBonified: number;
+  }>>> {
+    const products = await this.productsOrderRepository
+      .createQueryBuilder("productsOrder")
+      .leftJoinAndSelect("productsOrder.subproduct", "subproduct")
+      .leftJoinAndSelect("subproduct.product", "product")
+      .leftJoinAndSelect("productsOrder.order", "order")
+      .leftJoinAndSelect("order.user", "user") // Asegúrate de tener la relación con "user"
+      .where("order.date BETWEEN :startDate AND :endDate", { startDate, endDate })
+      .orderBy("order.date", "DESC")
+      .limit(limit)
+      .getRawMany();
+  
+    console.log("Productos obtenidos:", products);
+  
+    const formatMonthYear = (date: Date) => {
+      const months = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+      ];
+      const month = months[date.getMonth()];
+      const year = String(date.getFullYear()).slice(2);
+      return `${month} '${year}`;
+    };
+  
+    const groupedData: Record<string, Record<string, {
+      orders: Array<{
+        orderId: string;
+        orderDate: Date;
+        productsDetail: Array<{
+          productId: string;
+          productDescription: string;
+          subproductId: string;
+          subproductDescription: string;
+          subproductUnit: string;
+          subproductQuantity: number;
+          subproductBonified: number;
+          subproductRevenue: number;
+        }>;
+      }>;
+      kilosFacturados: number;
+      unidadesFacturadas: number;
+      kilosBonificados: number;
+      unidadesBonificadas: number;
+      importeGenerado: number;
+      totalSold: number;
+      totalBonified: number;
+    }>> = {};
+  
+    products.forEach(product => {
+      const monthYear = formatMonthYear(new Date(product.order_date));
+      const userId = product.order_userId; // Ajusta según el alias en tu consulta
+      const userName = product.user_name || "Usuario Desconocido"; // Alias para nombre de usuario si aplica
+      if (!groupedData[monthYear]) {
+        groupedData[monthYear] = {};
+      }
+  
+      if (!groupedData[monthYear][userId]) {
+        groupedData[monthYear][userId] = {
+          orders: [],
+          kilosFacturados: 0,
+          unidadesFacturadas: 0,
+          kilosBonificados: 0,
+          unidadesBonificadas: 0,
+          importeGenerado: 0,
+          totalSold: 0,
+          totalBonified: 0,
+        };
+      }
+  
+      const userMetrics = groupedData[monthYear][userId];
+      const existingOrder = userMetrics.orders.find(order => order.orderId === product.order_id);
+  
+      const productDetail = {
+        productId: product.product_id,
+        productDescription: product.product_description,
+        subproductId: product.subproduct_id,
+        subproductDescription: product.subproduct_description,
+        subproductUnit: product.subproduct_unit,
+        subproductQuantity: product.productsOrder_quantity,
+        subproductBonified: product.subproduct_discount === 100 ? product.productsOrder_quantity : 0,
+        subproductRevenue: product.subproduct_discount < 100 ? 
+          product.productsOrder_quantity * product.subproduct_price * (1 - product.subproduct_discount / 100) : 0,
+      };
+  
+      if (existingOrder) {
+        existingOrder.productsDetail.push(productDetail);
+      } else {
+        userMetrics.orders.push({
+          orderId: product.order_id,
+          orderDate: product.order_date,
+          productsDetail: [productDetail],
+        });
+      }
+  
+      if (product.subproduct_discount < 100) {
+        userMetrics.kilosFacturados += productDetail.subproductUnit === "Kilo" ? productDetail.subproductQuantity : 0;
+        userMetrics.unidadesFacturadas += productDetail.subproductUnit !== "Kilo" ? productDetail.subproductQuantity : 0;
+        userMetrics.importeGenerado += productDetail.subproductRevenue;
+        userMetrics.totalSold += productDetail.subproductQuantity;
+      } else {
+        userMetrics.kilosBonificados += productDetail.subproductUnit === "Kilo" ? productDetail.subproductQuantity : 0;
+        userMetrics.unidadesBonificadas += productDetail.subproductUnit !== "Kilo" ? productDetail.subproductQuantity : 0;
+        userMetrics.totalBonified += productDetail.subproductQuantity;
+      }
+    });
+  
+    console.log("Datos agrupados por mes y usuario:", groupedData);
+    return groupedData;
+  }
+  
 }
 
 

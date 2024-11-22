@@ -113,16 +113,21 @@ export class MetricsController {
 
     @Post('productos-por-mes-usuario-bonificados')
     async getProductsByUserByMonthBonified(
-        @Body('userId') userId: string,
+        @Body('userId') userId: string, 
         @Body('startDate') startDate: Date,
         @Body('endDate') endDate: Date,
         @Body('limit') limit: number
     ) {
- 
-        
-        return await this.ordersMetricsService.getProductsByUserByMonthBonifiedService(userId,startDate, endDate, limit);
+        return await this.ordersMetricsService.getProductsByUserByMonthBonifiedService(userId, startDate, endDate, limit);
     }
-    
+    @Post('productos-ventas-totales')
+    async getProductsByMonthGroupedByUser(
+        @Body('startDate') startDate: Date,
+        @Body('endDate') endDate: Date,
+        @Body('limit') limit: number
+    ) {
+        return await this.ordersMetricsService.getProductsByMonthGroupedByUserService(startDate, endDate, limit);
+    }
     @Post('productos-por-mes-usuario-bonificados-importe')
     async getProductsAndImportByUserByMonthBonified(
         @Body('date') date: string,
