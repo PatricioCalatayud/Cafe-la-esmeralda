@@ -47,6 +47,10 @@ export class OrdersMetricsService {
     if(!limit) limit = 20
     return await this.ordersMetricsRepository.getProductsByMonthByUserBonifiedRepositoryasync(userId, startDate, endDate, limit);
   }
+  async getProductsByMonthGroupedByUserService(startDate: Date, endDate: Date, limit: number) {
+    if(!limit) limit = 20
+    return await this.ordersMetricsRepository.getProductsByMonthGroupedByUserRepository( startDate, endDate, limit);
+  }
 
   async getProductsAndImportByUserByMonthBonifiedService(dateSelected: Date, userId: string, limit: number) {
     if(!limit) limit = 20
