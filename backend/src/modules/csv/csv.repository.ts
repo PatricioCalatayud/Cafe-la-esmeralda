@@ -1145,6 +1145,126 @@ async generateSalesReport(
     });
   }
 }
+async generateTotalSalesReport(startDate:Date, endDate:Date, limit: number, res: Response): Promise<void> {
+  try {
+    const body = {
+      startDate,
+      endDate,
+      limit
+    };
+    const response = await firstValueFrom(
+      this.httpService.post('http://localhost:3001/metrics/productos-ventas-totales', body)
+    );
+
+    const allProducts = [];
+    
+    Object.entries(response.data).forEach(([month, clientData]: [string, any]) => {
+      Object.values(clientData).forEach((client: any) => {
+        client.orders.forEach((order: any) => {
+          order.productsDetail.forEach((product: any) => {
+            allProducts.push({
+              mes: month,
+              fecha: new Date(order.orderDate).toLocaleDateString(),
+              producto: product.productDescription,
+              unidad: product.subproductUnit,
+              cantidad: product.subproductQuantity,
+              bonificado: product.subproductBonified,
+              importe: product.subproductRevenue
+            });
+          });
+        });
+      });
+    });
+
+    allProducts.sort((a, b) => {
+      const dateCompare = new Date(a.fecha).getTime() - new Date(b.fecha).getTime();
+      if (dateCompare === 0) {
+        return a.producto.localeCompare(b.producto);
+      }
+      return dateCompare;
+    });
+
+    // Definir la ruta base y el nombre del archivo
+    const baseDir = join('D:', 'd', 'cp', 'Cafe-la-esmeralda noFork', 'Cafe-la-esmeralda', 'backend', 'temp');
+    const timestamp = new Date().getTime();
+    const fileName = `total_revenue_grouped_by_month_${timestamp}.csv`;
+    const localFilePath = join(baseDir, fileName);
+
+    // Asegurarse de que el directorio existe
+    if (!fs.existsSync(baseDir)) {
+      fs.mkdirSync(baseDir, { recursive: true });
+    }
+
+    await new Promise<void>((resolve, reject) => {
+      const writeStream = fs.createWriteStream(localFilePath);
+      const csvStream = fastcsv.format({
+        headers: false,
+        delimiter: ';',
+        quote: '"',
+        writeBOM: true,
+      });
+
+      writeStream.on('finish', resolve);
+      writeStream.on('error', reject);
+
+      csvStream.pipe(writeStream);
+
+      // Título del informe
+      csvStream.write({
+        field1: 'INFORME DE VENTAS TOTALES',
+        field2: `Período: ${new Date(body.startDate).toLocaleDateString()} - ${new Date(body.endDate).toLocaleDateString()}`,
+        field3: '',
+        field4: '',
+        field5: '',
+        field6: '',
+        field7: ''
+      });
+
+      // Encabezados
+      csvStream.write({
+        field1: 'Mes',
+        field2: 'Fecha',
+        field3: 'Producto',
+        field4: 'Unidad',
+        field5: 'Cantidad c/Cargo',
+        field6: 'Cantidad Bonificada',
+        field7: 'Importe'
+      });
+
+      // Datos
+      allProducts.forEach(row => {
+        csvStream.write({
+          field1: row.mes,
+          field2: row.fecha,
+          field3: row.producto,
+          field4: row.unidad,
+          field5: row.cantidad - row.bonificado,
+          field6: row.bonificado,
+          field7: row.importe.toFixed(2)
+        });
+      });
+
+      csvStream.end();
+    });
+
+    // Enviar el archivo como respuesta
+    res.attachment(fileName);
+    res.sendFile(localFilePath, (err) => {
+      if (err) {
+        console.error('Error al enviar el archivo:', err);
+        res.status(500).json({ error: 'Error al enviar el archivo' });
+      }
+      // Opcional: descomentar la siguiente línea si quieres eliminar el archivo después de enviarlo
+      // fs.unlinkSync(localFilePath);
+    });
+  } catch (error) {
+    console.error('Error en la generación del informe:', error);
+    res.status(500).json({
+      error: 'No se pudo generar el informe de ventas',
+      details: error.message,
+    });
+  }
+}
 
 }
 
