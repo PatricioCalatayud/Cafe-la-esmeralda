@@ -9,38 +9,38 @@
             {
                 "discount":100,
                 "price": 33000,
-                "stock": 13,
+                "stock": 1300,
                 "amount": 1,
                 "unit": "Kilo"
             },
             {
                 "price": 13000,
-                "stock": 10,
+                "stock": 1000,
                 "amount": 250,
                 "unit": "Gramos"
             },
             {
                 "price": 23000,
-                "stock": 10,
+                "stock": 1000,
                 "amount": 500,
                 "unit": "Gramos"
             },
             {
                 "price": 33000,
-                "stock": 13,
+                "stock": 1300,
                 "amount": 1,
                 "unit": "Kilo"
             },
             {
                 "price": 23000,
-                "stock": 10,
+                "stock": 1000,
                 "discount":100,
                 "amount": 500,
                 "unit": "Gramos"
             },
             {
                 "price": 13000,
-                "stock": 10,
+                "stock": 1000,
                 "amount": 250,
                 "unit": "Gramos",
                 "discount":100
@@ -58,7 +58,7 @@
         "subproducts": [
             {
                 "price": 80000,
-                "stock": 23,
+                "stock": 2300,
                 "amount": 1,
                 "unit": "Kilo",
                 "discount":100
@@ -66,7 +66,7 @@
             },
             {
                 "price": 80000,
-                "stock": 23,
+                "stock": 2300,
                 "amount": 1,
                 "unit": "Kilo"
             }
@@ -80,7 +80,7 @@
         "subproducts": [
             {
                 "price": 3390,
-                "stock": 54,
+                "stock": 5400,
                 "amount": 50,
                 "unit": "Sobres"
             }
@@ -93,7 +93,7 @@
         "subproducts": [
             {
                 "price": 3000,
-                "stock": 84,
+                "stock": 840,
                 "amount": 100,
                 "unit": "Sobres"
             }
@@ -106,7 +106,7 @@
         "subproducts": [
             {
                 "price": 22600,
-                "stock": 113,
+                "stock": 1130,
                 "amount": 50,
                 "unit": "Unidades"
             }
@@ -119,7 +119,7 @@
         "subproducts": [
             {
                 "price": 2825,
-                "stock": 92,
+                "stock": 920,
                 "amount": 1,
                 "unit": "Unidades"
             }
@@ -133,13 +133,13 @@
         "subproducts": [
             {
                 "price": 14475,
-                "stock": 113,
+                "stock": 1130,
                 "amount": 30,
                 "unit": "Unidades"
             },
             {
                 "price": 22600,
-                "stock": 113,
+                "stock": 1130,
                 "amount": 50,
                 "unit": "Unidades"
             }
