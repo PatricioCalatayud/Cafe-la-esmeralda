@@ -62,9 +62,12 @@ constructor(
     ): Promise<void> {
         return this.csvRepository.productsBonifiedByUserByMonthRepository(userId, date, res);
     }
-    getSalesReportByDeliveryService(date: string, deliveryNumber: number, limit: number, province: number, localidad: string, res: Response<any, Record<string, any>>) {
+    async getSalesReportByDeliveryService(date: string, deliveryNumber: number, limit: number, province: number, localidad: string, res: Response<any, Record<string, any>>) {
         return this.csvRepository.generateSalesReport(date, deliveryNumber, limit, province, localidad, res);
     }
 
+    async getGenerateTotalSalesReportService(startDate:Date, endDate:Date, limit: number, res: Response) {
+        return this.csvRepository.generateTotalSalesReport(startDate, endDate, limit, res);
+    }
 
 }

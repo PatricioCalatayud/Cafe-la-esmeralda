@@ -166,5 +166,20 @@ export class CsvController {
       res
     );
   }
+
+  @Post('reporte-ventas-total-anual')
+  async getGenerateTotalSalesReport(
+    @Body('startDate') startDate: Date,
+    @Body('endDate') endDate: Date,
+    @Body('limit') limit: number,
+    @Res() res: Response
+  ) {
+    return await this.csvService.getGenerateTotalSalesReportService(
+      startDate,
+      endDate,
+      limit,
+      res
+    );
+  }
 }
     

@@ -1145,6 +1145,137 @@ async generateSalesReport(
     });
   }
 }
+async generateTotalSalesReport(
+  startDate: Date,
+  endDate: Date,
+  limit: number,
+  res: Response
+): Promise<void> {
+  try {
+    const body = { startDate, endDate, limit };
 
+    const response = await firstValueFrom(
+      this.httpService.post('http://localhost:3001/metrics/productos-ventas-totales', body)
+    );
+
+    const allProducts: any[] = [];
+
+    // Procesar los datos de la respuesta
+    Object.entries(response.data).forEach(([month, clientData]: [string, any]) => {
+      Object.values(clientData).forEach((client: any) => {
+        client.orders.forEach((order: any) => {
+          order.productsDetail.forEach((product: any) => {
+            allProducts.push({
+              mes: month,
+              fecha: new Date(order.orderDate).toLocaleDateString('es-CL'),
+              producto: product.productDescription,
+              unidad: product.subproductUnit,
+              cantidad: product.subproductQuantity,
+              bonificado: product.subproductBonified,
+              importe: parseFloat(product.subproductRevenue) || 0,
+            });
+          });
+        });
+      });
+    });
+
+    // Ordenar por fecha de manera descendente
+    allProducts.sort((a, b) => {
+      const [diaA, mesA, anoA] = a.fecha.split('/').map(Number);
+      const [diaB, mesB, anoB] = b.fecha.split('/').map(Number);
+      const fechaA = new Date(anoA, mesA - 1, diaA);
+      const fechaB = new Date(anoB, mesB - 1, diaB);
+      return fechaB.getTime() - fechaA.getTime();
+    });
+
+    // Calcular totales generales
+    const totalCantidad = allProducts.reduce((total, row) => total + row.cantidad, 0);
+    const totalImporte = allProducts.reduce((total, row) => total + row.importe, 0);
+
+    // Configuración del archivo CSV
+    const baseDir = join('D:', 'd', 'cp', 'Cafe-la-esmeralda noFork', 'Cafe-la-esmeralda', 'backend', 'temp');
+    const timestamp = new Date().getTime();
+    const fileName = `total_revenue_grouped_by_month_${timestamp}.csv`;
+    const localFilePath = join(baseDir, fileName);
+
+    if (!fs.existsSync(baseDir)) {
+      fs.mkdirSync(baseDir, { recursive: true });
+    }
+
+    // Escribir el archivo CSV
+    await new Promise<void>((resolve, reject) => {
+      const writeStream = fs.createWriteStream(localFilePath);
+      const csvStream = fastcsv.format({ 
+        headers: false, 
+        delimiter: ';', 
+        quote: '"', 
+        writeBOM: true 
+      });
+
+      writeStream.on('finish', resolve);
+      writeStream.on('error', reject);
+
+      csvStream.pipe(writeStream);
+
+      // Título del informe
+      csvStream.write([
+        'INFORME DE VENTAS TOTALES', 
+        `Período: ${new Date(body.startDate).toLocaleDateString()} - ${new Date(body.endDate).toLocaleDateString()}`,
+        '', '', '', '', ''
+      ]);
+
+      // Encabezados
+      csvStream.write([
+        'Mes', 'Fecha', 'Producto', 'Unidad', 
+        'Cantidad c/Cargo', 'Cantidad Bonificada', 'Importe'
+      ]);
+
+      // Datos del cuerpo
+      allProducts.forEach((row) => {
+        csvStream.write([
+          row.mes, 
+          row.fecha, 
+          row.producto, 
+          row.unidad,
+          (row.cantidad - row.bonificado).toFixed(2),
+          row.bonificado.toFixed(2),
+          row.importe.toFixed(2)
+        ]);
+      });
+
+      // Espacio antes del resumen
+      csvStream.write(['', '', '', '', '', '', '']);
+      csvStream.write(['RESUMEN', '', '', '', '', '', '']);
+
+      // Resumen con ambos valores
+      csvStream.write([
+        'Total Cantidad', 
+        totalCantidad.toFixed(2), 
+        '', '', '', '', ''
+      ]);
+
+      csvStream.write([
+        'Facturación Total', 
+        totalImporte.toFixed(2), 
+        '', '', '', '', ''
+      ]);
+
+      csvStream.end();
+    });
+
+    res.attachment(fileName);
+    res.sendFile(localFilePath, (err) => {
+      if (err) {
+        console.error('Error al enviar el archivo:', err);
+        res.status(500).json({ error: 'Error al enviar el archivo' });
+      }
+    });
+  } catch (error) {
+    console.error('Error en la generación del informe:', error);
+    res.status(500).json({
+      error: 'No se pudo generar el informe de ventas',
+      details: error.message,
+    });
+  }
 }
-
+}
