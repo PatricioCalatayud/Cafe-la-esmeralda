@@ -1266,6 +1266,3 @@ async getProductsByDeliveryByMonthRepository(
   }
   
 }
-
-
-
